@@ -9,7 +9,7 @@ const { addSourceMap } = require('./');
  * Spawns Java and executes the compilation.
  */
 module.exports=async (args, {
-  debug, compilerVersion, output, noSourceMap, getSigInt,
+  debug, compilerVersion, output, noSourceMap, getSigInt = () => {},
 }) => {
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))

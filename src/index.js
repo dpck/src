@@ -1,3 +1,5 @@
+import { read } from '@wrote/wrote'
+
 export { default as Compile } from './lib/compile'
 export { default as Bundle } from './lib/bundle'
 export { default as run } from './lib/run'
@@ -8,9 +10,19 @@ export { default as getOptions } from './lib/get-options'
  */
 const GOOGLE_CLOSURE_COMPILER = process.env['GOOGLE_CLOSURE_COMPILER']
 
-/**
- * Either the contents of resolved `google-closure-compiler-java` package.json file, or `target` if `GOOGLE_CLOSURE_COMPILER` env variable was set.
- */
-const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
+export { GOOGLE_CLOSURE_COMPILER }
 
-export { GOOGLE_CLOSURE_COMPILER, compilerPackage }
+/**
+ * If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
+ */
+export const getCompilerVersion = async () => {
+  let compilerVersion = 'target'
+  const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
+
+  if (!GOOGLE_CLOSURE_COMPILER) {
+    const compilerPackageJson = await read(compilerPackage)
+    const { 'version': cv } = JSON.parse(compilerPackageJson)
+    ;[compilerVersion] = cv.split('.')
+  }
+  return compilerVersion
+}

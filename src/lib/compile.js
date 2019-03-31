@@ -51,10 +51,16 @@ const Compile = async ({ src, output, noStrict, verbose,
   })
   const wrapper = getWrapper(internals)
 
+  const hasJsonFiles = detected.some(({ entry }) => {
+    return entry.endsWith('.json')
+  })
+  if (hasJsonFiles) {
+    console.log('You\'re importing a JSON file. Make sure to use require instead of import.')
+  }
   const Args = [
     ...args,
     ...externs,
-    ...(commonJs.length ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length || hasJsonFiles ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]

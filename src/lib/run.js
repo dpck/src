@@ -9,7 +9,7 @@ import { addSourceMap } from './'
  * Spawns Java and executes the compilation.
  */
 export default async (args, {
-  debug, compilerVersion, output, noSourceMap, getSigInt,
+  debug, compilerVersion, output, noSourceMap, getSigInt = () => {},
 }) => {
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))

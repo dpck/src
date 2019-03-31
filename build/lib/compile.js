@@ -51,10 +51,16 @@ const Compile = async ({ src, output, noStrict, verbose,
   })
   const wrapper = getWrapper(internals)
 
+  const hasJsonFiles = detected.some(({ entry }) => {
+    return entry.endsWith('.json')
+  })
+  if (hasJsonFiles) {
+    console.log(c('You\'re importing a JSON file. Make sure to use require instead of import.', 'yellow'))
+  }
   const Args = [
     ...args,
     ...externs,
-    ...(commonJs.length ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length || hasJsonFiles ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
@@ -103,7 +109,7 @@ const filterNodeModule = (entry) => {
  */
 const getExterns = async (internals) => {
   const depack = relative('',
-    dirname(require.resolve('depack/package.json')))
+    dirname(require.resolve('@depack/depack/package.json')))
   const externsDir = join(depack, 'externs')
   const allInternals = internals
     .reduce((acc, i) => {
