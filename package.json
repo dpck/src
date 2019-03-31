@@ -42,5 +42,12 @@
     "eslint-config-artdeco": "1.0.1",
     "yarn-s": "1.1.0",
     "zoroaster": "3.11.2"
+  },
+  "dependencies": {
+    "@depack/bundle": "1.0.2",
+    "@wrote/wrote": "1.2.1",
+    "erte": "1.1.7",
+    "makepromise": "3.0.2",
+    "static-analysis": "1.3.2"
   }
 }
