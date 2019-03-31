@@ -21,13 +21,12 @@ const externsDeps = {
   readline: ['stream', 'events'],
 }
 
-const Compile = async (opts, options) => {
-  const { src, output, noStrict, verbose,
-    compilerVersion, noSourceMap, debug,
-  } = opts
+const Compile = async ({ src, output, noStrict, verbose,
+  compilerVersion, noSourceMap, debug,
+}, compilerArgs = []) => {
   if (!src) throw new Error('Source is not given.')
   const args = [
-    ...options,
+    ...compilerArgs,
     '--module_resolution', 'NODE',
     '--package_json_entry_names', 'module,main',
   ]

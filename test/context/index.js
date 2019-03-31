@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { debuglog } from 'util'
 
-const LOG = debuglog('@depack/src')
+const LOG = debuglog('@depack/depack')
 
 /**
  * A testing context for the package.

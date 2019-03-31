@@ -1,5 +1,5 @@
 {
-  "name": "@depack/src",
+  "name": "@depack/depack",
   "version": "0.0.0-pre",
   "description": "The Source Code For Depack's JavaScript API.",
   "main": "build/index.js",
@@ -47,7 +47,9 @@
     "@depack/bundle": "1.0.2",
     "@wrote/wrote": "1.2.1",
     "erte": "1.1.7",
+    "indicatrix": "1.0.0",
     "makepromise": "3.0.2",
+    "spawncommand": "2.1.1",
     "static-analysis": "1.3.2"
   }
 }

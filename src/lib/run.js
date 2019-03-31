@@ -5,6 +5,9 @@ import { createWriteStream } from 'fs'
 import { makeError } from './closure'
 import { addSourceMap } from './'
 
+/**
+ * Spawns Java and executes the compilation.
+ */
 export default async (args, {
   debug, compilerVersion, output, noSourceMap, getSigInt,
 }) => {

@@ -1,29 +1,23 @@
-const { debuglog } = require('util');
-
-const LOG = debuglog('@depack/src')
+const $_lib_compile = require('./lib/compile');
+const $_lib_bundle = require('./lib/bundle');
+const $_lib_run = require('./lib/run');
+const $_lib_get_options = require('./lib/get-options');
 
 /**
- * The Source Code For Depack's JavaScript API.
- * @param {Config} [config] Options for the program.
- * @param {boolean} [config.shouldRun=true] A boolean option. Default `true`.
- * @param {string} config.text A text to return.
+ * If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
  */
-               async function src(config = {}) {
-  const {
-    shouldRun = true,
-    text,
-  } = config
-  if (!shouldRun) return
-  LOG('@depack/src called with %s', text)
-  return text
-}
+const GOOGLE_CLOSURE_COMPILER = process.env['GOOGLE_CLOSURE_COMPILER']
 
-/* documentary types/index.xml */
 /**
- * @typedef {Object} Config Options for the program.
- * @prop {boolean} [shouldRun=true] A boolean option. Default `true`.
- * @prop {string} text A text to return.
+ * Either the contents of resolved `google-closure-compiler-java` package.json file, or `target` if `GOOGLE_CLOSURE_COMPILER` env variable was set.
  */
+const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
 
 
-module.exports = src
+
+module.exports.Compile = $_lib_compile
+module.exports.Bundle = $_lib_bundle
+module.exports.run = $_lib_run
+module.exports.getOptions = $_lib_get_options
+module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
+module.exports.compilerPackage = compilerPackage

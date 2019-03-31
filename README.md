@@ -1,19 +1,18 @@
-# @depack/src
+# @depack/depack
 
-[![npm version](https://badge.fury.io/js/@depack/src.svg)](https://npmjs.org/package/@depack/src)
+[![npm version](https://badge.fury.io/js/%40depack%2Fdepack.svg)](https://npmjs.org/package/@depack/depack)
 
-`@depack/src` is The Source Code For Depack's JavaScript API.
+`@depack/depack` is The Source Code For Depack's JavaScript API.
 
 ```sh
-yarn add -E @depack/src
+yarn add -E @depack/depack
 ```
 
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`src(arg1: string, arg2?: boolean)`](#mynewpackagearg1-stringarg2-boolean-void)
-  * [`Config`](#type-config)
+- [`src(arg1: string, arg2?: boolean)`](#srcarg1-stringarg2-boolean-void)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -23,7 +22,7 @@ yarn add -E @depack/src
 The package is available by importing its default function:
 
 ```js
-import src from '@depack/src'
+import src from '@depack/depack'
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
@@ -32,16 +31,11 @@ import src from '@depack/src'
 
 Call this function to get the result you want.
 
-__<a name="type-config">`Config`</a>__: Options for the program.
 
-|   Name    |   Type    |    Description    | Default |
-| --------- | --------- | ----------------- | ------- |
-| shouldRun | _boolean_ | A boolean option. | `true`  |
-| __text*__ | _string_  | A text to return. | -       |
 
 ```js
 /* alanode example/ */
-import src from '@depack/src'
+import src from '@depack/depack'
 
 (async () => {
   const res = await src({
@@ -51,7 +45,7 @@ import src from '@depack/src'
 })()
 ```
 ```
-example
+
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>

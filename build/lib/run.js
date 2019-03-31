@@ -5,6 +5,9 @@ const { createWriteStream } = require('fs');
 const { makeError } = require('./closure');
 const { addSourceMap } = require('./');
 
+/**
+ * Spawns Java and executes the compilation.
+ */
 module.exports=async (args, {
   debug, compilerVersion, output, noSourceMap, getSigInt,
 }) => {

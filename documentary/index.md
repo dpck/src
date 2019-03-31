@@ -1,11 +1,11 @@
-# @depack/src
+# @depack/depack
 
-%NPM: @depack/src%
+%NPM: @depack/depack%
 
-`@depack/src` is The Source Code For Depack's JavaScript API.
+`@depack/depack` is The Source Code For Depack's JavaScript API.
 
 ```sh
-yarn add -E @depack/src
+yarn add -E @depack/depack
 ```
 
 ## Table Of Contents

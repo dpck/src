@@ -5,6 +5,9 @@ const getLanguage = (l) => {
   return l
 }
 
+/**
+ * Returns the arguments for the compiler.
+ */
 module.exports=({
   compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
   src, output, level, languageIn, languageOut, sourceMap = true,

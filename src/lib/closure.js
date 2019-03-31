@@ -31,7 +31,7 @@ const [VER] = process.version.split('.', 1)
 export const prepareCoreModules = async ({
   internals, nodeModulesPath = 'node_modules', force = true,
 }) => {
-  const corePath = relative('', join(dirname(require.resolve('depack/package.json')), 'builtin-modules', VER))
+  const corePath = relative('', join(dirname(require.resolve('@depack/depack/package.json')), 'builtin-modules', VER))
   const r = await Promise.all(internals.map(async (name) => {
     const path = join(nodeModulesPath, name)
     const packageJson = join(path, 'package.json')
