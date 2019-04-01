@@ -9,9 +9,21 @@ import { removeStrict, getWrapper } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
-const Compile = async ({ src, output, noStrict, verbose,
-  compilerVersion, noSourceMap, debug,
-}, compilerArgs = []) => {
+/**
+ * Compile a Node.JS file into a single executable.
+ * @param {CompileConfig} options Options for the Node.JS package compiler.
+ * @param {string} options.src The entry file to bundle. Currently only single files are supported.
+ * @param {string} options.output The path where the output will be saved.
+ * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
+ * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
+ * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @param {string} options.compilerVersion Used in the display message.
+ * @param {boolean} [options.noSourceMap=false] Disables source maps. Default `false`.
+ */
+const Compile = async (options, compilerArgs = []) => {
+  const { src, output, noStrict, verbose,
+    compilerVersion, noSourceMap, debug,
+  } = options
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
@@ -121,3 +133,15 @@ const getExterns = async (internals) => {
 }
 
 export default Compile
+
+/* documentary types/compile.xml */
+/**
+ * @typedef {Object} CompileConfig Options for the Node.JS package compiler.
+ * @prop {string} src The entry file to bundle. Currently only single files are supported.
+ * @prop {string} output The path where the output will be saved.
+ * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
+ * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
+ * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @prop {string} compilerVersion Used in the display message.
+ * @prop {boolean} [noSourceMap=false] Disables source maps. Default `false`.
+ */

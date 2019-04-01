@@ -14,7 +14,8 @@
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "b": "alamode src -o build -s",
     "d": "yarn-s d1",
-    "d1": "NODE_DEBUG=doc doc src/index.js -g",
+    "d1": "NODE_DEBUG=doc doc src/lib/bundle.js -g",
+    "d2": "NODE_DEBUG=doc doc src/lib/compile.js -g",
     "build": "yarn-s d b doc",
     "e": "alanode"
   },

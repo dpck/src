@@ -1,0 +1,25 @@
+<types>
+  <type name="CompileConfig" desc="Options for the Node.JS package compiler.">
+    <prop string name="src">
+      The entry file to bundle. Currently only single files are supported.
+    </prop>
+    <prop string name="output">
+      The path where the output will be saved.
+    </prop>
+    <prop boolean name="noStrict" default="false">
+      Removes `use strict` from the output.
+    </prop>
+    <prop boolean name="verbose" default="false">
+      Print all arguments to the compiler.
+    </prop>
+    <prop opt string name="debug">
+      The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+    </prop>
+    <prop string name="compilerVersion">
+      Used in the display message.
+    </prop>
+    <prop boolean name="noSourceMap" default="false">
+      Disables source maps.
+    </prop>
+  </type>
+</types>
