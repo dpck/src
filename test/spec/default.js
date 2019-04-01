@@ -1,22 +1,29 @@
-import { equal, ok } from 'zoroaster/assert'
-import Context from '../context'
-import src from '../../src'
+import { makeError } from '../../src/lib/closure'
 
-/** @type {Object.<string, (c: Context)>} */
-const T = {
-  context: Context,
-  'is a function'() {
-    equal(typeof src, 'function')
+const error = `node_modules/argufy/src/index.js:2: WARNING - Bad type annotation.
+* @param {string[]} argv
+^
+
+node_modules/argufy/src/index.js:2: WARNING - Bad type annotation.
+* @param {string[]} argv
+^
+
+t/argufy.js:3: ERROR - variable src$$module$t$argufy is undeclared
+`
+/** @type {Object.<string>} */
+const TS = {
+  async 'parses the warnings'() {
+    return makeError(1, error)
   },
-  async 'calls package without error'() {
-    await src()
-  },
-  async 'gets a link to the fixture'({ FIXTURE }) {
-    const res = await src({
-      text: FIXTURE,
-    })
-    ok(res, FIXTURE)
+  async 'parses error with original'() {
+    return makeError(1, `node_modules/preact/dist/preact.mjs:678:
+Originally at:
+node_modules/preact/src/vdom/component.js:287: WARNING - dangerous use of the global this object
+                component.nextBase = base;
+                ^^^^
+
+t/argufy.js:3: ERROR - variable src$$module$t$argufy is undeclared`)
   },
 }
 
-export default T
+export default TS
