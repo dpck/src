@@ -45,6 +45,8 @@
   },
   "dependencies": {
     "@depack/bundle": "1.0.2",
+    "@depack/externs": "1.0.1",
+    "@depack/nodejs": "1.0.0",
     "@wrote/wrote": "1.2.1",
     "erte": "1.1.7",
     "indicatrix": "1.0.0",

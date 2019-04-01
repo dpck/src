@@ -4,22 +4,10 @@ import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
+import externsDeps from '@depack/externs'
 import { removeStrict, getWrapper } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
-
-const externsDeps = {
-  fs: ['events', 'stream'],
-  stream: ['events'],
-  child_process: ['events', 'stream'],
-  http: ['events', 'net', 'stream'],
-  https: ['http', 'tls'],
-  tls: ['events', 'net', 'stream', 'crypto'],
-  crypto: ['stream'],
-  net: ['events'],
-  zlib: ['stream'],
-  readline: ['stream', 'events'],
-}
 
 const Compile = async ({ src, output, noStrict, verbose,
   compilerVersion, noSourceMap, debug,
@@ -55,7 +43,7 @@ const Compile = async ({ src, output, noStrict, verbose,
     return entry.endsWith('.json')
   })
   if (hasJsonFiles) {
-    console.log('You\'re importing a JSON file. Make sure to use require instead of import.')
+    console.log(c('You\'re importing a JSON file. Make sure to use require instead of import.', 'yellow'))
   }
   const Args = [
     ...args,
@@ -108,25 +96,28 @@ const filterNodeModule = (entry) => {
  * Returns options to include externs.
  */
 const getExterns = async (internals) => {
-  const depack = relative('',
-    dirname(require.resolve('@depack/depack/package.json')))
-  const externsDir = join(depack, 'externs')
+  const externs = relative('',
+    dirname(require.resolve('@depack/externs/package.json')))
+  const externsDir = join(externs, 'v8')
   const allInternals = internals
     .reduce((acc, i) => {
       const deps = externsDeps[i] || []
       return [...acc, i, ...deps]
     }, [])
     .filter((e, i, a) => a.indexOf(e) == i)
-  const p = [...allInternals, 'node']
-    .map(i => join(externsDir, `${i}.js`))
+  const p = [...allInternals, 'global', 'nodejs']
+    .map(i => {
+      if (['module', 'process', 'console'].includes(i)) i = `_${i}`
+      return join(externsDir, `${i}.js`)
+    })
   await Promise.all(p.map(async pp => {
     const exist = await exists(pp)
     if (!exist) throw new Error(`Externs ${pp} don't exist.`)
   }))
-  const externs = p.reduce((acc, e) => {
+  const args = p.reduce((acc, e) => {
     return [...acc, '--externs', e]
   }, [])
-  return externs
+  return args
 }
 
 export default Compile

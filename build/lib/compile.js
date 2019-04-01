@@ -108,25 +108,28 @@ const filterNodeModule = (entry) => {
  * Returns options to include externs.
  */
 const getExterns = async (internals) => {
-  const depack = relative('',
-    dirname(require.resolve('@depack/depack/package.json')))
-  const externsDir = join(depack, 'externs')
+  const externs = relative('',
+    dirname(require.resolve('@depack/externs/package.json')))
+  const externsDir = join(externs, 'v8')
   const allInternals = internals
     .reduce((acc, i) => {
       const deps = externsDeps[i] || []
       return [...acc, i, ...deps]
     }, [])
     .filter((e, i, a) => a.indexOf(e) == i)
-  const p = [...allInternals, 'node']
-    .map(i => join(externsDir, `${i}.js`))
+  const p = [...allInternals, 'global', 'nodejs']
+    .map(i => {
+      if (['module', 'process', 'console'].includes(i)) i = `_${i}`
+      return join(externsDir, `${i}.js`)
+    })
   await Promise.all(p.map(async pp => {
     const exist = await exists(pp)
     if (!exist) throw new Error(`Externs ${pp} don't exist.`)
   }))
-  const externs = p.reduce((acc, e) => {
+  const args = p.reduce((acc, e) => {
     return [...acc, '--externs', e]
   }, [])
-  return externs
+  return args
 }
 
 module.exports=Compile

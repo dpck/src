@@ -69,6 +69,16 @@
   dependencies:
     mismatch "1.0.3"
 
+"@depack/externs@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.0.1.tgz#0830624e206be28045aa25b267c10c55bbbce7e8"
+  integrity sha512-mnCaZ+v1b2oO7oa3XUR82ycbiv5z6Yj8LsojKOQ+VP4EL1O4tnBBU4olCVa1Tf5t8e+3aQ23Eis728R5G7j+Iw==
+
+"@depack/nodejs@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.0.0.tgz#2d308202be339d57aba6005a6dc73b9f1db65bb7"
+  integrity sha512-V/LsRBaAmMOW1ObHkySQZ+5IglsZrUBli4Y2G0+ln9gjoo2xDqna+BgRtD6hlERnshYQGjvE/KnoqPHJYFRBRQ==
+
 "@depack/render@1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@depack/render/-/render-1.1.4.tgz#8586d55f60502c8bfae7bbb0bd0a0513670fbcbd"
