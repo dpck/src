@@ -1,6 +1,7 @@
 import { c } from 'erte'
-import { join, relative, dirname } from 'path'
+import { join, dirname } from 'path'
 import { ensurePath, write, read, exists } from '@wrote/wrote'
+import getCorePath from '@depack/nodejs'
 
 /**
  * Create an error with color.
@@ -31,7 +32,7 @@ const [VER] = process.version.split('.', 1)
 export const prepareCoreModules = async ({
   internals, nodeModulesPath = 'node_modules', force = true,
 }) => {
-  const corePath = relative('', join(dirname(require.resolve('@depack/depack/package.json')), 'builtin-modules', VER))
+  const corePath = getCorePath(VER)
   const r = await Promise.all(internals.map(async (name) => {
     const path = join(nodeModulesPath, name)
     const packageJson = join(path, 'package.json')
