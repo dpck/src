@@ -9,7 +9,7 @@ import run from './run'
  * Bundle the source code.
  * @param {BundleConfig} options Options for the web bundler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
- * @param {string} options.output The path where the output will be saved.
+ * @param {string} [options.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [options.tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
  * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
@@ -78,7 +78,7 @@ export default Bundle
 /**
  * @typedef {Object} BundleConfig Options for the web bundler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
- * @prop {string} output The path where the output will be saved.
+ * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.

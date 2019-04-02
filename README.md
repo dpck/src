@@ -45,7 +45,7 @@ __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS pa
 |      Name       |   Type    |                                          Description                                          | Default |
 | --------------- | --------- | --------------------------------------------------------------------------------------------- | ------- |
 | __src*__        | _string_  | The entry file to bundle. Currently only single files are supported.                          | -       |
-| __output*__     | _string_  | The path where the output will be saved.                                                      | -       |
+| output          | _string_  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -       |
 | noStrict        | _boolean_ | Removes `use strict` from the output.                                                         | `false` |
 | verbose         | _boolean_ | Print all arguments to the compiler.                                                          | `false` |
 | debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
@@ -63,7 +63,7 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 |      Name       |   Type    |                                          Description                                          |    Default    |
 | --------------- | --------- | --------------------------------------------------------------------------------------------- | ------------- |
 | __src*__        | _string_  | The entry file to bundle. Currently only single files are supported.                          | -             |
-| __output*__     | _string_  | The path where the output will be saved.                                                      | -             |
+| output          | _string_  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -             |
 | tempDir         | _string_  | Where to save prepared JSX files.                                                             | `depack-temp` |
 | preact          | _boolean_ | Adds `import { h } from 'preact'` automatically.                                              | `false`       |
 | debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -             |
@@ -80,7 +80,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
 
 |      Name       |   Type    |                                          Description                                          | Default |
 | --------------- | --------- | --------------------------------------------------------------------------------------------- | ------- |
-| __output*__     | _string_  | The path where the output will be saved.                                                      | -       |
+| output          | _string_  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -       |
 | debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
 | compilerVersion | _string_  | Used in the display message.                                                                  | -       |
 | noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false` |

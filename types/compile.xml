@@ -3,8 +3,8 @@
     <prop string name="src">
       The entry file to bundle. Currently only single files are supported.
     </prop>
-    <prop string name="output">
-      The path where the output will be saved.
+    <prop opt string name="output">
+      The path where the output will be saved. Prints to `stdout` if not passed.
     </prop>
     <prop boolean name="noStrict" default="false">
       Removes `use strict` from the output.

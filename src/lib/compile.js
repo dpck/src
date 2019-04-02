@@ -13,7 +13,7 @@ import run from './run'
  * Compile a Node.JS file into a single executable.
  * @param {CompileConfig} options Options for the Node.JS package compiler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
- * @param {string} options.output The path where the output will be saved.
+ * @param {string} [options.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
  * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
@@ -134,7 +134,7 @@ export default Compile
 /**
  * @typedef {Object} CompileConfig Options for the Node.JS package compiler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
- * @prop {string} output The path where the output will be saved.
+ * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
  * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
