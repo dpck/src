@@ -20,6 +20,7 @@ yarn add -E @depack/depack
   * [`BundleConfig`](#type-bundleconfig)
 - [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-arraystring)
   * [`GetOptions`](#type-getoptions)
+- [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -142,9 +143,26 @@ console.log(opts)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
+## `getOutput(`<br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src?: string,`<br/>`): string`
 
+Returns the location of the output file, even when the directory is given.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
+```js
+import { getOutput } from '@depack/depack'
+
+const file = getOutput('test.js')
+console.log('File: %s', file)
+const dir = getOutput('output', 'index.js')
+console.log('Dir: %s', dir)
+```
+```js
+File: test.js
+Dir: output/index.js
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
 
 
 ## Copyright
