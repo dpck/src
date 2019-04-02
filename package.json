@@ -57,15 +57,15 @@
     "zoroaster": "3.11.2"
   },
   "dependencies": {
-    "@depack/bundle": "1.0.2",
+    "@depack/bundle": "1.0.3",
     "@depack/externs": "1.1.1",
     "@depack/nodejs": "1.0.1",
-    "@wrote/wrote": "1.2.1",
+    "@wrote/wrote": "1.2.2",
     "erte": "1.1.7",
     "frame-of-mind": "1.1.0",
-    "indicatrix": "1.0.0",
-    "makepromise": "3.0.2",
+    "indicatrix": "1.1.0",
+    "makepromise": "3.0.3",
     "spawncommand": "2.1.1",
-    "static-analysis": "1.3.2"
+    "static-analysis": "1.3.3"
   }
 }
