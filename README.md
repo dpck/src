@@ -21,7 +21,7 @@ yarn add -E @depack/depack
 - [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-arraystring)
   * [`GetOptions`](#type-getoptions)
 - [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
-- [`GOOGLE_CLOSURE_COMPILER(): string`](#google_closure_compiler-string)
+- [`GOOGLE_CLOSURE_COMPILER: string`](#google_closure_compiler-string)
 - [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
 - [Copyright](#copyright)
 
@@ -126,7 +126,7 @@ _Stderr:_
 ```
 -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT --module_resolution NODE --package_json_entry_names module,main --externs node_modules/@depack/externs/v8/os.js --externs node_modules/@depack/externs/v8/fs.js --externs node_modules/@depack/externs/v8/stream.js --externs node_modules/@depack/externs/v8/events.js --externs node_modules/@depack/externs/v8/url.js --externs node_modules/@depack/externs/v8/global.js --externs node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190325.           
+Running Google Closure Compiler 20190325..          
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
@@ -302,7 +302,7 @@ Dir: output/index.js
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
-## `GOOGLE_CLOSURE_COMPILER(): string`
+## `GOOGLE_CLOSURE_COMPILER: string`
 
 If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
 

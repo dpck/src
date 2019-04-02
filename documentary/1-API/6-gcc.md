@@ -1,5 +1,4 @@
-```## GOOGLE_CLOSURE_COMPILER => string
-```
+## `GOOGLE_CLOSURE_COMPILER: string`
 
 If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
 
