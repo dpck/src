@@ -69,15 +69,15 @@
   dependencies:
     mismatch "1.0.3"
 
-"@depack/externs@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.1.0.tgz#cf6a3d8aff340001569496c73d4f093f60ac1e98"
-  integrity sha512-nja6atr9cZdCaY8vtmczM+lNrGQpvSlGPGPXPm7NA0u5D+Y8ZZJlIICI9oxiJXjmwOWWnxb2214Wde6nCmNGKQ==
+"@depack/externs@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.1.1.tgz#c00dc1abfa52ebf2c237ed48dbc5d30bb89dc885"
+  integrity sha512-coPYqVwCvdQ6afKvXGEB2J4z6Qg2mg+YnGbUzDZuwcptLRZv14yJA7SZKixY1QDtzy61o4S9QXp/vaEkbfiisA==
 
-"@depack/nodejs@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.0.0.tgz#2d308202be339d57aba6005a6dc73b9f1db65bb7"
-  integrity sha512-V/LsRBaAmMOW1ObHkySQZ+5IglsZrUBli4Y2G0+ln9gjoo2xDqna+BgRtD6hlERnshYQGjvE/KnoqPHJYFRBRQ==
+"@depack/nodejs@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.0.1.tgz#63a23082f6bc5d5002ef36c3d27fafe0b729b166"
+  integrity sha512-u2I9jjypvRtP3vYHT0XaO+MMfu3Wh3bjFAnWqv8U6LieKDhjM5uz4v5I+UCQebhRhhwXiQE79XTw6hdUPsFutQ==
 
 "@depack/render@1.1.4":
   version "1.1.4"
