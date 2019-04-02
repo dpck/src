@@ -58,15 +58,15 @@ Bundles source code into a _JavaScript_ file. If there are _JSX_ dependency, the
 
 __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
-|         Name         |   Type    |                                          Description                                          |    Default    |
-| -------------------- | --------- | --------------------------------------------------------------------------------------------- | ------------- |
-| __src*__             | _string_  | The entry file to bundle. Currently only single files are supported.                          | -             |
-| __output*__          | _string_  | The path where the output will be saved.                                                      | -             |
-| tempDir              | _string_  | Where to save prepared JSX files.                                                             | `depack-temp` |
-| preact               | _boolean_ | Adds `import { h } from 'preact'` automatically.                                              | `false`       |
-| debug                | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -             |
-| __compilerVersion*__ | _string_  | Used in the display message.                                                                  | -             |
-| noSourceMap          | _boolean_ | Disables source maps.                                                                         | `false`       |
+|      Name       |   Type    |                                          Description                                          |    Default    |
+| --------------- | --------- | --------------------------------------------------------------------------------------------- | ------------- |
+| __src*__        | _string_  | The entry file to bundle. Currently only single files are supported.                          | -             |
+| __output*__     | _string_  | The path where the output will be saved.                                                      | -             |
+| tempDir         | _string_  | Where to save prepared JSX files.                                                             | `depack-temp` |
+| preact          | _boolean_ | Adds `import { h } from 'preact'` automatically.                                              | `false`       |
+| debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -             |
+| compilerVersion | _string_  | Used in the display message.                                                                  | -             |
+| noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false`       |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 

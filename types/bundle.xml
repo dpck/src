@@ -15,7 +15,7 @@
     <prop opt string name="debug">
       The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
     </prop>
-    <prop string name="compilerVersion">
+    <prop opt string name="compilerVersion">
       Used in the display message.
     </prop>
     <prop boolean name="noSourceMap" default="false">

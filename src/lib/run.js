@@ -9,12 +9,12 @@ import { addSourceMap } from './'
  * Spawns Java and executes the compilation.
  */
 export default async (args, {
-  debug, compilerVersion, output, noSourceMap, getSigInt = () => {},
+  debug, compilerVersion = '', output, noSourceMap, getSigInt = () => {},
 }) => {
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))
 
-  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
+  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler${compilerVersion ? c(compilerVersion, 'grey') : ''}`, promise, {
     writable: process.stderr,
   })
   // if(process.stderr.isTTY) process.stderr.write(' '.repeat(process.stderr.columns))
