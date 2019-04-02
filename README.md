@@ -21,6 +21,8 @@ yarn add -E @depack/depack
 - [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-arraystring)
   * [`GetOptions`](#type-getoptions)
 - [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
+- [`GOOGLE_CLOSURE_COMPILER(): string`](#google_closure_compiler-string)
+- [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -65,6 +67,54 @@ __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS pa
 | __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -       |
 | noStrict | _boolean_ | Removes `use strict` from the output.                                | `false` |
 | verbose  | _boolean_ | Print all arguments to the compiler.                                 | `false` |
+
+_For example, given the following source:_
+
+```js
+import { constants } from 'os'
+import { createWriteStream, createReadStream } from 'fs'
+
+console.log(process.version)
+console.log(constants.errno.EACCES)
+const rs = createReadStream(__filename)
+const ws = createWriteStream(process.env['OUTPUT'])
+rs.pipe(ws)
+```
+
+_The library can be used to start the compilation:_
+
+```js
+import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
+
+(async () => {
+  const compilerVersion = await getCompilerVersion()
+  const options = getOptions({
+    advanced: true,
+    prettyPrint: true,
+  })
+  await Compile({
+    src: 'example/compile-src.js',
+  }, { compilerVersion }, options)
+})()
+```
+```js
+#!/usr/bin/env node
+const os = require('os');
+const fs = require('fs');
+var a = os.constants;
+var b = fs, c = b.createReadStream, d = b.createWriteStream;
+console.log(process.version);
+console.log(a.errno.EACCES);
+var e = c(__filename), f = d(process.env.OUTPUT);
+e.pipe(f);
+```
+
+_Stdout:_
+```
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT --module_resolution NODE --package_json_entry_names module,main --externs node_modules/@depack/externs/v8/os.js --externs node_modules/@depack/externs/v8/fs.js --externs node_modules/@depack/externs/v8/stream.js --externs node_modules/@depack/externs/v8/events.js --externs node_modules/@depack/externs/v8/url.js --externs node_modules/@depack/externs/v8/global.js --externs node_modules/@depack/externs/v8/nodejs.js
+Built-ins: os, fs
+Running Google Closure Compiler 20190325..          
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 
@@ -162,7 +212,17 @@ Dir: output/index.js
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
+## `GOOGLE_CLOSURE_COMPILER(): string`
+
+If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+
+## `async getCompilerVersion(): string`
+
+If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 
 ## Copyright

@@ -10,7 +10,16 @@ Compiles a _Node.JS_ package into a single executable (with the `+x` addition). 
 
 %TYPEDEF types/compile.xml%
 
-<!-- %EXAMPLE: example, ../src => @depack/depack%
-%FORK example% -->
+_For example, given the following source:_
+
+%EXAMPLE: example/compile-src%
+
+_The library can be used to start the compilation:_
+
+%EXAMPLE: example/compile, ../src => @depack/depack%
+%FORK-js example/compile%
+
+_Stdout:_
+%FORKERR example/compile%
 
 %~ width="25"%

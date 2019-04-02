@@ -41,7 +41,7 @@ const getOptions = (opts) => {
     const lang = getLanguage(languageOut)
     options.push('--language_out', lang)
   }
-  if (sourceMap && !debug) {
+  if (output && sourceMap && !debug) {
     options.push('--create_source_map', '%outname%.map',
       // '--source_map_include_content'
     )

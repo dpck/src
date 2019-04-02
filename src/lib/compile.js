@@ -86,15 +86,15 @@ const printCommand = (args, externs, sorted) => {
   } = sorted
   const fjs = js.filter(filterNodeModule)
   const cjs = commonJs.filter(filterNodeModule)
-  if (deps.length) console.log('%s: %s',
+  if (deps.length) console.error('%s: %s',
     c('Dependencies', 'yellow'), deps.filter((e, i, a) => {
       return a.indexOf(e) == i
     }).join(' '))
-  if (fjs.length) console.log('%s: %s',
+  if (fjs.length) console.error('%s: %s',
     c('Modules', 'yellow'), fjs.join(' '))
-  if (cjs.length) console.log('%s: %s',
+  if (cjs.length) console.error('%s: %s',
     c('CommonJS', 'yellow'), cjs.join(' '))
-  if (internals.length) console.log('%s: %s',
+  if (internals.length) console.error('%s: %s',
     c('Built-ins', 'yellow'), internals.join(', '))
 }
 
