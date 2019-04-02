@@ -13,17 +13,17 @@ import run from './run'
  * Compile a Node.JS file into a single executable.
  * @param {CompileConfig} options Options for the Node.JS package compiler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
- * @param {string} [options.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
- * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
- * @param {string} [options.compilerVersion] Used in the display message.
- * @param {boolean} [options.noSourceMap=false] Disables source maps. Default `false`.
+ * @param {RunConfig} runOptions General options for running of the compiler.
+ * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
+ * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @param {string} [runOptions.compilerVersion] Used in the display message.
+ * @param {boolean} [runOptions.noSourceMap=false] Disables source maps. Default `false`.
  */
-const Compile = async (options, compilerArgs = []) => {
-  const { src, output, noStrict, verbose,
-    compilerVersion, noSourceMap, debug,
-  } = options
+const Compile = async (options, runOptions, compilerArgs = []) => {
+  const { src, noStrict, verbose } = options
+  const { output, compilerVersion, noSourceMap, debug } = runOptions
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
@@ -134,9 +134,14 @@ export default Compile
 /**
  * @typedef {Object} CompileConfig Options for the Node.JS package compiler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
- * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
  * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
+ */
+
+/* documentary types/index.xml */
+/**
+ * @typedef {Object} RunConfig General options for running of the compiler.
+ * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @prop {string} [compilerVersion] Used in the display message.
  * @prop {boolean} [noSourceMap=false] Disables source maps. Default `false`.
