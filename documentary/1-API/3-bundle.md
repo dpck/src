@@ -1,6 +1,7 @@
-```## async Compile
+```## async Bundle
 [
   ["options", "BundleConfig"],
+  ["runOptions", "RunConfig"],
   ["compilerArgs?", "Array"]
 ]
 ```

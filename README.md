@@ -12,12 +12,12 @@ yarn add -E @depack/depack
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
-  * [`CompileConfig`](#type-compileconfig)
-- [`async Compile(options: BundleConfig, compilerArgs?: Array)`](#async-compileoptions-bundleconfigcompilerargs-array-void)
-  * [`BundleConfig`](#type-bundleconfig)
 - [`async run(args: Array, opts: RunConfig)`](#async-runargs-arrayopts-runconfig-void)
   * [`RunConfig`](#type-runconfig)
+- [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
+  * [`CompileConfig`](#type-compileconfig)
+- [`async Bundle(options: BundleConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-array-void)
+  * [`BundleConfig`](#type-bundleconfig)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -36,38 +36,6 @@ import {
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
 
-## `async Compile(`<br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
-
-Compiles a _Node.JS_ package into a single executable (with the `+x` addition). The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
-
-__<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS package compiler.
-
-|   Name   |   Type    |                             Description                              | Default |
-| -------- | --------- | -------------------------------------------------------------------- | ------- |
-| __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -       |
-| noStrict | _boolean_ | Removes `use strict` from the output.                                | `false` |
-| verbose  | _boolean_ | Print all arguments to the compiler.                                 | `false` |
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
-
-## `async Compile(`<br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
-
-Bundles source code into a _JavaScript_ file. If there are _JSX_ dependency, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
-
-__<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
-
-|      Name       |   Type    |                                          Description                                          |    Default    |
-| --------------- | --------- | --------------------------------------------------------------------------------------------- | ------------- |
-| __src*__        | _string_  | The entry file to bundle. Currently only single files are supported.                          | -             |
-| output          | _string_  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -             |
-| tempDir         | _string_  | Where to save prepared JSX files.                                                             | `depack-temp` |
-| preact          | _boolean_ | Adds `import { h } from 'preact'` automatically.                                              | `false`       |
-| debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -             |
-| compilerVersion | _string_  | Used in the display message.                                                                  | -             |
-| noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false`       |
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
-
 ## `async run(`<br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/>`): void`
 
 Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method.
@@ -80,6 +48,34 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
 | debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
 | compilerVersion | _string_  | Used in the display message.                                                                  | -       |
 | noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false` |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+
+## `async Compile(`<br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
+
+Compiles a _Node.JS_ package into a single executable (with the `+x` addition). The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
+
+__<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS package compiler.
+
+|   Name   |   Type    |                             Description                              | Default |
+| -------- | --------- | -------------------------------------------------------------------- | ------- |
+| __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -       |
+| noStrict | _boolean_ | Removes `use strict` from the output.                                | `false` |
+| verbose  | _boolean_ | Print all arguments to the compiler.                                 | `false` |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+
+## `async Bundle(`<br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
+
+Bundles source code into a _JavaScript_ file. If there are _JSX_ dependency, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+
+__<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
+
+|   Name   |   Type    |                             Description                              |    Default    |
+| -------- | --------- | -------------------------------------------------------------------- | ------------- |
+| __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -             |
+| tempDir  | _string_  | Where to save prepared JSX files.                                    | `depack-temp` |
+| preact   | _boolean_ | Adds `import { h } from 'preact'` automatically.                     | `false`       |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
 
