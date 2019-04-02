@@ -58,7 +58,18 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
 
 ## `async Compile(`<br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
 
-Compiles a _Node.JS_ package into a single executable (with the `+x` addition). The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
+Compiles a _Node.JS_ package into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. The actual logic that makes compilation of _Node.JS_ packages possible is:
+
+- Scan the source code and dependency to find out what internal Node.JS modules are used, and creates the output wrapper with `require` calls to require those built-in modules, e.g., `const path = require('path')`.
+- Add appropriate [externs](https://github.com/dpck/externs) for the internal modules.
+- To make Closure resolve internal imports like `import { join } from 'path'` instead of throwing an error, mock the built-ins in `node_modules` folder. The mocks will reference the variable from the output wrapper generated in step 1:
+    ```js
+    // node_modules/path/index.js
+    export default path
+    export * from path
+    ```
+
+The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
 
 __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS package compiler.
 
@@ -97,6 +108,8 @@ import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
   }, { compilerVersion }, options)
 })()
 ```
+
+_The compiled output in pretty format of advanced optimisation:_
 ```js
 #!/usr/bin/env node
 const os = require('os');
@@ -109,7 +122,7 @@ var e = c(__filename), f = d(process.env.OUTPUT);
 e.pipe(f);
 ```
 
-_Stdout:_
+_Stderr:_
 ```
 -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT --module_resolution NODE --package_json_entry_names module,main --externs node_modules/@depack/externs/v8/os.js --externs node_modules/@depack/externs/v8/fs.js --externs node_modules/@depack/externs/v8/stream.js --externs node_modules/@depack/externs/v8/events.js --externs node_modules/@depack/externs/v8/url.js --externs node_modules/@depack/externs/v8/global.js --externs node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
@@ -129,6 +142,83 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 | __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -             |
 | tempDir  | _string_  | Where to save prepared JSX files.                                    | `depack-temp` |
 | preact   | _boolean_ | Adds `import { h } from 'preact'` automatically.                     | `false`       |
+
+_For example, given the following single JS source:_
+
+```js
+/* eslint-env browser */
+[...document.querySelectorAll('.BananaInactive')]
+  .forEach((el) => {
+    const parent = el.closest('.BananaCheck')
+    el.onclick = () => {
+      parent.classList.add('BananaActivated')
+    }
+  })
+;[...document.querySelectorAll('.BananaActive')]
+  .forEach((el) => {
+    const parent = el.closest('.BananaCheck')
+    el.onclick = () => {
+      parent.classList.remove('BananaActivated')
+    }
+  })
+```
+
+_Depack is used to make a JS file in ES2015 understood by old browsers:_
+
+```js
+import { getCompilerVersion, Bundle, getOptions } from '@depack/depack'
+
+(async () => {
+  const compilerVersion = await getCompilerVersion()
+  const options = getOptions({
+    advanced: true,
+    prettyPrint: true,
+  })
+  await Bundle({
+    src: 'example/bundle-src.js',
+  }, { compilerVersion }, options)
+})()
+```
+
+_The bundled output:_
+```js
+function c(a) {
+  var b = 0;
+  return function() {
+    return b < a.length ? {done:!1, value:a[b++]} : {done:!0};
+  };
+}
+function e(a) {
+  if (!(a instanceof Array)) {
+    var b = "undefined" != typeof Symbol && Symbol.iterator && a[Symbol.iterator];
+    a = b ? b.call(a) : {next:c(a)};
+    for (var d = []; !(b = a.next()).done;) {
+      d.push(b.value);
+    }
+    a = d;
+  }
+  return a;
+}
+[].concat(e(document.querySelectorAll(".BananaInactive"))).forEach(function(a) {
+  var b = a.closest(".BananaCheck");
+  a.onclick = function() {
+    b.classList.add("BananaActivated");
+  };
+});
+[].concat(e(document.querySelectorAll(".BananaActive"))).forEach(function(a) {
+  var b = a.closest(".BananaCheck");
+  a.onclick = function() {
+    b.classList.remove("BananaActivated");
+  };
+});
+```
+
+_Stderr:_
+```
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT --module_resolution NODE
+--js example/bundle-src.js
+Running Google Closure Compiler 20190325...         
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
 
