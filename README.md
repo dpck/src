@@ -85,7 +85,7 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
 Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
 
-__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`.
+__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
 |    Name     |         Type          |                                                        Description                                                        |                            Default                             |
 | ----------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |

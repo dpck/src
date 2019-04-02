@@ -1,5 +1,5 @@
 <types>
-  <type name="GetOptions" desc="Parameters for `getOptions`.">
+  <type name="GetOptions" desc="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">
     <prop string name="compiler" default="require.resolve('google-closure-compiler-java/compiler.jar')">
       The path to the compiler JAR.
     </prop>
