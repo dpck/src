@@ -7,7 +7,7 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
- * @param {GetOptions} opts Parameters for `getOptions`.
+ * @param {GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @param {string} [opts.compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [opts.output] Sets the `--js_output_file` flag.
  * @param {string} [opts.level] Sets the `--compilation_level` flag.
@@ -78,7 +78,7 @@ export default getOptions
 
 /* documentary types/options.xml */
 /**
- * @typedef {Object} GetOptions Parameters for `getOptions`.
+ * @typedef {Object} GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @prop {string} [compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [level] Sets the `--compilation_level` flag.

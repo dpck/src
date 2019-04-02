@@ -102,7 +102,47 @@ __<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. htt
 | debug       | _string_              | The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible. | -                                                              |
 | argv        | _Array&lt;string&gt;_ | Any additional arguments to the compiler.                                                                                 | -                                                              |
 
+```js
+import { getOptions } from '@depack/depack'
+
+const opts = getOptions({
+  advanced: true,
+  iife: true,
+  languageIn: 2019,
+  languageOut: 2017,
+  noWarnings: true,
+  prettyPrint: true,
+  output: 'bundle.js',
+  argv: ['--externs', 'externs.js'],
+})
+console.log(opts)
+```
+```js
+[ '-jar',
+  '/Users/zavr/node_modules/google-closure-compiler-java/compiler.jar',
+  '--compilation_level',
+  'ADVANCED',
+  '--language_in',
+  'ECMASCRIPT_2019',
+  '--language_out',
+  'ECMASCRIPT_2017',
+  '--create_source_map',
+  '%outname%.map',
+  '--formatting',
+  'PRETTY_PRINT',
+  '--isolation_mode',
+  'IIFE',
+  '--warning_level',
+  'QUIET',
+  '--externs',
+  'externs.js',
+  '--js_output_file',
+  'bundle.js' ]
+```
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+
+
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 
