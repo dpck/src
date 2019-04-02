@@ -1,8 +1,26 @@
 import { constants } from 'os'
 import { createWriteStream, createReadStream } from 'fs'
 
-console.log(process.version)
-console.log(constants.errno.EACCES)
-const rs = createReadStream(__filename)
-const ws = createWriteStream(process.env['OUTPUT'])
-rs.pipe(ws)
+;(async () => {
+  const result = await new Promise((r, j) => {
+    const input = process.env['INPUT'] || __filename
+    const output = process.env['OUTPUT']
+    const rs = createReadStream(input)
+    const ws = output ? createWriteStream(output) : process.stdout
+    rs.pipe(ws)
+    rs.on('error', (err) => {
+      if (err.errno === -constants.errno.ENOENT) {
+        return j(`Cannot find file ${input}`)
+      }
+      return j(err)
+    })
+    rs.on('close', () => {
+      r({ input, 'output': output })
+    })
+  })
+  const res = {
+    version: process.version,
+    ...result,
+  }
+  console.log(res)
+})()

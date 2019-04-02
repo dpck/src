@@ -12,7 +12,7 @@ yarn add -E @depack/depack
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`async run(args: Array, opts: RunConfig)`](#async-runargs-arrayopts-runconfig-void)
+- [`async run(args: Array, opts: RunConfig): string`](#async-runargs-arrayopts-runconfig-string)
   * [`RunConfig`](#type-runconfig)
 - [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
   * [`CompileConfig`](#type-compileconfig)
@@ -41,9 +41,9 @@ import {
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
 
-## `async run(`<br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/>`): void`
+## `async run(`<br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/>`): string`
 
-Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method.
+Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process.
 
 __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the compiler.
 
@@ -85,11 +85,29 @@ _For example, given the following source:_
 import { constants } from 'os'
 import { createWriteStream, createReadStream } from 'fs'
 
-console.log(process.version)
-console.log(constants.errno.EACCES)
-const rs = createReadStream(__filename)
-const ws = createWriteStream(process.env['OUTPUT'])
-rs.pipe(ws)
+;(async () => {
+  const result = await new Promise((r, j) => {
+    const input = process.env['INPUT'] || __filename
+    const output = process.env['OUTPUT']
+    const rs = createReadStream(input)
+    const ws = output ? createWriteStream(output) : process.stdout
+    rs.pipe(ws)
+    rs.on('error', (err) => {
+      if (err.errno === -constants.errno.ENOENT) {
+        return j(`Cannot find file ${input}`)
+      }
+      return j(err)
+    })
+    rs.on('close', () => {
+      r({ input, 'output': output })
+    })
+  })
+  const res = {
+    version: process.version,
+    ...result,
+  }
+  console.log(res)
+})()
 ```
 
 _The library can be used to start the compilation:_
@@ -102,6 +120,8 @@ import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
   const options = getOptions({
     advanced: true,
     prettyPrint: true,
+    languageIn: 2018,
+    languageOut: 2017,
   })
   await Compile({
     src: 'example/compile-src.js',
@@ -112,19 +132,28 @@ import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
 _The compiled output in pretty format of advanced optimisation:_
 ```js
 #!/usr/bin/env node
+'use strict';
 const os = require('os');
-const fs = require('fs');
-var a = os.constants;
-var b = fs, c = b.createReadStream, d = b.createWriteStream;
-console.log(process.version);
-console.log(a.errno.EACCES);
-var e = c(__filename), f = d(process.env.OUTPUT);
-e.pipe(f);
+const fs = require('fs');             
+const {constants:g} = os;
+const {createReadStream:h, createWriteStream:k} = fs;
+(async() => {
+  var d = await new Promise((l, e) => {
+    const a = process.env.INPUT || __filename, b = process.env.OUTPUT, c = h(a), m = b ? k(b) : process.stdout;
+    c.pipe(m);
+    c.on("error", f => f.errno === -g.errno.ENOENT ? e(`Cannot find file ${a}`) : e(f));
+    c.on("close", () => {
+      l({input:a, output:b});
+    });
+  });
+  d = Object.assign({}, {version:process.version}, d);
+  console.log(d);
+})();
 ```
 
 _Stderr:_
 ```
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT --module_resolution NODE --package_json_entry_names module,main --externs node_modules/@depack/externs/v8/os.js --externs node_modules/@depack/externs/v8/fs.js --externs node_modules/@depack/externs/v8/stream.js --externs node_modules/@depack/externs/v8/events.js --externs node_modules/@depack/externs/v8/url.js --externs node_modules/@depack/externs/v8/global.js --externs node_modules/@depack/externs/v8/nodejs.js
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main --externs node_modules/@depack/externs/v8/os.js --externs node_modules/@depack/externs/v8/fs.js --externs node_modules/@depack/externs/v8/stream.js --externs node_modules/@depack/externs/v8/events.js --externs node_modules/@depack/externs/v8/url.js --externs node_modules/@depack/externs/v8/global.js --externs node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
 Running Google Closure Compiler 20190325..          
 ```
@@ -217,7 +246,7 @@ _Stderr:_
 ```
 -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190325...         
+Running Google Closure Compiler 20190325.           
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>

@@ -5,7 +5,7 @@ import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
 import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
-import { removeStrict, getWrapper, hasJsonFiles } from './'
+import { removeStrict, getWrapper, hasJsonFiles, prepareOutput } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
@@ -27,7 +27,6 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
-    '--module_resolution', 'NODE',
     '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
@@ -49,7 +48,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     if (a.startsWith('node_modules')) return -1
     if (b.startsWith('node_modules')) return 1
   })
-  const wrapper = getWrapper(internals)
+  const wrapper = getWrapper(internals, noStrict)
 
   const hasJson = hasJsonFiles(detected)
   if (hasJson) {
@@ -58,15 +57,21 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const Args = [
     ...args,
     ...externs,
+    ...(files.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
   verbose ? console.error(Args.join(' ')) : printCommand(args, externs, sorted)
 
-  await run(Args, { debug, compilerVersion, output, noSourceMap })
-  if (noStrict) await removeStrict(output)
-  if (output) await makePromise(chmod, [output, '755'])
+  const stdout = await run(Args, runOptions)
+  if (!output) {
+    const o = prepareOutput(stdout, wrapper, noStrict)
+    console.log(o.trim())
+  } else {
+    await removeStrict(output, wrapper, noStrict)
+    await makePromise(chmod, [output, '755'])
+  }
 }
 
 const printCommand = (args, externs, sorted) => {

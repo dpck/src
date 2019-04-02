@@ -29,13 +29,13 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Example",
-      "program": "${workspaceFolder}/example/index.js",
+      "program": "${workspaceFolder}/node_modules/.bin/alanode",
       "env": {
         "NODE_DEBUG": "@depack/depack",
       },
       "console": "integratedTerminal",
       "args": [
-        "example/example.js"
+        "example/compile.js"
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

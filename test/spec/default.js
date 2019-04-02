@@ -1,4 +1,5 @@
 import { makeError } from '../../src/lib/closure'
+import { prepareOutput } from '../../src/lib'
 
 const error = `node_modules/argufy/src/index.js:2: WARNING - Bad type annotation.
 * @param {string[]} argv
@@ -27,3 +28,32 @@ t/argufy.js:3: ERROR - variable src$$module$t$argufy is undeclared`)
 }
 
 export default TS
+
+export const PrepareOutput = {
+  'prepares output without strict'() {
+    const wr = `#!/usr/bin/env node
+'use strict';
+const os = require('vm');`
+    const wrapper = `${wr}%output%`
+    const res = prepareOutput(`${wr}const {Script:aa} = vm;`, wrapper)
+    return res
+  },
+  'prepares output with strict'() {
+    const wr = `#!/usr/bin/env node
+'use strict';
+const os = require('vm');`
+    const wrapper = `${wr}%output%`
+    const res = prepareOutput(`${wr}'use strict';
+const {Script:aa} = vm;`, wrapper)
+    return res
+  },
+  'prepares output with strict but with noStrict'() {
+    const wr = `#!/usr/bin/env node
+'use strict';
+const os = require('vm');`
+    const wrapper = `${wr}%output%`
+    const res = prepareOutput(`${wr}'use strict';
+const {Script:aa} = vm;`, wrapper, true)
+    return res
+  },
+}

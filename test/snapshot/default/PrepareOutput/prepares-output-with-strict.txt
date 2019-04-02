@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+'use strict';
+const os = require('vm');             
+const {Script:aa} = vm;
