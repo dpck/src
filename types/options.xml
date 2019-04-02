@@ -12,13 +12,10 @@
     <prop boolean name="advanced" default="false">
       Sets the `--compilation_level` flag to `ADVANCED`.
     </prop>
-    <prop type="(string|number)" name="languageIn">
+    <prop opt type="(string|number)" name="languageIn">
       Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
     </prop>
-    <prop type="(string|number)" name="languageOut">
-      Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
-    </prop>
-    <prop type="(string|number)" name="languageOut">
+    <prop opt type="(string|number)" name="languageOut">
       Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
     </prop>
     <prop boolean name="sourceMap" default="true">

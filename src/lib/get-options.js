@@ -12,9 +12,8 @@ const getLanguage = (l) => {
  * @param {string} [opts.output] Sets the `--js_output_file` flag.
  * @param {string} [opts.level] Sets the `--compilation_level` flag.
  * @param {boolean} [opts.advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
- * @param {(string|number)} opts.languageIn Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @param {(string|number)} opts.languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @param {(string|number)} opts.languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @param {(string|number)} [opts.languageIn] Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @param {(string|number)} [opts.languageOut] Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
  * @param {boolean} [opts.sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
  * @param {boolean} [opts.prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
  * @param {boolean} [opts.iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
@@ -84,9 +83,8 @@ export default getOptions
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [level] Sets the `--compilation_level` flag.
  * @prop {boolean} [advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
- * @prop {(string|number)} languageIn Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @prop {(string|number)} languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @prop {(string|number)} languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @prop {(string|number)} [languageIn] Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @prop {(string|number)} [languageOut] Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
  * @prop {boolean} [sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
  * @prop {boolean} [prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
  * @prop {boolean} [iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
