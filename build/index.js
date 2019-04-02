@@ -32,4 +32,5 @@ module.exports.Compile = $_lib_compile
 module.exports.Bundle = $_lib_bundle
 module.exports.run = $_lib_run
 module.exports.getOptions = $_lib_get_options
+module.exports.getOutput = $_lib_get_options.getOutput
 module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER

@@ -10,7 +10,7 @@ const getLanguage = (l) => {
  */
 export default ({
   compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
-  src, output, level, languageIn, languageOut, sourceMap = true,
+  output, level, languageIn, languageOut, sourceMap = true,
   argv = [], advanced, prettyPrint, noWarnings, debug, iife,
 }) => {
   const options = ['-jar', compiler]
@@ -46,8 +46,16 @@ export default ({
   }
   options.push(...argv)
   if (output) {
-    const o = /\.js$/.test(output) ? output : join(output, basename(src))
-    options.push('--js_output_file', o)
+    options.push('--js_output_file', output)
   }
   return options
+}
+
+/**
+ * Returns the location of the output file, even when the directory is given.
+ */
+export const getOutput = (output, src) => {
+  let o = /\.js$/.test(output) ? output : join(output, basename(src))
+  o = o.replace(/jsx$/, 'js')
+  return o
 }

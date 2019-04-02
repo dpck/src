@@ -1,28 +1,31 @@
-const { c } = require('erte');
+const { c, b } = require('erte');
 const { basename, relative } = require('path');
 const { write, read } = require('@wrote/wrote');
 
 /**
- * Returns the pretty-printed command.
+ * Returns the pretty-printed command for the bundler.
  * @param {Array<string>} args The array with arguments.
  * @param {(string):string} getJs The function to get the location of the js file to print.
  */
-       const getCommand = (args, getJs = js => js) => {
-  const js = []
+       const getCommand = (args, js) => {
+  // const js = []
   const a = args.join(' ')
-    .replace(/--js (\S+)\s*/g, (m, f) => {
-      const j = `  --js ${c(getJs(f), 'green')}`
-      js.push(j)
-      return ''
-    })
-    .replace(/--externs (\S+)/g, (m, f) => {
-      return `\n  --externs ${c(f, 'grey')}`
+    // .replace(/--js (\S+)\s*/g, (m, f) => {
+    //   const j = `  --js ${c(getJs(f), 'green')}`
+    //   js.push(j)
+    //   return ''
+    // })
+    .replace(/--compilation_level (\S+)/g, (m, f) => {
+      return `--compilation_level ${b(f, 'green')}`
     })
     .replace(/--js_output_file (\S+)/g, (m, f) => {
-      return `\n  --js_output_file ${c(f, 'red')}`
+      return `--js_output_file ${c(f, 'red')}`
     })
-  const jss = js.join('\n')
-  return `${a}\n${jss}`
+  const jss = js.map((file) => {
+    const j = `${c(file, 'green')}`
+    return j
+  }).join('\n     ')
+  return `${a}\n--js ${jss}`.trim()
 }
 
        const addSourceMap = async (path) => {

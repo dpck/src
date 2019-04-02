@@ -3,7 +3,7 @@ import { read } from '@wrote/wrote'
 export { default as Compile } from './lib/compile'
 export { default as Bundle } from './lib/bundle'
 export { default as run } from './lib/run'
-export { default as getOptions } from './lib/get-options'
+export { default as getOptions, getOutput } from './lib/get-options'
 
 /**
  * If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.

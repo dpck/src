@@ -50,15 +50,18 @@ const Bundle = async (options, compilerArgs = []) => {
   // process.on('SIGINT', () => {
   //   sigint = true
   // })
-  const Args = [
+  const PreArgs = [
     ...compilerArgs,
-    '--source_map_include_content',
+    ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
     '--module_resolution', 'NODE',
     ...(processCommonJs ? ['--process_common_js_modules'] : []),
-    '--js', ...deps,
   ]
-  const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
+  const jjs = hasJsx ? deps.map((j) => {
+    return j.startsWith(tempDir) ? relative(tempDir, j) : j
+  }) : deps
+  const a = getCommand(PreArgs, jjs)
   console.log(a)
+  const Args = [...PreArgs, '--js', ...deps]
 
   await run(Args, { debug, compilerVersion, output,
     noSourceMap, getSigInt })

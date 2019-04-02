@@ -1,28 +1,31 @@
-import { c } from 'erte'
+import { c, b } from 'erte'
 import { basename, relative } from 'path'
 import { write, read } from '@wrote/wrote'
 
 /**
- * Returns the pretty-printed command.
+ * Returns the pretty-printed command for the bundler.
  * @param {Array<string>} args The array with arguments.
  * @param {(string):string} getJs The function to get the location of the js file to print.
  */
-export const getCommand = (args, getJs = js => js) => {
-  const js = []
+export const getCommand = (args, js) => {
+  // const js = []
   const a = args.join(' ')
-    .replace(/--js (\S+)\s*/g, (m, f) => {
-      const j = `  --js ${c(getJs(f), 'green')}`
-      js.push(j)
-      return ''
-    })
-    .replace(/--externs (\S+)/g, (m, f) => {
-      return `\n  --externs ${c(f, 'grey')}`
+    // .replace(/--js (\S+)\s*/g, (m, f) => {
+    //   const j = `  --js ${c(getJs(f), 'green')}`
+    //   js.push(j)
+    //   return ''
+    // })
+    .replace(/--compilation_level (\S+)/g, (m, f) => {
+      return `--compilation_level ${b(f, 'green')}`
     })
     .replace(/--js_output_file (\S+)/g, (m, f) => {
-      return `\n  --js_output_file ${c(f, 'red')}`
+      return `--js_output_file ${c(f, 'red')}`
     })
-  const jss = js.join('\n')
-  return `${a}\n${jss}`
+  const jss = js.map((file) => {
+    const j = `${c(file, 'green')}`
+    return j
+  }).join('\n     ')
+  return `${a}\n--js ${jss}`.trim()
 }
 
 export const addSourceMap = async (path) => {
