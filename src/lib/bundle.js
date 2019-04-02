@@ -53,14 +53,14 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   const PreArgs = [
     ...compilerArgs,
     ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
-    '--module_resolution', 'NODE',
+    ...(deps.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(processCommonJs ? ['--process_common_js_modules'] : []),
   ]
   const jjs = hasJsx ? deps.map((j) => {
     return j.startsWith(tempDir) ? relative(tempDir, j) : j
   }) : deps
   const a = getCommand(PreArgs, jjs)
-  console.log(a)
+  console.error(a)
   const Args = [...PreArgs, '--js', ...deps]
 
   await run(Args, { debug, compilerVersion, output,
