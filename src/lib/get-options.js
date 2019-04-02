@@ -7,12 +7,27 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
+ * @param {GetOptions} opts Parameters for `getOptions`.
+ * @param {string} [opts.compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
+ * @param {string} [opts.output] Sets the `--js_output_file` flag.
+ * @param {string} [opts.level] Sets the `--compilation_level` flag.
+ * @param {boolean} [opts.advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
+ * @param {(string|number)} opts.languageIn Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @param {(string|number)} opts.languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @param {(string|number)} opts.languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @param {boolean} [opts.sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
+ * @param {boolean} [opts.prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
+ * @param {boolean} [opts.iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
+ * @param {boolean} [opts.noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
+ * @param {string} [opts.debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
+ * @param {Array<string>} [opts.argv] Any additional arguments to the compiler.
  */
-export default ({
-  compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
-  output, level, languageIn, languageOut, sourceMap = true,
-  argv = [], advanced, prettyPrint, noWarnings, debug, iife,
-}) => {
+const getOptions = (opts) => {
+  const {
+    compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
+    output, level, advanced, languageIn, languageOut, sourceMap = true,
+    argv = [], prettyPrint, noWarnings, debug, iife,
+  } = opts
   const options = ['-jar', compiler]
   if (level) {
     options.push('--compilation_level', level)
@@ -59,3 +74,23 @@ export const getOutput = (output, src) => {
   o = o.replace(/jsx$/, 'js')
   return o
 }
+
+export default getOptions
+
+/* documentary types/options.xml */
+/**
+ * @typedef {Object} GetOptions Parameters for `getOptions`.
+ * @prop {string} [compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
+ * @prop {string} [output] Sets the `--js_output_file` flag.
+ * @prop {string} [level] Sets the `--compilation_level` flag.
+ * @prop {boolean} [advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
+ * @prop {(string|number)} languageIn Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @prop {(string|number)} languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @prop {(string|number)} languageOut Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+ * @prop {boolean} [sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
+ * @prop {boolean} [prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
+ * @prop {boolean} [iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
+ * @prop {boolean} [noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
+ * @prop {string} [debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
+ * @prop {Array<string>} [argv] Any additional arguments to the compiler.
+ */

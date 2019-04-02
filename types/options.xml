@@ -1,0 +1,43 @@
+<types>
+  <type name="GetOptions" desc="Parameters for `getOptions`.">
+    <prop string name="compiler" default="require.resolve('google-closure-compiler-java/compiler.jar')">
+      The path to the compiler JAR.
+    </prop>
+    <prop opt string name="output">
+      Sets the `--js_output_file` flag.
+    </prop>
+    <prop opt string name="level">
+      Sets the `--compilation_level` flag.
+    </prop>
+    <prop boolean name="advanced" default="false">
+      Sets the `--compilation_level` flag to `ADVANCED`.
+    </prop>
+    <prop type="(string|number)" name="languageIn">
+      Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+    </prop>
+    <prop type="(string|number)" name="languageOut">
+      Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+    </prop>
+    <prop type="(string|number)" name="languageOut">
+      Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
+    </prop>
+    <prop boolean name="sourceMap" default="true">
+      Adds the `--create_source_map %outname%.map` flag.
+    </prop>
+    <prop boolean name="prettyPrint" default="false">
+      Adds the `--formatting PRETTY_PRINT` flag.
+    </prop>
+    <prop boolean name="iife" default="false">
+      Adds the `--isolation_mode IIFE` flag.
+    </prop>
+    <prop boolean name="noWarnings" default="false">
+      Sets the `--warning_level QUIET` flag.
+    </prop>
+    <prop string opt name="debug">
+      The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
+    </prop>
+    <prop opt type="Array<string>" name="argv">
+      Any additional arguments to the compiler.
+    </prop>
+  </type>
+</types>

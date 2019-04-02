@@ -6,7 +6,7 @@
 ]
 ```
 
-Bundles source code into a _JavaScript_ file. If there are _JSX_ dependency, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
 
 %TYPEDEF types/bundle.xml%
 

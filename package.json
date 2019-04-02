@@ -17,6 +17,7 @@
     "d1": "NODE_DEBUG=doc doc src/lib/bundle.js -g",
     "d2": "NODE_DEBUG=doc doc src/lib/compile.js -g",
     "d3": "NODE_DEBUG=doc doc src/lib/run.js -g",
+    "d4": "NODE_DEBUG=doc doc src/lib/get-options.js -g",
     "build": "yarn-s d b doc",
     "e": "alanode"
   },

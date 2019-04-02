@@ -18,6 +18,8 @@ yarn add -E @depack/depack
   * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options: BundleConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-array-void)
   * [`BundleConfig`](#type-bundleconfig)
+- [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-arraystring)
+  * [`GetOptions`](#type-getoptions)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -67,7 +69,7 @@ __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS pa
 
 ## `async Bundle(`<br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
 
-Bundles source code into a _JavaScript_ file. If there are _JSX_ dependency, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
 
 __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
@@ -79,7 +81,31 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+## `getOptions(`<br/>&nbsp;&nbsp;`options: GetOptions,`<br/>`): Array<string>`
+
+Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
+
+__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`.
+
+|       Name       |         Type          |                                                        Description                                                        |                            Default                             |
+| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| compiler         | _string_              | The path to the compiler JAR.                                                                                             | `require.resolve('google-closure-compiler-java/compiler.jar')` |
+| output           | _string_              | Sets the `--js_output_file` flag.                                                                                         | -                                                              |
+| level            | _string_              | Sets the `--compilation_level` flag.                                                                                      | -                                                              |
+| advanced         | _boolean_             | Sets the `--compilation_level` flag to `ADVANCED`.                                                                        | `false`                                                        |
+| __languageIn*__  | _(string \| number)_  | Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                      | -                                                              |
+| __languageOut*__ | _(string \| number)_  | Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                   | -                                                              |
+| __languageOut*__ | _(string \| number)_  | Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                   | -                                                              |
+| sourceMap        | _boolean_             | Adds the `--create_source_map %outname%.map` flag.                                                                        | `true`                                                         |
+| prettyPrint      | _boolean_             | Adds the `--formatting PRETTY_PRINT` flag.                                                                                | `false`                                                        |
+| iife             | _boolean_             | Adds the `--isolation_mode IIFE` flag.                                                                                    | `false`                                                        |
+| noWarnings       | _boolean_             | Sets the `--warning_level QUIET` flag.                                                                                    | `false`                                                        |
+| debug            | _string_              | The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible. | -                                                              |
+| argv             | _Array&lt;string&gt;_ | Any additional arguments to the compiler.                                                                                 | -                                                              |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 
 
 ## Copyright
