@@ -1,7 +1,8 @@
 import { rm } from '@wrote/wrote'
 import generateTemp from '@depack/bundle'
 import { relative } from 'path'
-import { getCommand, updateSourceMaps } from './'
+import staticAnalysis, { sort } from 'static-analysis'
+import { getCommand, updateSourceMaps, hasJsonFiles } from './'
 import run from './run'
 
 /**
@@ -21,8 +22,27 @@ const Bundle = async (options, compilerArgs = []) => {
     output, preact, compilerVersion, debug, noSourceMap,
   } = options
   if (!src) throw new Error('Entry file is not given.')
+  const analysis = await staticAnalysis(src, { nodeModules: false })
+  const hasJsx = analysis.some(({ entry }) => {
+    return entry.endsWith('.jsx')
+  })
+  let deps
+  let processCommonJs
+  if (hasJsx) {
+    deps = await generateTemp(src, { tempDir, preact })
+  } else {
+    const detected = await staticAnalysis(src)
+    const sorted = sort(detected)
+    const {
+      commonJs, commonJsPackageJsons, js, packageJsons,
+    } = sorted
+    const hasJson = hasJsonFiles(detected)
+    processCommonJs = Boolean(commonJs.length || hasJson)
+    deps = [src, ...commonJs, ...packageJsons,
+      ...js,
+      ...commonJsPackageJsons]
+  }
 
-  const deps = await generateTemp(src, { tempDir, preact })
   let sigint = false
   const getSigInt = () => {
     return sigint
@@ -34,16 +54,19 @@ const Bundle = async (options, compilerArgs = []) => {
     ...compilerArgs,
     '--source_map_include_content',
     '--module_resolution', 'NODE',
-    ...deps.reduce((acc, d) => {
-      return [...acc, '--js', d]
-    }, [])]
+    ...(processCommonJs ? ['--process_common_js_modules'] : []),
+    '--js', ...deps,
+  ]
   const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
   console.log(a)
 
   await run(Args, { debug, compilerVersion, output,
     noSourceMap, getSigInt })
-  if (!sigint && output && !noSourceMap) await updateSourceMaps(output, tempDir)
-  await rm(tempDir)
+  if (hasJsx) {
+    if (!sigint && output && !noSourceMap)
+      await updateSourceMaps(output, tempDir)
+    await rm(tempDir)
+  }
 }
 
 export default Bundle

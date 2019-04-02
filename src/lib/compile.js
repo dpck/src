@@ -1,11 +1,11 @@
 import { c } from 'erte'
-import { relative, join, dirname } from 'path'
+import { join } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
-import externsDeps from '@depack/externs'
-import { removeStrict, getWrapper } from './'
+import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
+import { removeStrict, getWrapper, hasJsonFiles } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
@@ -51,16 +51,14 @@ const Compile = async (options, compilerArgs = []) => {
   })
   const wrapper = getWrapper(internals)
 
-  const hasJsonFiles = detected.some(({ entry }) => {
-    return entry.endsWith('.json')
-  })
-  if (hasJsonFiles) {
+  const hasJson = hasJsonFiles(detected)
+  if (hasJson) {
     console.log(c('You\'re importing a JSON file. Make sure to use require instead of import.', 'yellow'))
   }
   const Args = [
     ...args,
     ...externs,
-    ...(commonJs.length || hasJsonFiles ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
@@ -108,9 +106,7 @@ const filterNodeModule = (entry) => {
  * Returns options to include externs.
  */
 const getExterns = async (internals) => {
-  const externs = relative('',
-    dirname(require.resolve('@depack/externs/package.json')))
-  const externsDir = join(externs, 'v8')
+  const externsDir = getExternsDir()
   const allInternals = internals
     .reduce((acc, i) => {
       const deps = externsDeps[i] || []

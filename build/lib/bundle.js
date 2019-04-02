@@ -1,19 +1,48 @@
 const { rm } = require('@wrote/wrote');
 let generateTemp = require('@depack/bundle'); if (generateTemp && generateTemp.__esModule) generateTemp = generateTemp.default;
 const { relative } = require('path');
-const { getCommand, updateSourceMaps } = require('./');
+let staticAnalysis = require('static-analysis'); const { sort } = staticAnalysis; if (staticAnalysis && staticAnalysis.__esModule) staticAnalysis = staticAnalysis.default;
+const { getCommand, updateSourceMaps, hasJsonFiles } = require('./');
 const run = require('./run');
 
 /**
  * Bundle the source code.
+ * @param {BundleConfig} options Options for the web bundler.
+ * @param {string} options.src The entry file to bundle. Currently only single files are supported.
+ * @param {string} options.output The path where the output will be saved.
+ * @param {string} [options.tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
+ * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
+ * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @param {string} options.compilerVersion Used in the display message.
+ * @param {boolean} [options.noSourceMap=false] Disables source maps. Default `false`.
  */
-const Bundle = async ({
-  src, tempDir = 'depack-temp',
-  output, preact, compilerVersion, debug, noSourceMap,
-}, compilerArgs = []) => {
+const Bundle = async (options, compilerArgs = []) => {
+  const {
+    src, tempDir = 'depack-temp',
+    output, preact, compilerVersion, debug, noSourceMap,
+  } = options
   if (!src) throw new Error('Entry file is not given.')
+  const analysis = await staticAnalysis(src, { nodeModules: false })
+  const hasJsx = analysis.some(({ entry }) => {
+    return entry.endsWith('.jsx')
+  })
+  let deps
+  let processCommonJs
+  if (hasJsx) {
+    deps = await generateTemp(src, { tempDir, preact })
+  } else {
+    const detected = await staticAnalysis(src)
+    const sorted = sort(detected)
+    const {
+      commonJs, commonJsPackageJsons, js, packageJsons,
+    } = sorted
+    const hasJson = hasJsonFiles(detected)
+    processCommonJs = Boolean(commonJs.length || hasJson)
+    deps = [src, ...commonJs, ...packageJsons,
+      ...js,
+      ...commonJsPackageJsons]
+  }
 
-  const deps = await generateTemp(src, { tempDir, preact })
   let sigint = false
   const getSigInt = () => {
     return sigint
@@ -25,29 +54,31 @@ const Bundle = async ({
     ...compilerArgs,
     '--source_map_include_content',
     '--module_resolution', 'NODE',
-    ...deps.reduce((acc, d) => {
-      return [...acc, '--js', d]
-    }, [])]
+    ...(processCommonJs ? ['--process_common_js_modules'] : []),
+    '--js', ...deps,
+  ]
   const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
   console.log(a)
 
   await run(Args, { debug, compilerVersion, output,
     noSourceMap, getSigInt })
-  if (!sigint && output && !noSourceMap) await updateSourceMaps(output, tempDir)
-  await rm(tempDir)
+  if (hasJsx) {
+    if (!sigint && output && !noSourceMap)
+      await updateSourceMaps(output, tempDir)
+    await rm(tempDir)
+  }
 }
 
 module.exports=Bundle
 
 /* documentary types/bundle.xml */
 /**
- * @typedef {Object} BundleOptions Options for the Bundle Command.
- * @prop {string} src The source file to compile.
- * @prop {string} dest The output file to write to.
- * @prop {string} [level="ADVANCED"] The level of the optimisation. Default `ADVANCED`.
- * @prop {string} [tempDir="depack-temp"] The path to the temporary directory. Default `depack-temp`.
- * @prop {*} [sourceMap=true] Whether to include source maps. Default `true`.
- * @prop {Array<string>} [externs] The externs to compile with.
- * @prop {string} [languageIn="ECMASCRIPT_2018"] The language in flag. Default `ECMASCRIPT_2018`.
- * @prop {*} [noWarnings=false] Do not print compiler's warnings. Default `false`.
+ * @typedef {Object} BundleConfig Options for the web bundler.
+ * @prop {string} src The entry file to bundle. Currently only single files are supported.
+ * @prop {string} output The path where the output will be saved.
+ * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
+ * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
+ * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @prop {string} compilerVersion Used in the display message.
+ * @prop {boolean} [noSourceMap=false] Disables source maps. Default `false`.
  */

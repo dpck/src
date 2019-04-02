@@ -78,3 +78,12 @@ export const getWrapper = (internals) => {
     .join('\n') + '\n%output%'
   return `#!/usr/bin/env node\n${wrapper}`
 }
+
+/**
+ * Checks whether static analysis returned .json files.
+ * @param {Array<import('static-analysis').Detection>} detected
+ */
+export const hasJsonFiles = detected => detected.some(({ entry }) => {
+  if (entry)
+    return entry.endsWith('.json')
+})

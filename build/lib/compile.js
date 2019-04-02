@@ -1,29 +1,29 @@
 const { c } = require('erte');
-const { relative, join, dirname } = require('path');
+const { join } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
 const { chmod } = require('fs');
 const { exists } = require('@wrote/wrote');
 let detect = require('static-analysis'); const { sort } = detect; if (detect && detect.__esModule) detect = detect.default;
-const { removeStrict, getWrapper } = require('./');
+let getExternsDir = require('@depack/externs'); const { dependencies: externsDeps } = getExternsDir; if (getExternsDir && getExternsDir.__esModule) getExternsDir = getExternsDir.default;
+const { removeStrict, getWrapper, hasJsonFiles } = require('./');
 const { prepareCoreModules, fixDependencies } = require('./closure');
 const run = require('./run');
 
-const externsDeps = {
-  fs: ['events', 'stream'],
-  stream: ['events'],
-  child_process: ['events', 'stream'],
-  http: ['events', 'net', 'stream'],
-  https: ['http', 'tls'],
-  tls: ['events', 'net', 'stream', 'crypto'],
-  crypto: ['stream'],
-  net: ['events'],
-  zlib: ['stream'],
-  readline: ['stream', 'events'],
-}
-
-const Compile = async ({ src, output, noStrict, verbose,
-  compilerVersion, noSourceMap, debug,
-}, compilerArgs = []) => {
+/**
+ * Compile a Node.JS file into a single executable.
+ * @param {CompileConfig} options Options for the Node.JS package compiler.
+ * @param {string} options.src The entry file to bundle. Currently only single files are supported.
+ * @param {string} options.output The path where the output will be saved.
+ * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
+ * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
+ * @param {string} [options.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @param {string} options.compilerVersion Used in the display message.
+ * @param {boolean} [options.noSourceMap=false] Disables source maps. Default `false`.
+ */
+const Compile = async (options, compilerArgs = []) => {
+  const { src, output, noStrict, verbose,
+    compilerVersion, noSourceMap, debug,
+  } = options
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
@@ -51,16 +51,14 @@ const Compile = async ({ src, output, noStrict, verbose,
   })
   const wrapper = getWrapper(internals)
 
-  const hasJsonFiles = detected.some(({ entry }) => {
-    return entry.endsWith('.json')
-  })
-  if (hasJsonFiles) {
+  const hasJson = hasJsonFiles(detected)
+  if (hasJson) {
     console.log(c('You\'re importing a JSON file. Make sure to use require instead of import.', 'yellow'))
   }
   const Args = [
     ...args,
     ...externs,
-    ...(commonJs.length || hasJsonFiles ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
@@ -108,9 +106,7 @@ const filterNodeModule = (entry) => {
  * Returns options to include externs.
  */
 const getExterns = async (internals) => {
-  const externs = relative('',
-    dirname(require.resolve('@depack/externs/package.json')))
-  const externsDir = join(externs, 'v8')
+  const externsDir = getExternsDir()
   const allInternals = internals
     .reduce((acc, i) => {
       const deps = externsDeps[i] || []
@@ -133,3 +129,15 @@ const getExterns = async (internals) => {
 }
 
 module.exports=Compile
+
+/* documentary types/compile.xml */
+/**
+ * @typedef {Object} CompileConfig Options for the Node.JS package compiler.
+ * @prop {string} src The entry file to bundle. Currently only single files are supported.
+ * @prop {string} output The path where the output will be saved.
+ * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
+ * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
+ * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+ * @prop {string} compilerVersion Used in the display message.
+ * @prop {boolean} [noSourceMap=false] Disables source maps. Default `false`.
+ */

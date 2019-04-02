@@ -79,9 +79,19 @@ const { write, read } = require('@wrote/wrote');
   return `#!/usr/bin/env node\n${wrapper}`
 }
 
+/**
+ * Checks whether static analysis returned .json files.
+ * @param {Array<import('static-analysis').Detection>} detected
+ */
+       const hasJsonFiles = detected => detected.some(({ entry }) => {
+  if (entry)
+    return entry.endsWith('.json')
+})
+
 module.exports.getCommand = getCommand
 module.exports.addSourceMap = addSourceMap
 module.exports.removeStrict = removeStrict
 module.exports.updateSourceMaps = updateSourceMaps
 module.exports.checkIfLib = checkIfLib
 module.exports.getWrapper = getWrapper
+module.exports.hasJsonFiles = hasJsonFiles
