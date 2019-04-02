@@ -1,10 +1,11 @@
-import { c } from 'erte'
+import { c, b } from 'erte'
 import { join } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
 import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
+import frame from 'frame-of-mind'
 import { removeStrict, getWrapper, hasJsonFiles, prepareOutput } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
@@ -23,13 +24,15 @@ import run from './run'
  */
 const Compile = async (options, runOptions, compilerArgs = []) => {
   const { src, noStrict, verbose } = options
-  const { output, compilerVersion, noSourceMap, debug } = runOptions
+  const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
     '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
+  warnOfCommonJs(detected)
+
   const sorted = sort(detected)
   const {
     commonJs, commonJsPackageJsons, internals, js, packageJsons,
@@ -101,6 +104,48 @@ const printCommand = (args, externs, sorted) => {
     c('CommonJS', 'yellow'), cjs.join(' '))
   if (internals.length) console.error('%s: %s',
     c('Built-ins', 'yellow'), internals.join(', '))
+}
+
+/**
+ * @param {Array<import('static-analysis').Detection>} analysis
+ */
+const warnOfCommonJs = (analysis) => {
+  const res = analysis.map(({ hasMain, name, from }) => {
+    if (!(hasMain && name)) return
+    const fromSrc = from.filter((s) => {
+      const detection = analysis.find(({ entry: e }) => {
+        return e === s
+      })
+      if (detection.hasMain) return
+      return true
+    })
+    if (!fromSrc.length) return
+    return { name, fromSrc }
+  }).filter(Boolean)
+  if (res.length) {
+    console.error(c(getCompatWarning(), 'red'))
+    console.error('The following commonJS packages referenced in ES6 modules don\'t support named exports:')
+    res.forEach(({ name, fromSrc }) => {
+      console.error(' %s from %s', c(name, 'red'), c(fromSrc.join(' '), 'grey'))
+    })
+  }
+
+  return res
+}
+
+const getCompatWarning = () => {
+  let s = `CommonJS don't have named exports, make sure to use them like
+/* no named */ import myModule from 'my-module';
+myModule.method('hello world')
+https://github.com/google/closure-compiler/issues/3308`
+  const mx = s.split('\n').reduce((acc, { length }) => {
+    if (length > acc) return length
+    return acc
+  }, 0)
+  if (process.stderr.isTTY && mx + 4 < process.stderr.columns) {
+    s = frame(s)
+  }
+  return s
 }
 
 const filterNodeModule = (entry) => {

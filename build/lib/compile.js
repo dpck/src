@@ -1,11 +1,12 @@
-const { c } = require('erte');
+const { c, b } = require('erte');
 const { join } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
 const { chmod } = require('fs');
 const { exists } = require('@wrote/wrote');
 let detect = require('static-analysis'); const { sort } = detect; if (detect && detect.__esModule) detect = detect.default;
 let getExternsDir = require('@depack/externs'); const { dependencies: externsDeps } = getExternsDir; if (getExternsDir && getExternsDir.__esModule) getExternsDir = getExternsDir.default;
-const { removeStrict, getWrapper, hasJsonFiles } = require('./');
+let frame = require('frame-of-mind'); if (frame && frame.__esModule) frame = frame.default;
+const { removeStrict, getWrapper, hasJsonFiles, prepareOutput } = require('./');
 const { prepareCoreModules, fixDependencies } = require('./closure');
 const run = require('./run');
 
@@ -23,14 +24,15 @@ const run = require('./run');
  */
 const Compile = async (options, runOptions, compilerArgs = []) => {
   const { src, noStrict, verbose } = options
-  const { output, compilerVersion, noSourceMap, debug } = runOptions
+  const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...compilerArgs,
-    '--module_resolution', 'NODE',
     '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
+  warnOfCommonJs(detected)
+
   const sorted = sort(detected)
   const {
     commonJs, commonJsPackageJsons, internals, js, packageJsons,
@@ -49,7 +51,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     if (a.startsWith('node_modules')) return -1
     if (b.startsWith('node_modules')) return 1
   })
-  const wrapper = getWrapper(internals)
+  const wrapper = getWrapper(internals, noStrict)
 
   const hasJson = hasJsonFiles(detected)
   if (hasJson) {
@@ -58,15 +60,21 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const Args = [
     ...args,
     ...externs,
+    ...(files.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
   verbose ? console.error(Args.join(' ')) : printCommand(args, externs, sorted)
 
-  await run(Args, { debug, compilerVersion, output, noSourceMap })
-  if (noStrict) await removeStrict(output)
-  if (output) await makePromise(chmod, [output, '755'])
+  const stdout = await run(Args, runOptions)
+  if (!output) {
+    const o = prepareOutput(stdout, wrapper, noStrict)
+    console.log(o.trim())
+  } else {
+    await removeStrict(output, wrapper, noStrict)
+    await makePromise(chmod, [output, '755'])
+  }
 }
 
 const printCommand = (args, externs, sorted) => {
@@ -96,6 +104,48 @@ const printCommand = (args, externs, sorted) => {
     c('CommonJS', 'yellow'), cjs.join(' '))
   if (internals.length) console.error('%s: %s',
     c('Built-ins', 'yellow'), internals.join(', '))
+}
+
+/**
+ * @param {Array<import('static-analysis').Detection>} analysis
+ */
+const warnOfCommonJs = (analysis) => {
+  const res = analysis.map(({ hasMain, name, from }) => {
+    if (!(hasMain && name)) return
+    const fromSrc = from.filter((s) => {
+      const detection = analysis.find(({ entry: e }) => {
+        return e === s
+      })
+      if (detection.hasMain) return
+      return true
+    })
+    if (!fromSrc.length) return
+    return { name, fromSrc }
+  }).filter(Boolean)
+  if (res.length) {
+    console.error(c(getCompatWarning(), 'red'))
+    console.error('The following commonJS packages referenced in ES6 modules don\'t support named exports:')
+    res.forEach(({ name, fromSrc }) => {
+      console.error(' %s from %s', c(name, 'red'), c(fromSrc.join(' '), 'grey'))
+    })
+  }
+
+  return res
+}
+
+const getCompatWarning = () => {
+  let s = `CommonJS don't have named exports, make sure to use them like
+${b('/* no named */', 'grey')} import myModule from 'my-module';
+myModule.method('hello world')
+https://github.com/google/closure-compiler/issues/3308`
+  const mx = s.split('\n').reduce((acc, { length }) => {
+    if (length > acc) return length
+    return acc
+  }, 0)
+  if (process.stderr.isTTY && mx + 4 < process.stderr.columns) {
+    s = frame(s)
+  }
+  return s
 }
 
 const filterNodeModule = (entry) => {

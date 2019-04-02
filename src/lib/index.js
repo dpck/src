@@ -42,7 +42,7 @@ export const removeStrict = async (path, wrapper, noStrict) => {
 }
 
 // fixes 'use strict' to be on top
-export const prepareOutput = (output, wrapper, noStrict) => {
+export const prepareOutput = (output, wrapper = '', noStrict) => {
   const wp = wrapper.replace(/%output%$/, '')
   const actualOutput = output.replace(wp, '')
   const hasUseStrict = actualOutput.startsWith('\'use strict\';')

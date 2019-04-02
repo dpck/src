@@ -63,8 +63,9 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   console.error(a)
   const Args = [...PreArgs, '--js', ...deps]
 
-  await run(Args, { debug, compilerVersion, output,
+  const stdout = await run(Args, { debug, compilerVersion, output,
     noSourceMap, getSigInt })
+  if (!output && stdout) console.log(stdout)
   if (hasJsx) {
     if (!sigint && output && !noSourceMap)
       await updateSourceMaps(output, tempDir)

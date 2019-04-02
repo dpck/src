@@ -35,10 +35,20 @@ const { write, read } = require('@wrote/wrote');
   await write(path, s)
 }
 
-       const removeStrict = async (path) => {
+       const removeStrict = async (path, wrapper, noStrict) => {
   const r = await read(path)
-  const s = r.replace(/^'use strict';/m, ' '.repeat(13))
-  await write(path, s)
+  const prepared = prepareOutput(r, wrapper, noStrict)
+  await write(path, prepared)
+}
+
+// fixes 'use strict' to be on top
+       const prepareOutput = (output, wrapper = '', noStrict) => {
+  const wp = wrapper.replace(/%output%$/, '')
+  const actualOutput = output.replace(wp, '')
+  const hasUseStrict = actualOutput.startsWith('\'use strict\';')
+  const ao = actualOutput.replace(/'use strict';/, ' '.repeat(13))
+  const aw = noStrict || !hasUseStrict ? wp.replace(/'use strict';/, ' '.repeat(13)) : wp
+  return `${aw}${ao}`
 }
 
        const updateSourceMaps = async (path, tempDir) => {
@@ -67,6 +77,7 @@ const { write, read } = require('@wrote/wrote');
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
  * @param {Array<string>} internals The list of internal modules used in the program.
+ * @param {boolean} noStrict Does not add 'use strict' mode.
  * @example
  * const fs = require('fs');
  * const _module = require('module');
@@ -78,8 +89,10 @@ const { write, read } = require('@wrote/wrote');
       const m = i == 'module' ? '_module' : i
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
-    .join('\n') + '\n%output%'
-  return `#!/usr/bin/env node\n${wrapper}`
+    .join('\n') + '%output%'
+  return `#!/usr/bin/env node
+'use strict';
+${wrapper}`
 }
 
 /**
@@ -94,6 +107,7 @@ const { write, read } = require('@wrote/wrote');
 module.exports.getCommand = getCommand
 module.exports.addSourceMap = addSourceMap
 module.exports.removeStrict = removeStrict
+module.exports.prepareOutput = prepareOutput
 module.exports.updateSourceMaps = updateSourceMaps
 module.exports.checkIfLib = checkIfLib
 module.exports.getWrapper = getWrapper
