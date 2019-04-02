@@ -13,9 +13,10 @@
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "b": "alamode src -o build -s",
-    "d": "yarn-s d1",
+    "d": "yarn-s d1 d2 d3",
     "d1": "NODE_DEBUG=doc doc src/lib/bundle.js -g",
     "d2": "NODE_DEBUG=doc doc src/lib/compile.js -g",
+    "d3": "NODE_DEBUG=doc doc src/lib/run.js -g",
     "build": "yarn-s d b doc",
     "e": "alanode"
   },

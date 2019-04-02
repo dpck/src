@@ -16,6 +16,8 @@ yarn add -E @depack/depack
   * [`CompileConfig`](#type-compileconfig)
 - [`async Compile(options: BundleConfig, compilerArgs?: Array)`](#async-compileoptions-bundleconfigcompilerargs-array-void)
   * [`BundleConfig`](#type-bundleconfig)
+- [`async run(args: Array, opts: RunConfig)`](#async-runargs-arrayopts-runconfig-void)
+  * [`RunConfig`](#type-runconfig)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -70,7 +72,22 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+## `async run(`<br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/>`): void`
+
+Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method.
+
+__<a name="type-runconfig">`RunConfig`</a>__: General options for running of the compiler.
+
+|      Name       |   Type    |                                          Description                                          | Default |
+| --------------- | --------- | --------------------------------------------------------------------------------------------- | ------- |
+| __output*__     | _string_  | The path where the output will be saved.                                                      | -       |
+| debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
+| compilerVersion | _string_  | Used in the display message.                                                                  | -       |
+| noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false` |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
 
 
 ## Copyright
