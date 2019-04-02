@@ -31,7 +31,16 @@
   },
   "keywords": [
     "src",
-    "depack"
+    "depack",
+    "gcc",
+    "google closure compiler",
+    "closure",
+    "bundle",
+    "compile",
+    "build",
+    "executable",
+    "binary",
+    "single"
   ],
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",
