@@ -1,5 +1,5 @@
-import { c, b } from 'erte'
-import { join } from 'path'
+import { c } from 'erte'
+import { join, dirname } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
@@ -30,7 +30,18 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     ...compilerArgs,
     '--package_json_entry_names', 'module,main',
   ]
-  const detected = await detect(src)
+  const detected = await detect(src, {
+    fields: ['externs'],
+  })
+  const detectedExterns = detected.reduce((acc, { packageJson, externs = [] }) => {
+    if (!packageJson) return acc
+    const dir = dirname(packageJson)
+    externs = Array.isArray(externs) ? externs : [externs]
+    externs = externs.map((e) => join(dir, e))
+    return [...acc, ...externs]
+  }, [])
+  detectedExterns.length && console.log('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
+  const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
 
   const sorted = sort(detected)
@@ -60,12 +71,16 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const Args = [
     ...args,
     ...externs,
+    ...detectedExternsArgs,
     ...(files.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
-  verbose ? console.error(Args.join(' ')) : printCommand(args, externs, sorted)
+  verbose ? console.error(Args.join(' ')) : printCommand(args, [
+    ...externs, ...detectedExternsArgs,
+  ],
+  sorted)
 
   const stdout = await run(Args, runOptions)
   if (!output) {
@@ -172,7 +187,12 @@ const getExterns = async (internals) => {
     const exist = await exists(pp)
     if (!exist) throw new Error(`Externs ${pp} don't exist.`)
   }))
-  const args = p.reduce((acc, e) => {
+  const args = createExternsArgs(p)
+  return args
+}
+
+const createExternsArgs = (externs) => {
+  const args = externs.reduce((acc, e) => {
     return [...acc, '--externs', e]
   }, [])
   return args
