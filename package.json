@@ -58,13 +58,13 @@
   },
   "dependencies": {
     "@depack/bundle": "^1.0.4",
-    "@depack/externs": "^1.2.0",
-    "@depack/nodejs": "^1.1.0",
+    "@depack/externs": "^1.2.1",
+    "@depack/nodejs": "^1.1.1",
     "@wrote/wrote": "^1.2.2",
     "erte": "^1.1.7",
     "frame-of-mind": "^1.1.0",
     "indicatrix": "^1.1.0",
-    "makepromise": "^3.0.3",
+    "makepromise": "^3.1.0",
     "spawncommand": "^2.1.2",
     "static-analysis": "^1.4.0"
   }

@@ -40,6 +40,11 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.0.1.tgz#7e4d3bb1b0ac62173b00e4bba7091f7847cdb088"
   integrity sha512-ZSavD8NpWA1/1SRCKrx8LZ5WfbKS1kRUIFOERJvR1jXqCAcbM3xWSP2VdCKEh4lCwWghSWQkotbpK6n+o1Y/xQ==
 
+"@artdeco/clean-stack@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.1.0.tgz#fd96f2032643d3087306e5bf2558eafd035bf7e8"
+  integrity sha512-q9iJEwjNv7mVvZPdEPbL3KpjkxRpyTdmySZCErKW3DNy1VyzxB9lg9COqeLv9MVZY+DouEKQcO/D7aHsL3iuAQ==
+
 "@depack/bundle@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.0.4.tgz#9089c7c69f4069c3686a190cb7ec8b1db8880ad9"
@@ -71,15 +76,15 @@
   dependencies:
     mismatch "1.1.0"
 
-"@depack/externs@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.2.0.tgz#bd99563af60249454e3b3ffa7dd3d4be02cdd646"
-  integrity sha512-W2YUJ8byXuW3hIyU1HRW7qxlVsSPz/SsZqgECoynjw3u8L4Tu3kr9m2jXtp2ijmvMBLTxdkayz+aFRFCterKiA==
+"@depack/externs@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.2.1.tgz#5bb270289950abcc8b926695d08d522f291bcdf3"
+  integrity sha512-8NTxAfuZd/DVfQXMbCwh2yxB81WTNxRV/PBE0FQM479UDii4+RTbjbO1I6yaISgeU/En4h5gFpWWhYBVhjPSpA==
 
-"@depack/nodejs@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.0.tgz#72f77d0037bdf774a5761fe8189774cc8b87574c"
-  integrity sha512-tSK2E54Jo5BMtw6zCrZ9obp76d6NbUfL+8cXQtgcTGpUgdJ5h9FPb20NqV+lS5KPj606GFVdLuaBPQFjo2Nwaw==
+"@depack/nodejs@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.1.tgz#202c4fbb0c27293ef1d557fdcd74152f75aa0dce"
+  integrity sha512-doSLS9lLvJGVtNTB6d2955ytNePcoGj22M+VlMd2/YNnVHtiEN+RiMa4XcGjV9UCOOCzVKCS981pJZ470lciRA==
 
 "@depack/render@^1.1.4":
   version "1.1.4"
@@ -405,6 +410,13 @@ erotic@2.0.3, erotic@^2.0.3:
   dependencies:
     "@artdeco/clean-stack" "1.0.1"
 
+erotic@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/erotic/-/erotic-2.1.0.tgz#31fc93b42c92a0f2c49f5dd28f8fe8972c25ce59"
+  integrity sha512-45QT7WuGSIv1lCYvZe9m/bJ7J6i2pCwrKlHAZRi8BPf8iE8rxEk70l4zaqvrdLt1MpkvGEEoplOfhCfkiot6zQ==
+  dependencies:
+    "@artdeco/clean-stack" "^1.1.0"
+
 erte@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/erte/-/erte-1.1.4.tgz#1400a891622c5a12970b710b2f227a7182c0dc9c"
@@ -520,6 +532,13 @@ makepromise@3.0.3, makepromise@^3.0.3:
   integrity sha512-KWY9GjgtPNbIfnV0X/cspebWCx8chNOI9Y+/pv1VT0tDnnH+4FPAWGCFJKMISkDgYmkl/yjxdsvGQTEGpMnd9Q==
   dependencies:
     erotic "2.0.3"
+
+makepromise@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/makepromise/-/makepromise-3.1.0.tgz#58a07ea1605ad10c14a907334e067d200402d8b9"
+  integrity sha512-wbRpYfLteGKd3j96r30G2xCrqp3blk/kYOzGKBPnEix4a/VcHcxcYFwJ79fCZFtcEqMn8MGSh8h+D+/LlI+JQQ==
+  dependencies:
+    erotic "^2.1.0"
 
 mismatch@1.0.3:
   version "1.0.3"
