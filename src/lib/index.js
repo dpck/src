@@ -86,7 +86,8 @@ export const getWrapper = (internals) => {
   if (!internals.length) return
   const wrapper = internals
     .map(i => {
-      const m = i == 'module' ? '_module' : i
+      let m = i
+      if (['module', 'process', 'console', 'crypto'].includes(i)) m = `_${i}`
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
     .join('\n') + '%output%'
