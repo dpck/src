@@ -1,3 +1,12 @@
+## 18 April 2019
+
+### [1.1.0](https://github.com/dpck/src/compare/v1.0.1...v1.1.0)
+
+- [feature] Look up externs from _package.json_ files.
+- [feature] Compile &mdash; split command by lines; pass entry point.
+- [fix] Check for `jsx` the entry of the bundle.
+- [deps] Update `nodejs`, `externs`; fix packages with paths in `bundle`, update `static-analysis` to share `split` with _BundleTransform_.
+
 ## 4 April 2019
 
 ### [1.0.1](https://github.com/dpck/src/compare/v1.0.0...v1.0.1)
