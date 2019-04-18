@@ -578,12 +578,13 @@ spawncommand@^2.1.1, spawncommand@^2.1.2:
   dependencies:
     catchment "^3.2.3"
 
-static-analysis@^1.3.3, static-analysis@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.4.0.tgz#19f98a14c9e163109d857f4b97257caebf2b882d"
-  integrity sha512-PoWkwV3eJ5vI007Aid85Ziu42rRln9+4s+r1AWeSm0KHwXNzGROyL60nRfv67m0Fwt8ICEL4tFnVPtpw2pay0g==
+static-analysis@^1.3.3, static-analysis@^1.4.0, static-analysis@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.5.0.tgz#e870784569e7b003026c33f5ab3bce5170eedb28"
+  integrity sha512-Jie8iIXQanD7YwCztOwuzNfD7qZofMLI+toqPqotWEP20hsD7al1RsouC/lKzeDk6hw2aTWaRxZTi64G5ig9ww==
   dependencies:
     "@depack/detect" "^1.0.1"
+    "@depack/split" "^1.0.0"
     "@wrote/read" "^1.0.3"
     erotic "^2.0.3"
     fpj "^1.1.0"
