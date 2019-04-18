@@ -23,7 +23,7 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   const { output, compilerVersion, debug, noSourceMap } = runOptions
   if (!src) throw new Error('Entry file is not given.')
   const analysis = await staticAnalysis(src, { nodeModules: false })
-  const hasJsx = analysis.some(({ entry }) => {
+  const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
     return entry.endsWith('.jsx')
   })
   let deps

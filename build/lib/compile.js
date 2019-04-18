@@ -29,6 +29,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const args = [
     ...compilerArgs,
     '--package_json_entry_names', 'module,main',
+    '--entry_point', src,
   ]
   const detected = await detect(src, {
     fields: ['externs'],
@@ -93,15 +94,26 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
 }
 
 const printCommand = (args, externs, sorted) => {
-  const s = [...args, ...externs].join(' ')
-    .replace(/--js_output_file (\S+)/g, (m, f) => {
-      return `--js_output_file ${c(f, 'red')}`
+  const maxLength = process.stderr.columns - 3 || 87
+  let lastLineLength = 4
+  const s = [...args, ...externs].reduce((acc, current) => {
+    if (lastLineLength + current.length > maxLength) {
+      acc = acc + ' \\\n' + current
+      lastLineLength = current.length
+    } else {
+      acc = acc + ' ' + current
+      lastLineLength += current.length + 1
+    }
+    return acc
+  }, 'java')
+    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b = '', f) => {
+      return `--js_output_file ${b}${c(f, 'red')}`
     })
-    .replace(/--externs (\S+)/g, (m, f) => {
-      return `--externs ${c(f, 'grey')}`
+    .replace(/--externs (\\\n)?(\S+)/g, (m, b = '', f) => {
+      return `--externs ${b}${c(f, 'grey')}`
     })
-    .replace(/--compilation_level (\S+)/g, (m, f) => {
-      return `--compilation_level ${c(f, 'green')}`
+    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b = '', f) => {
+      return `--compilation_level ${b}${c(f, 'green')}`
     })
   console.error(s)
   const {
@@ -131,6 +143,7 @@ const warnOfCommonJs = (analysis) => {
       const detection = analysis.find(({ entry: e }) => {
         return e === s
       })
+      if (!detection) return
       if (detection.hasMain) return
       return true
     })
