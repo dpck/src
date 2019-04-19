@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@depack/bundle": "^1.0.5",
-    "@depack/externs": "^1.2.3",
+    "@depack/externs": "^1.2.4",
     "@depack/nodejs": "^1.1.2",
     "@wrote/wrote": "^1.2.3",
     "erte": "^1.1.7",
