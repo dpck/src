@@ -7,7 +7,7 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
- * @param {GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @param {_depack.GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @param {string} [opts.compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [opts.output] Sets the `--js_output_file` flag.
  * @param {string} [opts.level] Sets the `--compilation_level` flag.
@@ -19,7 +19,7 @@ const getLanguage = (l) => {
  * @param {boolean} [opts.iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
  * @param {boolean} [opts.noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
  * @param {string} [opts.debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
- * @param {Array<string>} [opts.argv] Any additional arguments to the compiler.
+ * @param {!Array<string>} [opts.argv] Any additional arguments to the compiler.
  */
 const getOptions = (opts) => {
   const {
@@ -78,7 +78,12 @@ module.exports=getOptions
 
 /* documentary types/options.xml */
 /**
- * @typedef {Object} GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.GetOptions} GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @prop {string} [compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [level] Sets the `--compilation_level` flag.
@@ -90,7 +95,7 @@ module.exports=getOptions
  * @prop {boolean} [iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
  * @prop {boolean} [noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
  * @prop {string} [debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
- * @prop {Array<string>} [argv] Any additional arguments to the compiler.
+ * @prop {!Array<string>} [argv] Any additional arguments to the compiler.
  */
 
 

@@ -3,19 +3,20 @@ let spawn = require('spawncommand'); if (spawn && spawn.__esModule) spawn = spaw
 const { c } = require('erte');
 const { createWriteStream } = require('fs');
 const { makeError } = require('./closure');
-const { addSourceMap } = require('./');
+const { addData } = require('./');
 
 /**
  * Spawns Java and executes the compilation.
- * @param {Array<string>} args The arguments to Java.
- * @param {RunConfig} opts General options for running of the compiler.
+ * @param {!Array<string>} args The arguments to Java.
+ * @param {_depack.RunConfig} opts General options for running of the compiler.
  * @param {string} [opts.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [opts.compilerVersion] Used in the display message.
  * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
- * @return {Promise<string>} Stdout of JavaProcess
+ * @param {boolean} [library] Whether to add `module.exports = DEPACK_EXPORT`.
+ * @return {!Promise<string>} Stdout of JavaProcess
  */
-const run = async (args, opts) => {
+const run = async (args, opts, library = false) => {
   const {
     debug, compilerVersion = '', output, noSourceMap, getSigInt = () => {},
   } = opts
@@ -32,9 +33,9 @@ const run = async (args, opts) => {
   if(getSigInt()) return
 
   if (code) throw new Error(makeError(code, stderr))
-  if (output && !noSourceMap) await addSourceMap(output)
+  if (output) await addData(output, { library, sourceMap: !noSourceMap })
   if (stderr && !debug) console.warn(c(stderr, 'grey'))
-  else if (debug) console.log('Sources after each pass log saved to %s', debug)
+  else if (debug) console.log('Sources after each pass saved to %s', debug)
   return stdout
 }
 
@@ -42,7 +43,12 @@ module.exports=run
 
 /* documentary types/index.xml */
 /**
- * @typedef {Object} RunConfig General options for running of the compiler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.RunConfig General options for running of the compiler.
  * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @prop {string} [compilerVersion] Used in the display message.

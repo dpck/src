@@ -25,7 +25,7 @@ import run from './run'
  * @param {!Array<string>} compilerArgs The compiler args got with `getOptions` and/or manually extended.
  */
 const Compile = async (options, runOptions, compilerArgs = []) => {
-  const { src, noStrict, verbose } = options
+  const { src, noStrict, verbose, library } = options
   const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
   const args = [
@@ -52,7 +52,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     commonJs, commonJsPackageJsons, internals, js, packageJsons,
   } = sorted
   const internalDeps = await prepareCoreModules({ internals })
-  const externs = await getExterns(internals)
+  const externs = await getExterns(internals, library)
   await fixDependencies(commonJsPackageJsons, packageJsons)
 
   const files = [src,
@@ -65,7 +65,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     if (a.startsWith('node_modules')) return -1
     if (b.startsWith('node_modules')) return 1
   })
-  const wrapper = getWrapper(internals, noStrict)
+  const wrapper = getWrapper(internals, library)
 
   const jsonFiles = hasJsonFiles(detected)
   const hasJson = jsonFiles.length
@@ -90,7 +90,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   ],
   sorted)
 
-  const stdout = await run(Args, runOptions)
+  const stdout = await run(Args, runOptions, library)
   if (!output) {
     const o = prepareOutput(stdout, wrapper, noStrict)
     console.log(o.trim())
@@ -189,8 +189,10 @@ const filterNodeModule = (entry) => {
 
 /**
  * Returns options to include externs.
+ * @param {!Array<string>} internals The list of builtin Node.JS modules used.
+ * @param {boolean} library Whether to include the depack extern with `DEPACK_EXPORT`.
  */
-const getExterns = async (internals) => {
+const getExterns = async (internals, library = false) => {
   const externsDir = getExternsDir()
   const allInternals = internals
     .reduce((acc, i) => {
@@ -198,7 +200,8 @@ const getExterns = async (internals) => {
       return [...acc, i, ...deps]
     }, [])
     .filter((e, i, a) => a.indexOf(e) == i)
-  const p = [...allInternals, 'global', 'nodejs']
+  const p = [...allInternals,
+    'global', 'nodejs', ...(library ? ['depack'] : [])]
     .map(i => {
       if (['module', 'process', 'console'].includes(i)) i = `_${i}`
       return join(externsDir, `${i}.js`)

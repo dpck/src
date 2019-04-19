@@ -3,7 +3,7 @@ import spawn from 'spawncommand'
 import { c } from 'erte'
 import { createWriteStream } from 'fs'
 import { makeError } from './closure'
-import { addSourceMap } from './'
+import { addData } from './'
 
 /**
  * Spawns Java and executes the compilation.
@@ -13,9 +13,10 @@ import { addSourceMap } from './'
  * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [opts.compilerVersion] Used in the display message.
  * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
+ * @param {boolean} [library] Whether to add `module.exports = DEPACK_EXPORT`.
  * @return {!Promise<string>} Stdout of JavaProcess
  */
-const run = async (args, opts) => {
+const run = async (args, opts, library = false) => {
   const {
     debug, compilerVersion = '', output, noSourceMap, getSigInt = () => {},
   } = opts
@@ -32,9 +33,9 @@ const run = async (args, opts) => {
   if(getSigInt()) return
 
   if (code) throw new Error(makeError(code, stderr))
-  if (output && !noSourceMap) await addSourceMap(output)
+  if (output) await addData(output, { library, sourceMap: !noSourceMap })
   if (stderr && !debug) console.warn(c(stderr, 'grey'))
-  else if (debug) console.log('Sources after each pass log saved to %s', debug)
+  else if (debug) console.log('Sources after each pass saved to %s', debug)
   return stdout
 }
 

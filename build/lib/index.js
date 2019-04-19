@@ -4,7 +4,7 @@ const { write, read } = require('@wrote/wrote');
 
 /**
  * Returns the pretty-printed command for the bundler.
- * @param {Array<string>} args The array with arguments.
+ * @param {!Array<string>} args The array with arguments.
  * @param {(string):string} getJs The function to get the location of the js file to print.
  */
        const getCommand = (args, js) => {
@@ -28,11 +28,21 @@ const { write, read } = require('@wrote/wrote');
   return `${a}\n--js ${jss}`.trim()
 }
 
-       const addSourceMap = async (path) => {
-  const name = basename(path)
+// export const addSourceMap = async (path) => {
+//   const name = basename(path)
+//   const r = await read(path)
+//   const s = [r, '//' + `# sourceMappingURL=${name}.map`].join('\n')
+//   await write(path, s)
+// }
+       const addData = async (path, { sourceMap, library }) => {
   const r = await read(path)
-  const s = [r, '//' + `# sourceMappingURL=${name}.map`].join('\n')
-  await write(path, s)
+  const rr = [r]
+  if (library) rr.push('module.exports = DEPACK_EXPORT')
+  if (sourceMap) {
+    const name = basename(path)
+    rr.push('//' + `# sourceMappingURL=${name}.map`)
+  }
+  await write(path, rr.join('\n'))
 }
 
        const removeStrict = async (path, wrapper, noStrict) => {
@@ -76,13 +86,13 @@ const { write, read } = require('@wrote/wrote');
 
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
- * @param {Array<string>} internals The list of internal modules used in the program.
- * @param {boolean} noStrict Does not add 'use strict' mode.
+ * @param {!Array<string>} internals The list of internal modules used in the program.
+ * @param {boolean} [library=false] Whether to create a library.
  * @example
  * const fs = require('fs');
  * const _module = require('module');
  */
-       const getWrapper = (internals) => {
+       const getWrapper = (internals, library = false) => {
   if (!internals.length) return
   const wrapper = internals
     .map(i => {
@@ -91,6 +101,11 @@ const { write, read } = require('@wrote/wrote');
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
     .join('\n') + '%output%'
+  if (library) {
+    return `'use strict';
+let DEPACK_EXPORT;
+${wrapper}`
+  }
   return `#!/usr/bin/env node
 'use strict';
 ${wrapper}`
@@ -98,15 +113,20 @@ ${wrapper}`
 
 /**
  * Checks whether static analysis returned .json files.
- * @param {Array<import('static-analysis').Detection>} detected
+ * @param {!Array<_staticAnalysis.Detection>} detected
  */
-       const hasJsonFiles = detected => detected.some(({ entry }) => {
+       const hasJsonFiles = detected => detected.filter(({ entry }) => {
   if (entry)
     return entry.endsWith('.json')
 })
 
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
+ */
+
 module.exports.getCommand = getCommand
-module.exports.addSourceMap = addSourceMap
+module.exports.addData = addData
 module.exports.removeStrict = removeStrict
 module.exports.prepareOutput = prepareOutput
 module.exports.updateSourceMaps = updateSourceMaps

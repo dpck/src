@@ -28,14 +28,22 @@ export const getCommand = (args, js) => {
   return `${a}\n--js ${jss}`.trim()
 }
 
-export const addSourceMap = async (path) => {
-  const name = basename(path)
+export const addData = async (path, { sourceMap, library }) => {
   const r = await read(path)
-  const s = [r, '//' + `# sourceMappingURL=${name}.map`].join('\n')
-  await write(path, s)
+  const rr = [r]
+  if (library) rr.push('module.exports = DEPACK_EXPORT')
+  if (sourceMap) {
+    const name = basename(path)
+    rr.push('//' + `# sourceMappingURL=${name}.map`)
+  }
+  await write(path, rr.join('\n'))
 }
 
 export const removeStrict = async (path, wrapper, noStrict) => {
+  // if we compiled a library, GCC would already not have use strict
+  // as compared to the compile mode where we added #!/usr/bin/env node
+  // on top which resulted in an extra 'use strict' after the wrapper
+  if (wrapper.startsWith('\'use strict\'') && !noStrict) return
   const r = await read(path)
   const prepared = prepareOutput(r, wrapper, noStrict)
   await write(path, prepared)
@@ -77,12 +85,12 @@ export const checkIfLib = modName => /^[./]/.test(modName)
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
  * @param {!Array<string>} internals The list of internal modules used in the program.
- * @param {boolean} noStrict Does not add 'use strict' mode.
+ * @param {boolean} [library=false] Whether to create a library.
  * @example
  * const fs = require('fs');
  * const _module = require('module');
  */
-export const getWrapper = (internals) => {
+export const getWrapper = (internals, library = false) => {
   if (!internals.length) return
   const wrapper = internals
     .map(i => {
@@ -91,6 +99,11 @@ export const getWrapper = (internals) => {
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
     .join('\n') + '%output%'
+  if (library) {
+    return `'use strict';
+let DEPACK_EXPORT;
+${wrapper}`
+  }
   return `#!/usr/bin/env node
 'use strict';
 ${wrapper}`
