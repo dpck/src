@@ -28,12 +28,6 @@ const { write, read } = require('@wrote/wrote');
   return `${a}\n--js ${jss}`.trim()
 }
 
-// export const addSourceMap = async (path) => {
-//   const name = basename(path)
-//   const r = await read(path)
-//   const s = [r, '//' + `# sourceMappingURL=${name}.map`].join('\n')
-//   await write(path, s)
-// }
        const addData = async (path, { sourceMap, library }) => {
   const r = await read(path)
   const rr = [r]
@@ -46,6 +40,10 @@ const { write, read } = require('@wrote/wrote');
 }
 
        const removeStrict = async (path, wrapper, noStrict) => {
+  // if we compiled a library, GCC would already not have use strict
+  // as compared to the compile mode where we added #!/usr/bin/env node
+  // on top which resulted in an extra 'use strict' after the wrapper
+  if (wrapper.startsWith('\'use strict\'') && !noStrict) return
   const r = await read(path)
   const prepared = prepareOutput(r, wrapper, noStrict)
   await write(path, prepared)

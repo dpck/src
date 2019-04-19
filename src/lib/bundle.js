@@ -36,8 +36,8 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
     const {
       commonJs, commonJsPackageJsons, js, packageJsons,
     } = sorted
-    const hasJson = hasJsonFiles(detected)
-    processCommonJs = Boolean(commonJs.length || hasJson)
+    const jsonFiles = hasJsonFiles(detected)
+    processCommonJs = Boolean(commonJs.length || jsonFiles.length)
     deps = [src, ...commonJs, ...packageJsons,
       ...js,
       ...commonJsPackageJsons]

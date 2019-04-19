@@ -35,7 +35,7 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "example/argufy"
+        "example/bundle"
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"
