@@ -39,7 +39,7 @@ const { write, read } = require('@wrote/wrote');
   await write(path, rr.join('\n'))
 }
 
-       const removeStrict = async (path, wrapper, noStrict) => {
+       const removeStrict = async (path, wrapper = '', noStrict = false) => {
   // if we compiled a library, GCC would already not have use strict
   // as compared to the compile mode where we added #!/usr/bin/env node
   // on top which resulted in an extra 'use strict' after the wrapper
@@ -54,7 +54,9 @@ const { write, read } = require('@wrote/wrote');
   const wp = wrapper.replace(/%output%$/, '')
   const actualOutput = output.replace(wp, '')
   const hasUseStrict = actualOutput.startsWith('\'use strict\';')
-  const ao = actualOutput.replace(/'use strict';/, ' '.repeat(13))
+  let ao = actualOutput
+  if (wrapper || noStrict)
+    ao = actualOutput.replace(/'use strict';/, ' '.repeat(13))
   const aw = noStrict || !hasUseStrict ? wp.replace(/'use strict';/, ' '.repeat(13)) : wp
   return `${aw}${ao}`
 }
