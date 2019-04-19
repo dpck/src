@@ -1,4 +1,4 @@
-<types>
+<types namespace="_depack">
   <type name="RunConfig" desc="General options for running of the compiler.">
     <prop opt string name="output">
       The path where the output will be saved. Prints to `stdout` if not passed.

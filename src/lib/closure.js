@@ -24,7 +24,7 @@ const [VER] = process.version.split('.', 1)
 
 /**
  * Creates mocks in the `node_module` folder to serve as externs. It is not possible to serve proxies not from `node_modules` path because Closure does not understand it.
- * @param {Array<string>} internals The names of the core modules to prepare.
+ * @param {!Array<string>} internals The names of the core modules to prepare.
  * @param {string} nodeModulesPath The path to the node_modules folder in which to put the core mocks.
  * @param {string?} corePath The path where the mocks are stored.
  * @todo Add an option to dynamically evaluate the content of the mock.
@@ -72,18 +72,19 @@ const testDepack = async (packageJson) => {
 
 /**
  * Update dependencies' package.json files to point to a file and not a directory. * https://github.com/google/closure-compiler/issues/3149
- * @param {Array<string>} commonJS The paths to CommonJS package.json files.
- * @param {Array<string>} modules The paths to package.json files.
+ * @param {!Array<string>} commonJS The paths to CommonJS package.json files.
+ * @param {!Array<string>} modules The paths to package.json files.
  */
 export const fixDependencies = async (commonJS, modules) => {
   const all = [...commonJS, ...modules]
   await Promise.all(all.map(async (dep) => {
     const f = await read(dep)
     const p = JSON.parse(f)
-    const { 'main': main, 'module': mod } = p
+    const { 'main': main, 'module': mod, 'browser': b } = p
     const isModule = !!mod
     const field = isModule ? 'module' : 'main'
-    const M = mod || main
+    let M = mod || main || 'index.js'
+    if (!/\.m?jsx?$/.test(M)) M = `${M}.js`
     const j = join(dirname(dep), M)
     const e = await exists(j)
     if (!e) throw new Error(`The ${field} for dependency ${dep} does not exist.`)
@@ -91,6 +92,10 @@ export const fixDependencies = async (commonJS, modules) => {
       const newM = join(M, 'index.js')
       p[field] = newM
       console.warn('Updating %s to point to a file.', dep)
+      await write(dep, JSON.stringify(p, null, 2))
+    } else if (b && !(mod || main)) {
+      p['main'] = 'index.js'
+      console.warn('Updating %s to have main.', dep)
       await write(dep, JSON.stringify(p, null, 2))
     }
   }))

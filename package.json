@@ -13,11 +13,8 @@
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "b": "alamode src -o build -s",
-    "d": "yarn-s d1 d2 d3",
-    "d1": "NODE_DEBUG=doc doc src/lib/bundle.js -g",
-    "d2": "NODE_DEBUG=doc doc src/lib/compile.js -g",
-    "d3": "NODE_DEBUG=doc doc src/lib/run.js -g",
-    "d4": "NODE_DEBUG=doc doc src/lib/get-options.js -g",
+    "d": "yarn-s d1",
+    "d1": "typal src/lib -c",
     "build": "yarn-s d b doc",
     "e": "alanode"
   },
@@ -53,6 +50,7 @@
     "documentary": "^1.23.4",
     "eslint-config-artdeco": "1.0.1",
     "temp-context": "^2.1.3",
+    "typal": "^1.3.1",
     "yarn-s": "1.1.0",
     "zoroaster": "^3.11.6"
   },
@@ -66,6 +64,6 @@
     "indicatrix": "^1.1.0",
     "makepromise": "^3.1.0",
     "spawncommand": "^2.1.2",
-    "static-analysis": "^1.5.1"
+    "static-analysis": "^1.6.0"
   }
 }

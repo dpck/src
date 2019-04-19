@@ -7,13 +7,13 @@ import { addSourceMap } from './'
 
 /**
  * Spawns Java and executes the compilation.
- * @param {Array<string>} args The arguments to Java.
- * @param {RunConfig} opts General options for running of the compiler.
+ * @param {!Array<string>} args The arguments to Java.
+ * @param {_depack.RunConfig} opts General options for running of the compiler.
  * @param {string} [opts.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [opts.compilerVersion] Used in the display message.
  * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
- * @return {Promise<string>} Stdout of JavaProcess
+ * @return {!Promise<string>} Stdout of JavaProcess
  */
 const run = async (args, opts) => {
   const {
@@ -42,7 +42,12 @@ export default run
 
 /* documentary types/index.xml */
 /**
- * @typedef {Object} RunConfig General options for running of the compiler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.RunConfig General options for running of the compiler.
  * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @prop {string} [compilerVersion] Used in the display message.

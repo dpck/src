@@ -7,16 +7,16 @@ import run from './run'
 
 /**
  * Bundle the source code.
- * @param {BundleConfig} options Options for the web bundler.
+ * @param {_depack.BundleConfig} options Options for the web bundler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {string} [options.tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
- * @param {RunConfig} runOptions General options for running of the compiler.
+ * @param {_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [runOptions.compilerVersion] Used in the display message.
  * @param {boolean} [runOptions.noSourceMap=false] Disables source maps. Default `false`.
- * @param {Array<string>} compilerArgs Extra arguments for the compiler.
+ * @param {!Array<string>} compilerArgs Extra arguments for the compiler, including the ones got with `getOptions`.
  */
 const Bundle = async (options, runOptions, compilerArgs = []) => {
   const { src, tempDir = 'depack-temp', preact } = options
@@ -77,7 +77,12 @@ export default Bundle
 
 /* documentary types/bundle.xml */
 /**
- * @typedef {Object} BundleConfig Options for the web bundler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.BundleConfig} BundleConfig Options for the web bundler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.BundleConfig Options for the web bundler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
  * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
@@ -85,7 +90,12 @@ export default Bundle
 
 /* documentary types/index.xml */
 /**
- * @typedef {Object} RunConfig General options for running of the compiler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.RunConfig General options for running of the compiler.
  * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @prop {string} [compilerVersion] Used in the display message.

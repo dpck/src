@@ -4,7 +4,7 @@ import { write, read } from '@wrote/wrote'
 
 /**
  * Returns the pretty-printed command for the bundler.
- * @param {Array<string>} args The array with arguments.
+ * @param {!Array<string>} args The array with arguments.
  * @param {(string):string} getJs The function to get the location of the js file to print.
  */
 export const getCommand = (args, js) => {
@@ -76,7 +76,7 @@ export const checkIfLib = modName => /^[./]/.test(modName)
 
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
- * @param {Array<string>} internals The list of internal modules used in the program.
+ * @param {!Array<string>} internals The list of internal modules used in the program.
  * @param {boolean} noStrict Does not add 'use strict' mode.
  * @example
  * const fs = require('fs');
@@ -98,9 +98,14 @@ ${wrapper}`
 
 /**
  * Checks whether static analysis returned .json files.
- * @param {Array<import('static-analysis').Detection>} detected
+ * @param {!Array<_staticAnalysis.Detection>} detected
  */
-export const hasJsonFiles = detected => detected.some(({ entry }) => {
+export const hasJsonFiles = detected => detected.filter(({ entry }) => {
   if (entry)
     return entry.endsWith('.json')
 })
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
+ */

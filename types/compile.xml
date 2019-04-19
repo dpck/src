@@ -1,4 +1,4 @@
-<types>
+<types namespace="_depack">
   <type name="CompileConfig" desc="Options for the Node.JS package compiler.">
     <prop string name="src">
       The entry file to bundle. Currently only single files are supported.
@@ -8,6 +8,9 @@
     </prop>
     <prop boolean name="verbose" default="false">
       Print all arguments to the compiler.
+    </prop>
+    <prop boolean name="library" default="false">
+      Whether to create a library.
     </prop>
   </type>
 </types>

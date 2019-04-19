@@ -1,4 +1,4 @@
-<types>
+<types namespace="_depack">
   <type name="BundleConfig" desc="Options for the web bundler.">
     <prop string name="src">
       The entry file to bundle. Currently only single files are supported.

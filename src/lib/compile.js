@@ -12,15 +12,17 @@ import run from './run'
 
 /**
  * Compile a Node.JS file into a single executable.
- * @param {CompileConfig} options Options for the Node.JS package compiler.
+ * @param {_depack.CompileConfig} options Options for the Node.JS package compiler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
- * @param {RunConfig} runOptions General options for running of the compiler.
+ * @param {boolean} [options.library=false] Whether to create a library. Default `false`.
+ * @param {_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [runOptions.compilerVersion] Used in the display message.
  * @param {boolean} [runOptions.noSourceMap=false] Disables source maps. Default `false`.
+ * @param {!Array<string>} compilerArgs The compiler args got with `getOptions` and/or manually extended.
  */
 const Compile = async (options, runOptions, compilerArgs = []) => {
   const { src, noStrict, verbose } = options
@@ -65,9 +67,14 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   })
   const wrapper = getWrapper(internals, noStrict)
 
-  const hasJson = hasJsonFiles(detected)
+  const jsonFiles = hasJsonFiles(detected)
+  const hasJson = jsonFiles.length
   if (hasJson) {
-    console.log(c('You\'re importing a JSON file. Make sure to use require instead of import.', 'yellow'))
+    console.log(c('You\'re importing JSON files. Cannot use named exports there.', 'yellow'))
+    console.log(' ', jsonFiles.map(({ entry, from }) => {
+      return `${entry} [${from.join(' ')}]`
+    })
+      .join('\n  '))
   }
   const Args = [
     ...args,
@@ -134,7 +141,7 @@ const printCommand = (args, externs, sorted) => {
 }
 
 /**
- * @param {Array<import('static-analysis').Detection>} analysis
+ * @param {!Array<!_staticAnalysis.Detection>} analysis
  */
 const warnOfCommonJs = (analysis) => {
   const res = analysis.map(({ hasMain, name, from }) => {
@@ -163,9 +170,9 @@ const warnOfCommonJs = (analysis) => {
 
 const getCompatWarning = () => {
   let s = `CommonJS don't have named exports, make sure to use them like
-/* no named */ import myModule from 'my-module';
+import myModule from 'my-module' /* CommonJS Compat */
 myModule.method('hello world')
-https://github.com/google/closure-compiler/issues/3308`
+myModule.default('must explicitly call default')`
   const mx = s.split('\n').reduce((acc, { length }) => {
     if (length > acc) return length
     return acc
@@ -213,17 +220,33 @@ const createExternsArgs = (externs) => {
 
 export default Compile
 
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
+ */
+
 /* documentary types/compile.xml */
 /**
- * @typedef {Object} CompileConfig Options for the Node.JS package compiler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.CompileConfig} CompileConfig Options for the Node.JS package compiler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.CompileConfig Options for the Node.JS package compiler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
  * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
  * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
+ * @prop {boolean} [library=false] Whether to create a library. Default `false`.
  */
 
 /* documentary types/index.xml */
 /**
- * @typedef {Object} RunConfig General options for running of the compiler.
+ * @suppress {nonStandardJsDocs}
+ * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} _depack.RunConfig General options for running of the compiler.
  * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @prop {string} [compilerVersion] Used in the display message.
