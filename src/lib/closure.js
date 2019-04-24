@@ -1,7 +1,8 @@
 import { c } from 'erte'
-import { join, dirname } from 'path'
+import { join, dirname, relative } from 'path'
 import { ensurePath, write, read, exists } from '@wrote/wrote'
 import getCorePath from '@depack/nodejs'
+import resolveDependency from 'resolve-dependency'
 
 /**
  * Create an error with color.
@@ -78,24 +79,36 @@ const testDepack = async (packageJson) => {
 export const fixDependencies = async (commonJS, modules) => {
   const all = [...commonJS, ...modules]
   await Promise.all(all.map(async (dep) => {
+    const dir = dirname(dep)
     const f = await read(dep)
     const p = JSON.parse(f)
-    const { 'main': main, 'module': mod, 'browser': b } = p
+    const { 'main': main, 'module': mod } = p
     const isModule = !!mod
     const field = isModule ? 'module' : 'main'
-    let M = mod || main || 'index.js'
-    if (!/\.m?jsx?$/.test(M)) M = `${M}.js`
-    const j = join(dirname(dep), M)
-    const e = await exists(j)
-    if (!e) throw new Error(`The ${field} for dependency ${dep} does not exist.`)
-    if (e.isDirectory()) {
+    let M = mod || main
+    if (!M) {
+      const j = join(dirname(dep), 'index.js')
+      const e = await exists(j)
+      if (!e) throw new Error(`Package ${dep} does not specify either main or module fields, and does not contain the index.js file.`)
+      p['main'] = 'index.js'
+      console.warn('Updating %s to have the main field.', dep)
+      await write(dep, JSON.stringify(p, null, 2))
+    }
+    let isDir, path
+    try {
+      ({ isDir, path } = await resolveDependency(M, dep))
+    } catch (err) {
+      throw new Error(`The ${field} for dependency ${dep} does not exist.`)
+    }
+    if (isDir) {
       const newM = join(M, 'index.js')
       p[field] = newM
       console.warn('Updating %s to point to a file.', dep)
       await write(dep, JSON.stringify(p, null, 2))
-    } else if (b && !(mod || main)) {
-      p['main'] = 'index.js'
-      console.warn('Updating %s to have main.', dep)
+    } else if (join(dir, p[field]) != path) {
+      const relPath = relative(dir, path)
+      p[field] = relPath
+      console.warn('Updating %s to point to the file with extension.', dep)
       await write(dep, JSON.stringify(p, null, 2))
     }
   }))
