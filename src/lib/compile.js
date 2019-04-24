@@ -66,29 +66,32 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     if (b.startsWith('node_modules')) return 1
   })
   const wrapper = getWrapper(internals, library)
-
   const jsonFiles = hasJsonFiles(detected)
-  const hasJson = jsonFiles.length
-  if (hasJson) {
-    console.log(c('You\'re importing JSON files. Cannot use named exports there.', 'yellow'))
-    console.log(' ', jsonFiles.map(({ entry, from }) => {
-      return `${entry} [${from.join(' ')}]`
-    })
-      .join('\n  '))
-  }
+
   const Args = [
     ...args,
     ...externs,
     ...detectedExternsArgs,
     ...(files.length > 1 ? ['--module_resolution', 'NODE'] : []),
-    ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
+  if (jsonFiles.length && !commonJs.length) {
+    const hasRequired = jsonFiles.filter(({ required }) => {
+      return required
+    }, false)
+    if (hasRequired.length) {
+      console.error('You are requiring JSON files. Make sure their relative paths will stay the same to the build.')
+      console.log(hasRequired.map(({ entry, from }) => {
+        return `${c(entry, 'blue')} from ${from.join(' ')}`
+      })
+        .join('\n'))
+    }
+  }
   verbose ? console.error(Args.join(' ')) : printCommand(args, [
     ...externs, ...detectedExternsArgs,
-  ],
-  sorted)
+  ], sorted)
 
   const stdout = await run(Args, runOptions, library)
   if (!output) {
@@ -171,7 +174,7 @@ const warnOfCommonJs = (analysis) => {
 const getCompatWarning = () => {
   let s = `CommonJS don't have named exports, make sure to use them like
 import myModule from 'my-module' /* CommonJS Compat */
-myModule.method('hello world')
+myModule.default.method('hello world') // yes Node.JS, wat r u doing
 myModule.default('must explicitly call default')`
   const mx = s.split('\n').reduce((acc, { length }) => {
     if (length > acc) return length
@@ -201,9 +204,9 @@ const getExterns = async (internals, library = false) => {
     }, [])
     .filter((e, i, a) => a.indexOf(e) == i)
   const p = [...allInternals,
-    'global', 'nodejs', ...(library ? ['depack'] : [])]
+    'global', 'global/buffer', 'nodejs', ...(library ? ['depack'] : [])]
     .map(i => {
-      if (['module', 'process', 'console'].includes(i)) i = `_${i}`
+      if (['module', 'process', 'console', 'crypto'].includes(i)) i = `_${i}`
       return join(externsDir, `${i}.js`)
     })
   await Promise.all(p.map(async pp => {
