@@ -1,5 +1,9 @@
 ## 25 April 2019
 
+### [1.2.2](https://github.com/dpck/src/compare/v1.2.1...v1.2.2)
+
+- [fix] Quote externs when reducing _package.json_ fields.
+
 ### [1.2.1](https://github.com/dpck/src/compare/v1.2.0...v1.2.1)
 
 - [fix] Fix regex for color printing.

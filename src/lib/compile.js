@@ -36,7 +36,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const detected = await detect(src, {
     fields: ['externs'],
   })
-  const detectedExterns = detected.reduce((acc, { packageJson, externs = [] }) => {
+  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
     if (!packageJson) return acc
     const dir = dirname(packageJson)
     externs = Array.isArray(externs) ? externs : [externs]
