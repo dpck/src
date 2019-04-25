@@ -333,14 +333,14 @@ forkfeed@^1.0.0:
   resolved "https://registry.yarnpkg.com/forkfeed/-/forkfeed-1.0.0.tgz#e519201d8f3809a0802b72347066a0a772f0629b"
   integrity sha512-E8O9yqYwJLxyExwKLAbDe/Mw20fUuxwplFB/h8lpRQWgKrPcih3uuVKPyXqcJ0N/iPHJMHV6ZH1iFjIkRYvaFw==
 
-fpj@^1.1.0, fpj@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/fpj/-/fpj-1.2.1.tgz#73e5169a91281d18bc4225e2cdf6cb77d2b9a89d"
-  integrity sha512-wkYWsA84m/NbrKhR34vUocYsxwLP0yJffMPXasFCi4K/4GzL5HS841l2CJtx/Kr3E7X4b7oNlA+aj2DR7sJVeg==
+fpj@^1.1.0, fpj@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/fpj/-/fpj-1.3.0.tgz#c01dd7d72e69fa5f82d339f5e6fbc3b3256d286a"
+  integrity sha512-RduDTdeaoEPD+zzyv7eYefGiPD6DVhNnhwOWTzG1aJnCDmkJrbdDfaWAOxyM0Xw75Ui6+o6wJyAUDrnyqmQvcg==
   dependencies:
-    "@wrote/exists" "^1.0.3"
+    "@wrote/exists" "^1.0.5"
     "@wrote/read" "^1.0.4"
-    resolve-dependency "^1.0.2"
+    resolve-dependency "^1.0.3"
 
 frame-of-mind@^1.1.0, frame-of-mind@^1.2.3:
   version "1.2.3"
@@ -457,16 +457,16 @@ spawncommand@^2.1.2:
   dependencies:
     catchment "^3.2.3"
 
-static-analysis@^1.3.3, static-analysis@^1.4.0, static-analysis@^1.6.0, static-analysis@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.7.0.tgz#07467b60d8006e59d598389ac455b8158c13ff74"
-  integrity sha512-q/p3lJX3JcCfRhqHbQApDYO/FNqzDkIzkV89Bv6J72Z6A8jbmSH6NN6PQbU3u0bRJeg+tukhFwMFLooJrzJamg==
+static-analysis@^1.3.3, static-analysis@^1.4.0, static-analysis@^1.6.0, static-analysis@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.7.1.tgz#d5c58e0fd318a8db981616cdb7726003c93db999"
+  integrity sha512-QTZGNqXoeEOFFTZmyeR10ai9sT8Hi/Xi7zDwr6LrFcZ9l4GEBT7qeWLyesaLf+2rAnpMDWkgLJ/ovRquJX01HA==
   dependencies:
     "@depack/detect" "^1.0.2"
     "@depack/split" "^1.0.0"
     "@wrote/read" "^1.0.4"
     erotic "^2.1.1"
-    fpj "^1.2.1"
+    fpj "^1.3.0"
     mismatch "^1.2.0"
     resolve-dependency "^1.0.3"
 

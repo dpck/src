@@ -67,6 +67,6 @@
     "indicatrix": "^1.2.0",
     "makepromise": "^3.1.0",
     "spawncommand": "^2.1.2",
-    "static-analysis": "^1.7.0"
+    "static-analysis": "^1.7.1"
   }
 }
