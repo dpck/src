@@ -1,5 +1,9 @@
 ## 25 April 2019
 
+### [1.2.1](https://github.com/dpck/src/compare/v1.2.0...v1.2.1)
+
+- [fix] Fix regex for color printing.
+
 ### [1.2.0](https://github.com/dpck/src/compare/v1.1.0...v1.2.0)
 
 - [externs] Publish externs within the `_depack` namespace, tidy up most of the dependencies' types for _GCC_.

@@ -3,7 +3,7 @@ import { basename, relative } from 'path'
 import { write, read } from '@wrote/wrote'
 
 export const replaceWithColor = (str, name, color, background = false) => {
-  const re = new RegExp(`--${name} (\\\n)?(\\S+)`, 'g')
+  const re = new RegExp(`--${name} (\\\\\n)?(\\S+)`, 'g')
   return str.replace(re, (m, bef, f) => {
     const fn = background ? b : c
     return `--${name} ${bef || ''}${fn(f, color)}`
