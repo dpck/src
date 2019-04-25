@@ -1,3 +1,15 @@
+## 25 April 2019
+
+### [1.2.0](https://github.com/dpck/src/compare/v1.1.0...v1.2.0)
+
+- [externs] Publish externs within the `_depack` namespace, tidy up most of the dependencies' types for _GCC_.
+- [feature] Update Fix dependencies logic to `main` field when missing but `index.js` is present, and resolve extension (e.g., `"main": "index"`).
+- [fix] Shell command (with `\`) for both closure and bundle, as well as in verbose.
+- [fix] Include `crypto` for prefixed externs.
+- [feature] Library mode with `DEPACK_EXPORT` variable and extern.
+- [feature] Warn of JSON files, don't add the `process_common_js_modules` when they are required.
+- [deps] Upgrade externs (callable require, module in global, Buffer has static methods and becomes `externs/global/buffer.js`).
+
 ## 18 April 2019
 
 ### [1.1.0](https://github.com/dpck/src/compare/v1.0.1...v1.1.0)
