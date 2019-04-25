@@ -2,30 +2,30 @@ const { c, b } = require('erte');
 const { basename, relative } = require('path');
 const { write, read } = require('@wrote/wrote');
 
+       const replaceWithColor = (str, name, color, background = false) => {
+  const re = new RegExp(`--${name} (\\\n)?(\\S+)`, 'g')
+  return str.replace(re, (m, bef, f) => {
+    const fn = background ? b : c
+    return `--${name} ${bef || ''}${fn(f, color)}`
+  })
+}
+
 /**
  * Returns the pretty-printed command for the bundler.
  * @param {!Array<string>} args The array with arguments.
  * @param {!Array<string>} js The list of js files.
  */
        const getCommand = (args, js) => {
-  // const js = []
-  const a = args.join(' ')
-    // .replace(/--js (\S+)\s*/g, (m, f) => {
-    //   const j = `  --js ${c(getJs(f), 'green')}`
-    //   js.push(j)
-    //   return ''
-    // })
-    .replace(/--compilation_level (\S+)/g, (m, f) => {
-      return `--compilation_level ${b(f, 'green')}`
-    })
-    .replace(/--js_output_file (\S+)/g, (m, f) => {
-      return `--js_output_file ${c(f, 'red')}`
-    })
+  let s = getShellCommand(args)
+
+  s = replaceWithColor(s, 'compilation_level', 'green', true)
+  s = replaceWithColor(s, 'js_output_file', 'red')
+
   const jss = js.map((file) => {
     const j = `${c(file, 'green')}`
     return j
   }).join('\n     ')
-  return `${a}\n--js ${jss}`.trim()
+  return `${s}\n--js ${jss}`.trim()
 }
 
        const addData = async (path, { sourceMap, library }) => {
@@ -120,11 +120,29 @@ ${wrapper}`
     return entry.endsWith('.json')
 })
 
+
+       const getShellCommand = (args, program = 'java') => {
+  const maxLength = process.stderr.columns - 3 || 87
+  let lastLineLength = program.length
+  const s = args.reduce((acc, current) => {
+    if (lastLineLength + current.length > maxLength) {
+      acc = acc + ' \\\n' + current
+      lastLineLength = current.length
+    } else {
+      acc = acc + ' ' + current
+      lastLineLength += current.length + 1
+    }
+    return acc
+  }, program)
+  return s
+}
+
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
  */
 
+module.exports.replaceWithColor = replaceWithColor
 module.exports.getCommand = getCommand
 module.exports.addData = addData
 module.exports.removeStrict = removeStrict
@@ -133,3 +151,4 @@ module.exports.updateSourceMaps = updateSourceMaps
 module.exports.checkIfLib = checkIfLib
 module.exports.getWrapper = getWrapper
 module.exports.hasJsonFiles = hasJsonFiles
+module.exports.getShellCommand = getShellCommand

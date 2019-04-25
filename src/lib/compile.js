@@ -6,7 +6,7 @@ import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
 import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
 import frame from 'frame-of-mind'
-import { removeStrict, getWrapper, hasJsonFiles, prepareOutput } from './'
+import { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
@@ -43,7 +43,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     externs = externs.map((e) => join(dir, e))
     return [...acc, ...externs]
   }, [])
-  detectedExterns.length && console.log('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
+  detectedExterns.length && console.error('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
   const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
 
@@ -105,27 +105,10 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
 }
 
 const printCommand = (args, externs, sorted) => {
-  const maxLength = process.stderr.columns - 3 || 87
-  let lastLineLength = 4
-  const s = [...args, ...externs].reduce((acc, current) => {
-    if (lastLineLength + current.length > maxLength) {
-      acc = acc + ' \\\n' + current
-      lastLineLength = current.length
-    } else {
-      acc = acc + ' ' + current
-      lastLineLength += current.length + 1
-    }
-    return acc
-  }, 'java')
-    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b, f) => {
-      return `--js_output_file ${b || ''}${c(f, 'red')}`
-    })
-    .replace(/--externs (\\\n)?(\S+)/g, (m, b, f) => {
-      return `--externs ${b || ''}${c(f, 'grey')}`
-    })
-    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b, f) => {
-      return `--compilation_level ${b || ''}${c(f, 'green')}`
-    })
+  let s = getShellCommand([...args, ...externs])
+  s = replaceWithColor(s, 'js_output_file', 'red')
+  s = replaceWithColor(s, 'externs', 'grey')
+  s = replaceWithColor(s, 'compilation_level', 'green', true)
   console.error(s)
   const {
     commonJs, internals, js, deps,
