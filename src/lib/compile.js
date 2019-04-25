@@ -90,7 +90,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
         .join('\n'))
     }
   }
-  verbose ? console.error(Args.join(' ')) : printCommand(args, [
+  verbose ? console.error(getShellCommand(Args)) : printCommand(args, [
     ...externs, ...detectedExternsArgs,
   ], sorted)
 
