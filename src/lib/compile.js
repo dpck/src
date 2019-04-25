@@ -12,12 +12,12 @@ import run from './run'
 
 /**
  * Compile a Node.JS file into a single executable.
- * @param {_depack.CompileConfig} options Options for the Node.JS package compiler.
+ * @param {!_depack.CompileConfig} options Options for the Node.JS package compiler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
  * @param {boolean} [options.library=false] Whether to create a library. Default `false`.
- * @param {_depack.RunConfig} runOptions General options for running of the compiler.
+ * @param {!_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [runOptions.compilerVersion] Used in the display message.
@@ -64,6 +64,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   ].sort((a, b) => {
     if (a.startsWith('node_modules')) return -1
     if (b.startsWith('node_modules')) return 1
+    return 0
   })
   const wrapper = getWrapper(internals, library)
   const jsonFiles = hasJsonFiles(detected)
@@ -116,14 +117,14 @@ const printCommand = (args, externs, sorted) => {
     }
     return acc
   }, 'java')
-    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--js_output_file ${b}${c(f, 'red')}`
+    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--js_output_file ${b || ''}${c(f, 'red')}`
     })
-    .replace(/--externs (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--externs ${b}${c(f, 'grey')}`
+    .replace(/--externs (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--externs ${b || ''}${c(f, 'grey')}`
     })
-    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--compilation_level ${b}${c(f, 'green')}`
+    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--compilation_level ${b || ''}${c(f, 'green')}`
     })
   console.error(s)
   const {
@@ -173,7 +174,7 @@ const warnOfCommonJs = (analysis) => {
 
 const getCompatWarning = () => {
   let s = `CommonJS don't have named exports, make sure to use them like
-import myModule from 'my-module' /* CommonJS Compat */
+` + `import myModule from 'my-module' /* CommonJS Compat */
 myModule.default.method('hello world') // yes Node.JS, wat r u doing
 myModule.default('must explicitly call default')`
   const mx = s.split('\n').reduce((acc, { length }) => {

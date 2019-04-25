@@ -8,7 +8,7 @@ import { addData } from './'
 /**
  * Spawns Java and executes the compilation.
  * @param {!Array<string>} args The arguments to Java.
- * @param {_depack.RunConfig} opts General options for running of the compiler.
+ * @param {!_depack.RunConfig} opts General options for running of the compiler.
  * @param {string} [opts.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [opts.compilerVersion] Used in the display message.
@@ -18,7 +18,7 @@ import { addData } from './'
  */
 const run = async (args, opts, library = false) => {
   const {
-    debug, compilerVersion = '', output, noSourceMap, getSigInt = () => {},
+    debug, compilerVersion = '', output, noSourceMap,
   } = opts
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))
@@ -29,8 +29,6 @@ const run = async (args, opts, library = false) => {
     writable: process.stderr,
   })
   // if(process.stderr.isTTY) process.stderr.write(' '.repeat(process.stderr.columns))
-
-  if(getSigInt()) return
 
   if (code) throw new Error(makeError(code, stderr))
   if (output) await addData(output, { library, sourceMap: !noSourceMap })

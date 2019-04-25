@@ -57,10 +57,10 @@
   dependencies:
     mismatch "^1.1.1"
 
-"@depack/externs@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.3.0.tgz#a9b94693bef3294d715ac95ac761627e4a02b180"
-  integrity sha512-UroOrtKoFk/AH6KVlkdVztbkee14QYevhf1+dBUN5LUIgj6i0lEXg88zVeXEf1BEqzWO78rEZSC54Q3vAwbbBQ==
+"@depack/externs@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.4.0.tgz#cdf39386a90301500d9343864804441a8ca3d24e"
+  integrity sha512-ZYsWZmrNFxYdhtePDF5SlZJigdcI+buzYqy8cr4m2R4pZ4T9vUimw+RgoinLAJ5oae9tJ5b/hVWU/yJ6Jah4Kg==
 
 "@depack/nodejs@^1.1.3":
   version "1.1.3"
@@ -342,22 +342,22 @@ fpj@^1.1.0, fpj@^1.2.1:
     "@wrote/read" "^1.0.4"
     resolve-dependency "^1.0.2"
 
-frame-of-mind@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/frame-of-mind/-/frame-of-mind-1.1.0.tgz#b34398e91b2025bb9bce1f5d4ede98b3892fd39c"
-  integrity sha512-nPGTndyVYIcj1CkBlfLOAHTII87/kyY7qldvYeikTUxtkuFo8nQx0OfS4g4X1UacOsp/5A1phbXxLvuJ8mTYrg==
+frame-of-mind@^1.1.0, frame-of-mind@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/frame-of-mind/-/frame-of-mind-1.2.3.tgz#a68d22c02539e1fe6d575fd169a5ac57f8b047fa"
+  integrity sha512-dupw06bvFMVFJFTCYoa9b0BSNmHFQTxRNFbSjn/6m8jYa8t6ARqIL9h1hAZrtfsridbOx/J4QMtyAv6A8n/2mQ==
   dependencies:
-    paddys "1.1.0"
+    paddys "^1.2.0"
 
 "heap@>= 0.2.0":
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.6.tgz#087e1f10b046932fc8594dd9e6d378afc9d1e5ac"
   integrity sha1-CH4fELBGky/IWU3Z5tN4r8nR5aw=
 
-indicatrix@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.1.0.tgz#5041094a34947127381b73e57b44de9ac7217fde"
-  integrity sha512-nYWT3M75oor46kkn1p5kPSEBYYaExyqXs6/q1+AnjDqTDi1wq4B0QIunIJqyR95vXHHGp9xdXQBBfiq9Yd5BbQ==
+indicatrix@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.2.0.tgz#4aad22b659dc3d84cded9e7c1914546cea4ce1d3"
+  integrity sha512-6FYw+MQjxAqz2mMnmtcMcMjpCRwdJRSVng0xG9unLH/CqYVbr2Xjf/9HXIFgA9JLmNpi1l+WzsmKRDMECcw+KA==
 
 json-diff@0.5.2:
   version "0.5.2"
@@ -380,10 +380,10 @@ mismatch@^1.1.1, mismatch@^1.2.0:
   resolved "https://registry.yarnpkg.com/mismatch/-/mismatch-1.2.0.tgz#3f5021861e8084e36a14c2c1f9489941cd18f790"
   integrity sha512-kuw1k8ZHS+12fBVAVOBXMBJBXcNGnByFTJIDzH4W4v84OocejZ/qzxmT4ll9CLX5OD23NXr+NvrQDus0BsQ8xw==
 
-paddys@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/paddys/-/paddys-1.1.0.tgz#38f23de14ea0e1af629710fab84f65b3215b3618"
-  integrity sha512-cdis3a0TexvTEz12xQ4qBwQ6EwtzNTk9zgdQnBgXOS3QTj8uYv1IWwCJPqPVrUddGV4qvrotz1ijtw90JCUhig==
+paddys@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/paddys/-/paddys-1.2.0.tgz#984d61e0e7d96cc4c49fb5b5cfd6c9b7c080161d"
+  integrity sha512-wVss/tiodStz+HYquccKuE0T3IzxF4bXONeu4N9Goy5j++9MT07Aqe+I/vrjZG6z58HMjKr1R6QYtjXUs9+kug==
 
 pedantry@^2.3.1, pedantry@^2.3.2:
   version "2.3.2"

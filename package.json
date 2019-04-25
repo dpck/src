@@ -13,15 +13,18 @@
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "b": "alamode src -o build -s",
-    "d": "yarn-s d1",
+    "d": "yarn-s d1 externs",
     "d1": "typal src/lib -c",
     "build": "yarn-s d b doc",
-    "e": "alanode"
+    "e": "alanode",
+    "externs": "typal externs.js -e"
   },
   "files": [
     "build",
-    "src"
+    "src",
+    "externs.js"
   ],
+  "externs": "externs.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/dpck/src.git"
@@ -56,12 +59,12 @@
   },
   "dependencies": {
     "@depack/bundle": "^1.0.5",
-    "@depack/externs": "^1.3.0",
+    "@depack/externs": "^1.4.0",
     "@depack/nodejs": "^1.1.3",
     "@wrote/wrote": "^1.2.3",
     "erte": "^1.1.7",
-    "frame-of-mind": "^1.1.0",
-    "indicatrix": "^1.1.0",
+    "frame-of-mind": "^1.2.3",
+    "indicatrix": "^1.2.0",
     "makepromise": "^3.1.0",
     "spawncommand": "^2.1.2",
     "static-analysis": "^1.7.0"

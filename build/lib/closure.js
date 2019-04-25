@@ -1,7 +1,8 @@
 const { c } = require('erte');
-const { join, dirname } = require('path');
+const { join, dirname, relative } = require('path');
 const { ensurePath, write, read, exists } = require('@wrote/wrote');
 let getCorePath = require('@depack/nodejs'); if (getCorePath && getCorePath.__esModule) getCorePath = getCorePath.default;
+let resolveDependency = require('resolve-dependency'); if (resolveDependency && resolveDependency.__esModule) resolveDependency = resolveDependency.default;
 
 /**
  * Create an error with color.
@@ -24,9 +25,10 @@ const [VER] = process.version.split('.', 1)
 
 /**
  * Creates mocks in the `node_module` folder to serve as externs. It is not possible to serve proxies not from `node_modules` path because Closure does not understand it.
- * @param {!Array<string>} internals The names of the core modules to prepare.
- * @param {string} nodeModulesPath The path to the node_modules folder in which to put the core mocks.
- * @param {string?} corePath The path where the mocks are stored.
+ * @param {!Object} opts
+ * @param {!Array<string>} opts.internals The names of the core modules to prepare.
+ * @param {string} [opts.nodeModulesPath] The path to the node_modules folder in which to put the core mocks. Default `node_modules`.
+ * @param {boolean} [opts.force] Whether to force override. Default `true`.
  * @todo Add an option to dynamically evaluate the content of the mock.
  */
        const prepareCoreModules = async ({
@@ -78,24 +80,36 @@ const testDepack = async (packageJson) => {
        const fixDependencies = async (commonJS, modules) => {
   const all = [...commonJS, ...modules]
   await Promise.all(all.map(async (dep) => {
+    const dir = dirname(dep)
     const f = await read(dep)
     const p = JSON.parse(f)
-    const { 'main': main, 'module': mod, 'browser': b } = p
+    const { 'main': main, 'module': mod } = p
     const isModule = !!mod
     const field = isModule ? 'module' : 'main'
-    let M = mod || main || 'index.js'
-    if (!/\.m?jsx?$/.test(M)) M = `${M}.js`
-    const j = join(dirname(dep), M)
-    const e = await exists(j)
-    if (!e) throw new Error(`The ${field} for dependency ${dep} does not exist.`)
-    if (e.isDirectory()) {
+    let M = mod || main
+    if (!M) {
+      const j = join(dirname(dep), 'index.js')
+      const e = await exists(j)
+      if (!e) throw new Error(`Package ${dep} does not specify either main or module fields, and does not contain the index.js file.`)
+      p['main'] = 'index.js'
+      console.warn('Updating %s to have the main field.', dep)
+      await write(dep, JSON.stringify(p, null, 2))
+    }
+    let isDir, path
+    try {
+      ({ isDir, path } = await resolveDependency(M, dep))
+    } catch (err) {
+      throw new Error(`The ${field} for dependency ${dep} does not exist.`)
+    }
+    if (isDir) {
       const newM = join(M, 'index.js')
       p[field] = newM
       console.warn('Updating %s to point to a file.', dep)
       await write(dep, JSON.stringify(p, null, 2))
-    } else if (b && !(mod || main)) {
-      p['main'] = 'index.js'
-      console.warn('Updating %s to have main.', dep)
+    } else if (join(dir, p[field]) != path) {
+      const relPath = relative(dir, path)
+      p[field] = relPath
+      console.warn('Updating %s to point to the file with extension.', dep)
       await write(dep, JSON.stringify(p, null, 2))
     }
   }))

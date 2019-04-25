@@ -7,8 +7,8 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
- * @param {_depack.GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @param {string} [opts.compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
+ * @param {!_depack.GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @param {string} [opts.compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [opts.output] Sets the `--js_output_file` flag.
  * @param {string} [opts.level] Sets the `--compilation_level` flag.
  * @param {boolean} [opts.advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
@@ -27,6 +27,7 @@ const getOptions = (opts) => {
     output, level, advanced, languageIn, languageOut, sourceMap = true,
     argv = [], prettyPrint, noWarnings, debug, iife,
   } = opts
+  /** @type {!Array<string>} */
   const options = ['-jar', compiler]
   if (level) {
     options.push('--compilation_level', level)
@@ -84,7 +85,7 @@ export default getOptions
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {Object} _depack.GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @prop {string} [compiler="require.resolve('google-closure-compiler-java/compiler.jar')"] The path to the compiler JAR. Default `require.resolve('google-closure-compiler-java/compiler.jar')`.
+ * @prop {string} [compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [level] Sets the `--compilation_level` flag.
  * @prop {boolean} [advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.

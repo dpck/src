@@ -12,12 +12,12 @@ const run = require('./run');
 
 /**
  * Compile a Node.JS file into a single executable.
- * @param {_depack.CompileConfig} options Options for the Node.JS package compiler.
+ * @param {!_depack.CompileConfig} options Options for the Node.JS package compiler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
  * @param {boolean} [options.library=false] Whether to create a library. Default `false`.
- * @param {_depack.RunConfig} runOptions General options for running of the compiler.
+ * @param {!_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [runOptions.compilerVersion] Used in the display message.
@@ -64,31 +64,35 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   ].sort((a, b) => {
     if (a.startsWith('node_modules')) return -1
     if (b.startsWith('node_modules')) return 1
+    return 0
   })
   const wrapper = getWrapper(internals, library)
-
   const jsonFiles = hasJsonFiles(detected)
-  const hasJson = jsonFiles.length
-  if (hasJson) {
-    console.log(c('You\'re importing JSON files. Cannot use named exports there.', 'yellow'))
-    console.log(' ', jsonFiles.map(({ entry, from }) => {
-      return `${entry} [${from.join(' ')}]`
-    })
-      .join('\n  '))
-  }
+
   const Args = [
     ...args,
     ...externs,
     ...detectedExternsArgs,
     ...(files.length > 1 ? ['--module_resolution', 'NODE'] : []),
-    ...(commonJs.length || hasJson ? ['--process_common_js_modules'] : []),
+    ...(commonJs.length ? ['--process_common_js_modules'] : []),
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
+  if (jsonFiles.length && !commonJs.length) {
+    const hasRequired = jsonFiles.filter(({ required }) => {
+      return required
+    }, false)
+    if (hasRequired.length) {
+      console.error('You are requiring JSON files. Make sure their relative paths will stay the same to the build.')
+      console.log(hasRequired.map(({ entry, from }) => {
+        return `${c(entry, 'blue')} from ${from.join(' ')}`
+      })
+        .join('\n'))
+    }
+  }
   verbose ? console.error(Args.join(' ')) : printCommand(args, [
     ...externs, ...detectedExternsArgs,
-  ],
-  sorted)
+  ], sorted)
 
   const stdout = await run(Args, runOptions, library)
   if (!output) {
@@ -113,14 +117,14 @@ const printCommand = (args, externs, sorted) => {
     }
     return acc
   }, 'java')
-    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--js_output_file ${b}${c(f, 'red')}`
+    .replace(/--js_output_file (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--js_output_file ${b || ''}${c(f, 'red')}`
     })
-    .replace(/--externs (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--externs ${b}${c(f, 'grey')}`
+    .replace(/--externs (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--externs ${b || ''}${c(f, 'grey')}`
     })
-    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b = '', f) => {
-      return `--compilation_level ${b}${c(f, 'green')}`
+    .replace(/--compilation_level (\\\n)?(\S+)/g, (m, b, f) => {
+      return `--compilation_level ${b || ''}${c(f, 'green')}`
     })
   console.error(s)
   const {
@@ -170,8 +174,8 @@ const warnOfCommonJs = (analysis) => {
 
 const getCompatWarning = () => {
   let s = `CommonJS don't have named exports, make sure to use them like
-import myModule from 'my-module' /* CommonJS Compat */
-myModule.method('hello world')
+` + `import myModule from 'my-module' /* CommonJS Compat */
+myModule.default.method('hello world') // yes Node.JS, wat r u doing
 myModule.default('must explicitly call default')`
   const mx = s.split('\n').reduce((acc, { length }) => {
     if (length > acc) return length
@@ -201,9 +205,9 @@ const getExterns = async (internals, library = false) => {
     }, [])
     .filter((e, i, a) => a.indexOf(e) == i)
   const p = [...allInternals,
-    'global', 'nodejs', ...(library ? ['depack'] : [])]
+    'global', 'global/buffer', 'nodejs', ...(library ? ['depack'] : [])]
     .map(i => {
-      if (['module', 'process', 'console'].includes(i)) i = `_${i}`
+      if (['module', 'process', 'console', 'crypto'].includes(i)) i = `_${i}`
       return join(externsDir, `${i}.js`)
     })
   await Promise.all(p.map(async pp => {

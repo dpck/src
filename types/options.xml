@@ -1,7 +1,7 @@
 <types namespace="_depack">
   <type name="GetOptions" desc="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">
-    <prop string name="compiler" default="require.resolve('google-closure-compiler-java/compiler.jar')">
-      The path to the compiler JAR.
+    <prop opt string name="compiler">
+      The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
     </prop>
     <prop opt string name="output">
       Sets the `--js_output_file` flag.

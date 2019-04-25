@@ -25,9 +25,10 @@ const [VER] = process.version.split('.', 1)
 
 /**
  * Creates mocks in the `node_module` folder to serve as externs. It is not possible to serve proxies not from `node_modules` path because Closure does not understand it.
- * @param {!Array<string>} internals The names of the core modules to prepare.
- * @param {string} nodeModulesPath The path to the node_modules folder in which to put the core mocks.
- * @param {string?} corePath The path where the mocks are stored.
+ * @param {!Object} opts
+ * @param {!Array<string>} opts.internals The names of the core modules to prepare.
+ * @param {string} [opts.nodeModulesPath] The path to the node_modules folder in which to put the core mocks. Default `node_modules`.
+ * @param {boolean} [opts.force] Whether to force override. Default `true`.
  * @todo Add an option to dynamically evaluate the content of the mock.
  */
 export const prepareCoreModules = async ({

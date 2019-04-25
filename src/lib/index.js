@@ -5,7 +5,7 @@ import { write, read } from '@wrote/wrote'
 /**
  * Returns the pretty-printed command for the bundler.
  * @param {!Array<string>} args The array with arguments.
- * @param {(string):string} getJs The function to get the location of the js file to print.
+ * @param {!Array<string>} js The list of js files.
  */
 export const getCommand = (args, js) => {
   // const js = []
@@ -50,7 +50,7 @@ export const removeStrict = async (path, wrapper = '', noStrict = false) => {
 }
 
 // fixes 'use strict' to be on top
-export const prepareOutput = (output, wrapper = '', noStrict) => {
+export const prepareOutput = (output, wrapper = '', noStrict = false) => {
   const wp = wrapper.replace(/%output%$/, '')
   const actualOutput = output.replace(wp, '')
   const hasUseStrict = actualOutput.startsWith('\'use strict\';')
@@ -113,7 +113,7 @@ ${wrapper}`
 
 /**
  * Checks whether static analysis returned .json files.
- * @param {!Array<_staticAnalysis.Detection>} detected
+ * @param {!Array<!_staticAnalysis.Detection>} detected
  */
 export const hasJsonFiles = detected => detected.filter(({ entry }) => {
   if (entry)
