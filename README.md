@@ -47,12 +47,12 @@ Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the com
 
 __<a name="type-_depackrunconfig">`_depack.RunConfig`</a>__: General options for running of the compiler.
 
-|      Name       |   Type    |                                          Description                                          | Default |
-| --------------- | --------- | --------------------------------------------------------------------------------------------- | ------- |
-| output          | _string_  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -       |
-| debug           | _string_  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
-| compilerVersion | _string_  | Used in the display message.                                                                  | -       |
-| noSourceMap     | _boolean_ | Disables source maps.                                                                         | `false` |
+|      Name       |       Type       |                                          Description                                          | Default |
+| --------------- | ---------------- | --------------------------------------------------------------------------------------------- | ------- |
+| output          | <em>string</em>  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -       |
+| debug           | <em>string</em>  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
+| compilerVersion | <em>string</em>  | Used in the display message.                                                                  | -       |
+| noSourceMap     | <em>boolean</em> | Disables source maps.                                                                         | `false` |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
 
@@ -73,12 +73,12 @@ The last argument, `compilerArgs` can come from the `getOptions` method. The out
 
 __<a name="type-_depackcompileconfig">`_depack.CompileConfig`</a>__: Options for the Node.JS package compiler.
 
-|   Name   |   Type    |                             Description                              | Default |
-| -------- | --------- | -------------------------------------------------------------------- | ------- |
-| __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -       |
-| noStrict | _boolean_ | Removes `use strict` from the output.                                | `false` |
-| verbose  | _boolean_ | Print all arguments to the compiler.                                 | `false` |
-| library  | _boolean_ | Whether to create a library.                                         | `false` |
+|   Name   |       Type       |                             Description                              | Default |
+| -------- | ---------------- | -------------------------------------------------------------------- | ------- |
+| __src*__ | <em>string</em>  | The entry file to bundle. Currently only single files are supported. | -       |
+| noStrict | <em>boolean</em> | Removes `use strict` from the output.                                | `false` |
+| verbose  | <em>boolean</em> | Print all arguments to the compiler.                                 | `false` |
+| library  | <em>boolean</em> | Whether to create a library.                                         | `false` |
 
 _For example, given the following source:_
 
@@ -163,6 +163,7 @@ node_modules/@depack/externs/v8/stream.js --externs \
 node_modules/@depack/externs/v8/events.js --externs \
 node_modules/@depack/externs/v8/url.js --externs \
 node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
 Running Google Closure Compiler 20190325...         
@@ -176,11 +177,11 @@ Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, t
 
 __<a name="type-_depackbundleconfig">`_depack.BundleConfig`</a>__: Options for the web bundler.
 
-|   Name   |   Type    |                             Description                              |    Default    |
-| -------- | --------- | -------------------------------------------------------------------- | ------------- |
-| __src*__ | _string_  | The entry file to bundle. Currently only single files are supported. | -             |
-| tempDir  | _string_  | Where to save prepared JSX files.                                    | `depack-temp` |
-| preact   | _boolean_ | Adds `import { h } from 'preact'` automatically.                     | `false`       |
+|   Name   |       Type       |                             Description                              |    Default    |
+| -------- | ---------------- | -------------------------------------------------------------------- | ------------- |
+| __src*__ | <em>string</em>  | The entry file to bundle. Currently only single files are supported. | -             |
+| tempDir  | <em>string</em>  | Where to save prepared JSX files.                                    | `depack-temp` |
+| preact   | <em>boolean</em> | Adds `import { h } from 'preact'` automatically.                     | `false`       |
 
 _For example, given the following single JS source:_
 
@@ -254,7 +255,8 @@ function e(a) {
 
 _Stderr:_
 ```
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --formatting PRETTY_PRINT
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
 Running Google Closure Compiler 20190325...         
 ```
@@ -267,20 +269,20 @@ Returns an array of options to pass to the compiler for `Compile` and `Bundle` m
 
 __<a name="type-_depackgetoptions">`_depack.GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
-|    Name     |          Type          |                                                        Description                                                        |                            Default                             |
-| ----------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| compiler    | _string_               | The path to the compiler JAR.                                                                                             | `require.resolve('google-closure-compiler-java/compiler.jar')` |
-| output      | _string_               | Sets the `--js_output_file` flag.                                                                                         | -                                                              |
-| level       | _string_               | Sets the `--compilation_level` flag.                                                                                      | -                                                              |
-| advanced    | _boolean_              | Sets the `--compilation_level` flag to `ADVANCED`.                                                                        | `false`                                                        |
-| languageIn  | _(string \| number)_   | Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                      | -                                                              |
-| languageOut | _(string \| number)_   | Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                   | -                                                              |
-| sourceMap   | _boolean_              | Adds the `--create_source_map %outname%.map` flag.                                                                        | `true`                                                         |
-| prettyPrint | _boolean_              | Adds the `--formatting PRETTY_PRINT` flag.                                                                                | `false`                                                        |
-| iife        | _boolean_              | Adds the `--isolation_mode IIFE` flag.                                                                                    | `false`                                                        |
-| noWarnings  | _boolean_              | Sets the `--warning_level QUIET` flag.                                                                                    | `false`                                                        |
-| debug       | _string_               | The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible. | -                                                              |
-| argv        | _!Array&lt;string&gt;_ | Any additional arguments to the compiler.                                                                                 | -                                                              |
+|    Name     |             Type              |                                                         Description                                                          | Default |
+| ----------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
+| compiler    | <em>string</em>               | The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`. | -       |
+| output      | <em>string</em>               | Sets the `--js_output_file` flag.                                                                                            | -       |
+| level       | <em>string</em>               | Sets the `--compilation_level` flag.                                                                                         | -       |
+| advanced    | <em>boolean</em>              | Sets the `--compilation_level` flag to `ADVANCED`.                                                                           | `false` |
+| languageIn  | <em>(string \| number)</em>   | Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                         | -       |
+| languageOut | <em>(string \| number)</em>   | Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                      | -       |
+| sourceMap   | <em>boolean</em>              | Adds the `--create_source_map %outname%.map` flag.                                                                           | `true`  |
+| prettyPrint | <em>boolean</em>              | Adds the `--formatting PRETTY_PRINT` flag.                                                                                   | `false` |
+| iife        | <em>boolean</em>              | Adds the `--isolation_mode IIFE` flag.                                                                                       | `false` |
+| noWarnings  | <em>boolean</em>              | Sets the `--warning_level QUIET` flag.                                                                                       | `false` |
+| debug       | <em>string</em>               | The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.    | -       |
+| argv        | <em>!Array&lt;string&gt;</em> | Any additional arguments to the compiler.                                                                                    | -       |
 
 ```js
 import { getOptions } from '@depack/depack'
