@@ -166,7 +166,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190325...         
+Running Google Closure Compiler 20190415.           
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
@@ -177,11 +177,12 @@ Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, t
 
 __<a name="type-_depackbundleconfig">`_depack.BundleConfig`</a>__: Options for the web bundler.
 
-|   Name   |       Type       |                             Description                              |    Default    |
-| -------- | ---------------- | -------------------------------------------------------------------- | ------------- |
-| __src*__ | <em>string</em>  | The entry file to bundle. Currently only single files are supported. | -             |
-| tempDir  | <em>string</em>  | Where to save prepared JSX files.                                    | `depack-temp` |
-| preact   | <em>boolean</em> | Adds `import { h } from 'preact'` automatically.                     | `false`       |
+|     Name     |       Type       |                                                                                                                             Description                                                                                                                              |    Default    |
+| ------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| __src*__     | <em>string</em>  | The entry file to bundle. Currently only single files are supported.                                                                                                                                                                                                 | -             |
+| tempDir      | <em>string</em>  | Where to save prepared JSX files.                                                                                                                                                                                                                                    | `depack-temp` |
+| preact       | <em>boolean</em> | Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_.                                                                                                                                                     | `false`       |
+| preactExtern | <em>boolean</em> | Adds `import { h } from '@preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `@externs/preact`, so that the source code stays the same. | `false`       |
 
 _For example, given the following single JS source:_
 
@@ -258,7 +259,7 @@ _Stderr:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190325...         
+Running Google Closure Compiler 20190415...         
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
