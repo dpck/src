@@ -1,5 +1,5 @@
 const { c } = require('erte');
-const { join, dirname } = require('path');
+const { join } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
 const { chmod } = require('fs');
 const { exists } = require('@wrote/wrote');

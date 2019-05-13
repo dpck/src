@@ -7,8 +7,6 @@ const run = require('./run');
 
 const doesSrcHaveJsx = async (src) => {
   const analysis = await staticAnalysis(src, { nodeModules: false })
-  // const detectedExternsArgs = createExternsArgs(detectedExterns)
-  // const detectedExterns = detectExterns(analysis)
   const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
     return entry.endsWith('.jsx')
   })
@@ -20,7 +18,8 @@ const doesSrcHaveJsx = async (src) => {
  * @param {_depack.BundleConfig} options Options for the web bundler.
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {string} [options.tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
- * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
+ * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_. Default `false`.
+ * @param {boolean} [options.preactExtern=false] Adds `import { h } from '@preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `@externs/preact`, so that the source code stays the same. Default `false`.
  * @param {_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
@@ -61,24 +60,9 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   // process.on('SIGINT', () => {
   //   sigint = true
   // })
-  // let preactExterns = []
-  // if (preactExtern) { // probably want to do it with static analysis, to find all externs
-  //   let pe
-  //   try {
-  //     pe = require('@externs/preact/package.json')
-  //   } catch (err) {
-  //     try {
-  //       pe = require(join(process.cwd(), 'node_modules/@externs/preact/package.json'))
-  //     } catch (e) {
-  //       throw new Error('Could not require @externs/preact.')
-  //     }
-  //   }
-  //   preactExterns = createExternsArgs([pe['externs']])
-  // }
   const PreArgs = [
     ...compilerArgs,
     ...externs,
-    // ...detectedExternsArgs,
     ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
     ...(deps.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(processCommonJs ? ['--process_common_js_modules'] : []),
@@ -112,7 +96,8 @@ module.exports=Bundle
  * @typedef {Object} _depack.BundleConfig Options for the web bundler.
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
  * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
- * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically. Default `false`.
+ * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_. Default `false`.
+ * @prop {boolean} [preactExtern=false] Adds `import { h } from '@preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `@externs/preact`, so that the source code stays the same. Default `false`.
  */
 
 /* documentary types/index.xml */
