@@ -1,5 +1,9 @@
 ## 13 May 2019
 
+### [1.3.1](https://github.com/dpck/src/compare/v1.3.0...v1.3.1)
+
+- [fix] Fullwidth `＠externs/preact` JSDoc.
+
 ### [1.3.0](https://github.com/dpck/src/compare/v1.2.2...v1.3.0)
 
 - [feature] Implement the `preactExtern` option to be able to compile JSX with external _Preact_; scan the bundled files for externs.

@@ -19,7 +19,7 @@ const doesSrcHaveJsx = async (src) => {
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {string} [options.tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @param {boolean} [options.preact=false] Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_. Default `false`.
- * @param {boolean} [options.preactExtern=false] Adds `import { h } from '@preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `@externs/preact`, so that the source code stays the same. Default `false`.
+ * @param {boolean} [options.preactExtern=false] Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the source code stays the same. Default `false`.
  * @param {_depack.RunConfig} runOptions General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
@@ -97,7 +97,7 @@ module.exports=Bundle
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
  * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
  * @prop {boolean} [preact=false] Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_. Default `false`.
- * @prop {boolean} [preactExtern=false] Adds `import { h } from '@preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `@externs/preact`, so that the source code stays the same. Default `false`.
+ * @prop {boolean} [preactExtern=false] Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the source code stays the same. Default `false`.
  */
 
 /* documentary types/index.xml */
