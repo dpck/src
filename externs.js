@@ -10,7 +10,7 @@ _depack.RunConfig
 /* typal types/bundle.xml */
 /**
  * Options for the web bundler.
- * @typedef {{ src: string, tempDir: (string|undefined), preact: (boolean|undefined) }}
+ * @typedef {{ src: string, tempDir: (string|undefined), preact: (boolean|undefined), preactExtern: (boolean|undefined) }}
  */
 _depack.BundleConfig
 
@@ -24,6 +24,6 @@ _depack.CompileConfig
 /* typal types/options.xml */
 /**
  * Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @typedef {{ compiler: (string|undefined), output: (string|undefined), level: (string|undefined), advanced: (boolean|undefined), languageIn: ((string|number)|undefined), languageOut: ((string|number)|undefined), sourceMap: (boolean|undefined), prettyPrint: (boolean|undefined), iife: (boolean|undefined), noWarnings: (boolean|undefined), debug: (string|undefined), argv: (!Array<string>|undefined) }}
+ * @typedef {{ compiler: (string|undefined), output: (string|undefined), level: (string|undefined), advanced: (boolean|undefined), languageIn: (((string|number))|undefined), languageOut: (((string|number))|undefined), sourceMap: (boolean|undefined), prettyPrint: (boolean|undefined), iife: (boolean|undefined), noWarnings: (boolean|undefined), debug: (string|undefined), argv: ((!Array<string>)|undefined) }}
  */
 _depack.GetOptions

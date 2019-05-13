@@ -9,8 +9,8 @@ const TS = makeTestSuite('test/result/closure/fix-dependencies', {
    * @param {string} input
    * @param {TempContext} temp
    */
-  async getResults(input, { add, snapshot }) {
-    const p = await add(input)
+  async getResults({ add, snapshot }) {
+    const p = await add(this.input)
     await fixDependencies(
       [join(p, 'main.json')], [join(p, 'module.json')]
     )

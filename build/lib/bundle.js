@@ -1,9 +1,19 @@
 const { rm } = require('@wrote/wrote');
 let generateTemp = require('@depack/bundle'); if (generateTemp && generateTemp.__esModule) generateTemp = generateTemp.default;
-const { relative } = require('path');
+const { join, relative } = require('path');
 let staticAnalysis = require('static-analysis'); const { sort } = staticAnalysis; if (staticAnalysis && staticAnalysis.__esModule) staticAnalysis = staticAnalysis.default;
-const { getCommand, updateSourceMaps, hasJsonFiles } = require('./');
+const { getCommand, updateSourceMaps, hasJsonFiles, createExternsArgs, detectExterns } = require('./');
 const run = require('./run');
+
+const doesSrcHaveJsx = async (src) => {
+  const analysis = await staticAnalysis(src, { nodeModules: false })
+  // const detectedExternsArgs = createExternsArgs(detectedExterns)
+  // const detectedExterns = detectExterns(analysis)
+  const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
+    return entry.endsWith('.jsx')
+  })
+  return hasJsx
+}
 
 /**
  * Bundle the source code.
@@ -19,29 +29,30 @@ const run = require('./run');
  * @param {!Array<string>} compilerArgs Extra arguments for the compiler, including the ones got with `getOptions`.
  */
 const Bundle = async (options, runOptions, compilerArgs = []) => {
-  const { src, tempDir = 'depack-temp', preact } = options
+  const { src, tempDir = 'depack-temp', preact, preactExtern } = options
   const { output, compilerVersion, debug, noSourceMap } = runOptions
   if (!src) throw new Error('Entry file is not given.')
-  const analysis = await staticAnalysis(src, { nodeModules: false })
-  const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
-    return entry.endsWith('.jsx')
-  })
+  const hasJsx = await doesSrcHaveJsx(src)
   let deps
   let processCommonJs
-  if (hasJsx) {
-    deps = await generateTemp(src, { tempDir, preact })
-  } else {
-    const detected = await staticAnalysis(src)
-    const sorted = sort(detected)
-    const {
-      commonJs, commonJsPackageJsons, js, packageJsons,
-    } = sorted
-    const jsonFiles = hasJsonFiles(detected)
-    processCommonJs = Boolean(commonJs.length || jsonFiles.length)
-    deps = [src, ...commonJs, ...packageJsons,
-      ...js,
-      ...commonJsPackageJsons]
-  }
+  if (hasJsx) await generateTemp(src, { tempDir, preact, preactExtern })
+
+  const Src = hasJsx ? join(tempDir, src): src
+  const detected = await staticAnalysis(Src, {
+    fields: ['externs'],
+  })
+  const detectedExterns = detectExterns(detected)
+  const externs = createExternsArgs(detectedExterns)
+
+  const sorted = sort(detected)
+  const {
+    commonJs, commonJsPackageJsons, js, packageJsons,
+  } = sorted
+  const jsonFiles = hasJsonFiles(detected)
+  processCommonJs = Boolean(commonJs.length || jsonFiles.length)
+  deps = [Src, ...commonJs, ...packageJsons,
+    ...js,
+    ...commonJsPackageJsons]
 
   let sigint = false
   const getSigInt = () => {
@@ -50,8 +61,24 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   // process.on('SIGINT', () => {
   //   sigint = true
   // })
+  // let preactExterns = []
+  // if (preactExtern) { // probably want to do it with static analysis, to find all externs
+  //   let pe
+  //   try {
+  //     pe = require('@externs/preact/package.json')
+  //   } catch (err) {
+  //     try {
+  //       pe = require(join(process.cwd(), 'node_modules/@externs/preact/package.json'))
+  //     } catch (e) {
+  //       throw new Error('Could not require @externs/preact.')
+  //     }
+  //   }
+  //   preactExterns = createExternsArgs([pe['externs']])
+  // }
   const PreArgs = [
     ...compilerArgs,
+    ...externs,
+    // ...detectedExternsArgs,
     ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
     ...(deps.length > 1 ? ['--module_resolution', 'NODE'] : []),
     ...(processCommonJs ? ['--process_common_js_modules'] : []),

@@ -1,12 +1,12 @@
 import { c } from 'erte'
-import { join, dirname } from 'path'
+import { join } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
 import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
 import frame from 'frame-of-mind'
-import { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor } from './'
+import { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
@@ -36,13 +36,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const detected = await detect(src, {
     fields: ['externs'],
   })
-  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
-    if (!packageJson) return acc
-    const dir = dirname(packageJson)
-    externs = Array.isArray(externs) ? externs : [externs]
-    externs = externs.map((e) => join(dir, e))
-    return [...acc, ...externs]
-  }, [])
+  const detectedExterns = detectExterns(detected)
   detectedExterns.length && console.error('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
   const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
@@ -198,13 +192,6 @@ const getExterns = async (internals, library = false) => {
     if (!exist) throw new Error(`Externs ${pp} don't exist.`)
   }))
   const args = createExternsArgs(p)
-  return args
-}
-
-const createExternsArgs = (externs) => {
-  const args = externs.reduce((acc, e) => {
-    return [...acc, '--externs', e]
-  }, [])
   return args
 }
 

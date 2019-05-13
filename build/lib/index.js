@@ -1,5 +1,5 @@
 const { c, b } = require('erte');
-const { basename, relative } = require('path');
+const { join, dirname, basename, relative } = require('path');
 const { write, read } = require('@wrote/wrote');
 
        const replaceWithColor = (str, name, color, background = false) => {
@@ -138,6 +138,29 @@ ${wrapper}`
 }
 
 /**
+ * Runs through detected packages and returns the list of externs specified in the `externs` field.
+ * @param {!Array<!_staticAnalysis.Detection>} detected
+ * @return {!Array<string>}
+ */
+       const detectExterns = (detected) => {
+  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
+    if (!packageJson) return acc
+    const dir = dirname(packageJson)
+    externs = Array.isArray(externs) ? externs : [externs]
+    externs = externs.map((e) => join(dir, e))
+    return [...acc, ...externs]
+  }, [])
+  return detectedExterns
+}
+
+       const createExternsArgs = (externs) => {
+  const args = externs.reduce((acc, e) => {
+    return [...acc, '--externs', e]
+  }, [])
+  return args
+}
+
+/**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
  */
@@ -152,3 +175,5 @@ module.exports.checkIfLib = checkIfLib
 module.exports.getWrapper = getWrapper
 module.exports.hasJsonFiles = hasJsonFiles
 module.exports.getShellCommand = getShellCommand
+module.exports.detectExterns = detectExterns
+module.exports.createExternsArgs = createExternsArgs

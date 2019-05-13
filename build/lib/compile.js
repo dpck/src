@@ -6,7 +6,7 @@ const { exists } = require('@wrote/wrote');
 let detect = require('static-analysis'); const { sort } = detect; if (detect && detect.__esModule) detect = detect.default;
 let getExternsDir = require('@depack/externs'); const { dependencies: externsDeps } = getExternsDir; if (getExternsDir && getExternsDir.__esModule) getExternsDir = getExternsDir.default;
 let frame = require('frame-of-mind'); if (frame && frame.__esModule) frame = frame.default;
-const { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor } = require('./');
+const { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs } = require('./');
 const { prepareCoreModules, fixDependencies } = require('./closure');
 const run = require('./run');
 
@@ -36,13 +36,7 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const detected = await detect(src, {
     fields: ['externs'],
   })
-  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
-    if (!packageJson) return acc
-    const dir = dirname(packageJson)
-    externs = Array.isArray(externs) ? externs : [externs]
-    externs = externs.map((e) => join(dir, e))
-    return [...acc, ...externs]
-  }, [])
+  const detectedExterns = detectExterns(detected)
   detectedExterns.length && console.error('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
   const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
@@ -198,13 +192,6 @@ const getExterns = async (internals, library = false) => {
     if (!exist) throw new Error(`Externs ${pp} don't exist.`)
   }))
   const args = createExternsArgs(p)
-  return args
-}
-
-const createExternsArgs = (externs) => {
-  const args = externs.reduce((acc, e) => {
-    return [...acc, '--externs', e]
-  }, [])
   return args
 }
 

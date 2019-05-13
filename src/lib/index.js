@@ -1,5 +1,5 @@
 import { c, b } from 'erte'
-import { basename, relative } from 'path'
+import { join, dirname, basename, relative } from 'path'
 import { write, read } from '@wrote/wrote'
 
 export const replaceWithColor = (str, name, color, background = false) => {
@@ -135,6 +135,29 @@ export const getShellCommand = (args, program = 'java') => {
     return acc
   }, program)
   return s
+}
+
+/**
+ * Runs through detected packages and returns the list of externs specified in the `externs` field.
+ * @param {!Array<!_staticAnalysis.Detection>} detected
+ * @return {!Array<string>}
+ */
+export const detectExterns = (detected) => {
+  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
+    if (!packageJson) return acc
+    const dir = dirname(packageJson)
+    externs = Array.isArray(externs) ? externs : [externs]
+    externs = externs.map((e) => join(dir, e))
+    return [...acc, ...externs]
+  }, [])
+  return detectedExterns
+}
+
+export const createExternsArgs = (externs) => {
+  const args = externs.reduce((acc, e) => {
+    return [...acc, '--externs', e]
+  }, [])
+  return args
 }
 
 /**
