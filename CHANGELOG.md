@@ -1,3 +1,9 @@
+## 13 May 2019
+
+### [1.3.0](https://github.com/dpck/src/compare/v1.2.2...v1.3.0)
+
+- [feature] Implement the `preactExtern` option to be able to compile JSX with external _Preact_; scan the bundled files for externs.
+
 ## 25 April 2019
 
 ### [1.2.2](https://github.com/dpck/src/compare/v1.2.1...v1.2.2)
