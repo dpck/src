@@ -1,3 +1,9 @@
+## 16 July 2019
+
+### [1.3.2](https://github.com/dpck/src/compare/v1.3.1...v1.3.2)
+
+- [fix] Update externs to `^1.4.2`.
+
 ## 13 May 2019
 
 ### [1.3.1](https://github.com/dpck/src/compare/v1.3.0...v1.3.1)
