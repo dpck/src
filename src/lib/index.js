@@ -120,9 +120,10 @@ export const hasJsonFiles = detected => detected.filter(({ entry }) => {
     return entry.endsWith('.json')
 })
 
+const { DEPACK_MAX_COLUMNS = 87 } = process.env
 
 export const getShellCommand = (args, program = 'java') => {
-  const maxLength = process.stderr.columns - 3 || 87
+  const maxLength = process.stderr.columns - 3 || DEPACK_MAX_COLUMNS
   let lastLineLength = program.length
   const s = args.reduce((acc, current) => {
     if (lastLineLength + current.length > maxLength) {

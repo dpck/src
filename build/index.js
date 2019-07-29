@@ -11,11 +11,10 @@ const $_lib_get_options = require('./lib/get-options');
 const GOOGLE_CLOSURE_COMPILER = process.env['GOOGLE_CLOSURE_COMPILER']
 
 
-
 /**
  * If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
  */
-       const getCompilerVersion = async () => {
+const getCompilerVersion = async () => {
   /** @type {string} */
   let compilerVersion = 'target'
   const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')

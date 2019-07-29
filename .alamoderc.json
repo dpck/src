@@ -8,5 +8,10 @@
         }
       }
     }
+  },
+  "import": {
+    "alamodeModules": [
+      "@depack/nodejs", "resolve-dependency"
+    ]
   }
 }

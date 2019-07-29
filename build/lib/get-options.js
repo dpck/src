@@ -71,7 +71,7 @@ const getOptions = (opts) => {
  * @param {string} output
  * @param {string} src
  */
-       const getOutput = (output, src) => {
+const getOutput = (output, src) => {
   let o = /\.js$/.test(output) ? output : join(output, basename(src))
   o = o.replace(/jsx$/, 'js')
   return o

@@ -1,15 +1,15 @@
 const { c } = require('erte');
 const { join, dirname, relative } = require('path');
 const { ensurePath, write, read, exists } = require('@wrote/wrote');
-let getCorePath = require('@depack/nodejs'); if (getCorePath && getCorePath.__esModule) getCorePath = getCorePath.default;
-let resolveDependency = require('resolve-dependency'); if (resolveDependency && resolveDependency.__esModule) resolveDependency = resolveDependency.default;
+const getCorePath = require('@depack/nodejs');
+const resolveDependency = require('resolve-dependency');
 
 /**
  * Create an error with color.
  * @param {number} exitCode
  * @param {string} se The output of the compiler.
  */
-       const makeError = (exitCode, se) => {
+const makeError = (exitCode, se) => {
   const r = se.split('\n\n')
   const s = r.map((t) => {
     const warn = /^.+?:\d+:(?:\s*Originally at:\s*.+?)? WARNING -/.test(t)
@@ -31,7 +31,7 @@ const [VER] = process.version.split('.', 1)
  * @param {boolean} [opts.force] Whether to force override. Default `true`.
  * @todo Add an option to dynamically evaluate the content of the mock.
  */
-       const prepareCoreModules = async ({
+const prepareCoreModules = async ({
   internals, nodeModulesPath = 'node_modules', force = true,
 }) => {
   const corePath = getCorePath(VER)
@@ -77,7 +77,7 @@ const testDepack = async (packageJson) => {
  * @param {!Array<string>} commonJS The paths to CommonJS package.json files.
  * @param {!Array<string>} modules The paths to package.json files.
  */
-       const fixDependencies = async (commonJS, modules) => {
+const fixDependencies = async (commonJS, modules) => {
   const all = [...commonJS, ...modules]
   await Promise.all(all.map(async (dep) => {
     const dir = dirname(dep)

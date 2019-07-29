@@ -2,7 +2,7 @@ const { c, b } = require('erte');
 const { join, dirname, basename, relative } = require('path');
 const { write, read } = require('@wrote/wrote');
 
-       const replaceWithColor = (str, name, color, background = false) => {
+const replaceWithColor = (str, name, color, background = false) => {
   const re = new RegExp(`--${name} (\\\\\n)?(\\S+)`, 'g')
   return str.replace(re, (m, bef, f) => {
     const fn = background ? b : c
@@ -15,7 +15,7 @@ const { write, read } = require('@wrote/wrote');
  * @param {!Array<string>} args The array with arguments.
  * @param {!Array<string>} js The list of js files.
  */
-       const getCommand = (args, js) => {
+const getCommand = (args, js) => {
   let s = getShellCommand(args)
 
   s = replaceWithColor(s, 'compilation_level', 'green', true)
@@ -28,7 +28,7 @@ const { write, read } = require('@wrote/wrote');
   return `${s}\n--js ${jss}`.trim()
 }
 
-       const addData = async (path, { sourceMap, library }) => {
+const addData = async (path, { sourceMap, library }) => {
   const r = await read(path)
   const rr = [r]
   if (library) rr.push('module.exports = DEPACK_EXPORT')
@@ -39,7 +39,7 @@ const { write, read } = require('@wrote/wrote');
   await write(path, rr.join('\n'))
 }
 
-       const removeStrict = async (path, wrapper = '', noStrict = false) => {
+const removeStrict = async (path, wrapper = '', noStrict = false) => {
   // if we compiled a library, GCC would already not have use strict
   // as compared to the compile mode where we added #!/usr/bin/env node
   // on top which resulted in an extra 'use strict' after the wrapper
@@ -50,7 +50,7 @@ const { write, read } = require('@wrote/wrote');
 }
 
 // fixes 'use strict' to be on top
-       const prepareOutput = (output, wrapper = '', noStrict = false) => {
+const prepareOutput = (output, wrapper = '', noStrict = false) => {
   const wp = wrapper.replace(/%output%$/, '')
   const actualOutput = output.replace(wp, '')
   const hasUseStrict = actualOutput.startsWith('\'use strict\';')
@@ -61,7 +61,7 @@ const { write, read } = require('@wrote/wrote');
   return `${aw}${ao}`
 }
 
-       const updateSourceMaps = async (path, tempDir) => {
+const updateSourceMaps = async (path, tempDir) => {
   const map = `${path}.map`
   const r = await read(map)
   const j = JSON.parse(r)
@@ -82,7 +82,7 @@ const { write, read } = require('@wrote/wrote');
  * checkIfLib('./lib') // true
  * checkIfLib('preact') // false
  */
-       const checkIfLib = modName => /^[./]/.test(modName)
+const checkIfLib = modName => /^[./]/.test(modName)
 
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
@@ -92,7 +92,7 @@ const { write, read } = require('@wrote/wrote');
  * const fs = require('fs');
  * const _module = require('module');
  */
-       const getWrapper = (internals, library = false) => {
+const getWrapper = (internals, library = false) => {
   if (!internals.length) return
   const wrapper = internals
     .map(i => {
@@ -115,14 +115,15 @@ ${wrapper}`
  * Checks whether static analysis returned .json files.
  * @param {!Array<!_staticAnalysis.Detection>} detected
  */
-       const hasJsonFiles = detected => detected.filter(({ entry }) => {
+const hasJsonFiles = detected => detected.filter(({ entry }) => {
   if (entry)
     return entry.endsWith('.json')
 })
 
+const { DEPACK_MAX_COLUMNS = 87 } = process.env
 
-       const getShellCommand = (args, program = 'java') => {
-  const maxLength = process.stderr.columns - 3 || 87
+const getShellCommand = (args, program = 'java') => {
+  const maxLength = process.stderr.columns - 3 || DEPACK_MAX_COLUMNS
   let lastLineLength = program.length
   const s = args.reduce((acc, current) => {
     if (lastLineLength + current.length > maxLength) {
@@ -142,7 +143,7 @@ ${wrapper}`
  * @param {!Array<!_staticAnalysis.Detection>} detected
  * @return {!Array<string>}
  */
-       const detectExterns = (detected) => {
+const detectExterns = (detected) => {
   const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
     if (!packageJson) return acc
     const dir = dirname(packageJson)
@@ -153,7 +154,7 @@ ${wrapper}`
   return detectedExterns
 }
 
-       const createExternsArgs = (externs) => {
+const createExternsArgs = (externs) => {
   const args = externs.reduce((acc, e) => {
     return [...acc, '--externs', e]
   }, [])
