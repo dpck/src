@@ -45,7 +45,7 @@ import {
 
 Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process.
 
-__<a name="type-_depackrunconfig">`_depack.RunConfig`</a>__: General options for running of the compiler.
+<strong><a name="type-_depackrunconfig">`_depack.RunConfig`</a></strong>: General options for running of the compiler.
 
 |      Name       |       Type       |                                          Description                                          | Default |
 | --------------- | ---------------- | --------------------------------------------------------------------------------------------- | ------- |
@@ -71,7 +71,7 @@ Compiles a _Node.JS_ package into a single executable (with the `+x` addition). 
 
 The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
 
-__<a name="type-_depackcompileconfig">`_depack.CompileConfig`</a>__: Options for the Node.JS package compiler.
+<strong><a name="type-_depackcompileconfig">`_depack.CompileConfig`</a></strong>: Options for the Node.JS package compiler.
 
 |   Name   |       Type       |                             Description                              | Default |
 | -------- | ---------------- | -------------------------------------------------------------------- | ------- |
@@ -166,7 +166,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190528...         
+Running Google Closure Compiler 20190709...         
 ```
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
@@ -175,7 +175,7 @@ Running Google Closure Compiler 20190528...
 
 Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
 
-__<a name="type-_depackbundleconfig">`_depack.BundleConfig`</a>__: Options for the web bundler.
+<strong><a name="type-_depackbundleconfig">`_depack.BundleConfig`</a></strong>: Options for the web bundler.
 
 |     Name     |       Type       |                                                                                                                             Description                                                                                                                              |    Default    |
 | ------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -259,7 +259,7 @@ _Stderr:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190528..          
+Running Google Closure Compiler 20190709            
 ```
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
@@ -268,7 +268,7 @@ Running Google Closure Compiler 20190528..
 
 Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
 
-__<a name="type-_depackgetoptions">`_depack.GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+<strong><a name="type-_depackgetoptions">`_depack.GetOptions`</a></strong>: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
 |    Name     |             Type              |                                                         Description                                                          | Default |
 | ----------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
@@ -363,13 +363,14 @@ If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `tar
   <tr>
     <th>
       <a href="https://artd.eco">
-        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco">
+        <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
+          alt="Art Deco">
       </a>
     </th>
     <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
     <th>
       <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
+        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
           alt="Tech Nation Visa">
       </a>
     </th>
