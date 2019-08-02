@@ -1,0 +1,14 @@
+[
+  "--externs",
+  "node_modules/@depack/externs/v8/stream.js",
+  "--externs",
+  "node_modules/@depack/externs/v8/events.js",
+  "--externs",
+  "node_modules/@depack/externs/v8/os.js",
+  "--externs",
+  "node_modules/@depack/externs/v8/global.js",
+  "--externs",
+  "node_modules/@depack/externs/v8/global/buffer.js",
+  "--externs",
+  "node_modules/@depack/externs/v8/nodejs.js"
+]

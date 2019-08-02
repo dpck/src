@@ -2,6 +2,7 @@ import { c } from 'erte'
 import { join } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
+import { builtinModules } from 'module'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
 import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
@@ -28,15 +29,34 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
   const { src, noStrict, verbose, library } = options
   const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
+  // allow to pass internals in --externs arg, e.g.,
+  // --externs stream
+  // this is when externs are needed but not imported in code
+  /** @type {!Array<string>} */
+  const foundAdditional = compilerArgs.reduce((acc, val, i, a) => {
+    if (val != '--externs') return acc
+    const next = a[i + 1]
+    if (!next) return acc
+    if (builtinModules.includes(next)) {
+      compilerArgs[i] = null
+      compilerArgs[i + 1] = null
+      acc.push(next)
+    }
+    return acc
+  }, [])
+  const realCompilerArgs =
+    foundAdditional.length ? compilerArgs.filter(a => a) : compilerArgs
+
+
   const args = [
-    ...compilerArgs,
+    ...realCompilerArgs,
     '--package_json_entry_names', 'module,main',
     '--entry_point', src,
   ]
   const detected = await detect(src, {
     fields: ['externs'],
   })
-  const detectedExterns = detectExterns(detected)
+  const { detectedExterns, nodeJS } = detectExterns(detected)
   detectedExterns.length && console.error('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
   const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
@@ -46,7 +66,10 @@ const Compile = async (options, runOptions, compilerArgs = []) => {
     commonJs, commonJsPackageJsons, internals, js, packageJsons,
   } = sorted
   const internalDeps = await prepareCoreModules({ internals })
-  const externs = await getExterns(internals, library)
+  const externs = await getExterns(internals, [
+    ...foundAdditional,
+    ...nodeJS,
+  ])
   await fixDependencies(commonJsPackageJsons, packageJsons)
 
   const files = [src,
@@ -168,21 +191,23 @@ const filterNodeModule = (entry) => {
   return !entry.startsWith('node_modules')
 }
 
+const unique = (e, i, a) => a.indexOf(e) == i
+
 /**
  * Returns options to include externs.
  * @param {!Array<string>} internals The list of builtin Node.JS modules used.
- * @param {boolean} library Whether to include the depack extern with `DEPACK_EXPORT`.
+ * @param {!Array<string>} additional Any extra Node.JS modules to be included
  */
-const getExterns = async (internals, library = false) => {
+export const getExterns = async (internals, additional = []) => {
   const externsDir = getExternsDir()
-  const allInternals = internals
+  const allInternals = [...internals, ...additional]
+    .filter(unique)
     .reduce((acc, i) => {
       const deps = externsDeps[i] || []
       return [...acc, i, ...deps]
     }, [])
-    .filter((e, i, a) => a.indexOf(e) == i)
-  const p = [...allInternals,
-    'global', 'global/buffer', 'nodejs', ...(library ? ['depack'] : [])]
+    .filter(unique)
+  const p = [...allInternals, 'global', 'global/buffer', 'nodejs']
     .map(i => {
       if (['module', 'process', 'console', 'crypto'].includes(i)) i = `_${i}`
       return join(externsDir, `${i}.js`)

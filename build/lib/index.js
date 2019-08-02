@@ -1,6 +1,7 @@
 const { c, b } = require('erte');
 const { join, dirname, basename, relative } = require('path');
 const { write, read } = require('@wrote/wrote');
+const { builtinModules } = require('module');
 
 const replaceWithColor = (str, name, color, background = false) => {
   const re = new RegExp(`--${name} (\\\\\n)?(\\S+)`, 'g')
@@ -141,17 +142,26 @@ const getShellCommand = (args, program = 'java') => {
 /**
  * Runs through detected packages and returns the list of externs specified in the `externs` field.
  * @param {!Array<!_staticAnalysis.Detection>} detected
- * @return {!Array<string>}
  */
 const detectExterns = (detected) => {
+  /** @type {!Array<string>} */
+  const nodeJS = []
+  /** @type {!Array<string>} */
   const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
     if (!packageJson) return acc
     const dir = dirname(packageJson)
     externs = Array.isArray(externs) ? externs : [externs]
-    externs = externs.map((e) => join(dir, e))
-    return [...acc, ...externs]
+    externs = externs.filter((e) => {
+      if (builtinModules.includes(e)) {
+        nodeJS.push(e)
+        return false
+      }
+      return true
+    })
+    const actual = externs.map((e) => join(dir, e))
+    return [...acc, ...actual]
   }, [])
-  return detectedExterns
+  return { detectedExterns, nodeJS }
 }
 
 const createExternsArgs = (externs) => {
