@@ -40,7 +40,7 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   const detected = await staticAnalysis(Src, {
     fields: ['externs'],
   })
-  const detectedExterns = detectExterns(detected)
+  const { detectedExterns } = detectExterns(detected)
   const externs = createExternsArgs(detectedExterns)
 
   const sorted = sort(detected)
