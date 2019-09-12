@@ -12,9 +12,9 @@ yarn add -E @depack/depack
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`async run(args, opts): string`](#async-runargs-arraystringopts-runconfig-string)
+- [`async run(args, opts=): string`](#async-runargs-arraystringopts-runconfig-string)
   * [`RunConfig`](#type-runconfig)
-- [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
+- [`async compile(options, runOptions=, compilerArgs=): void`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-void)
   * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options: BundleConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-array-void)
   * [`BundleConfig`](#type-bundleconfig)
@@ -45,13 +45,11 @@ import {
   <img src="/.documentary/section-breaks/1.svg?sanitize=true" width="25">
 </a></p>
 
-## <code>async <ins>run</ins>(</code><sub><br/>&nbsp;&nbsp;`args: !Array<string>,`<br/>&nbsp;&nbsp;`opts: !RunConfig,`<br/></sub><code>): <i>string</i></code>
-Spawns a Java process and executes the compilation. Returns the _stdout_ of the Java process.
+## <code>async <ins>run</ins>(</code><sub><br/>&nbsp;&nbsp;`args: !Array<string>,`<br/>&nbsp;&nbsp;`opts=: !RunConfig,`<br/></sub><code>): <i>string</i></code>
+Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process. Returns the _stdout_ of the Java process.
 
  - <kbd><strong>args*</strong></kbd> <em><code>!Array&lt;string&gt;</code></em>: The arguments to Java.
- - <kbd><strong>opts*</strong></kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em>: General options for running of the compiler.
-
-Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process.
+ - <kbd>opts</kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
 
 __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the compiler.
 <table>
@@ -79,7 +77,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
  <tr></tr>
  <tr>
   <td>
-   The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+   The name of the file where to save sources after each pass. Useful when there's a potential bug in <em>GCC</em>.
   </td>
  </tr>
  <tr>
@@ -90,7 +88,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
  <tr></tr>
  <tr>
   <td>
-   Used in the display message.
+   Used in the display message. Obtained with the <code>getCompilerVersion</code> method.
   </td>
  </tr>
  <tr>
@@ -110,9 +108,14 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
-## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
+## <code>async <ins>compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
+Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag.
 
-Compiles a _Node.JS_ package into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. The actual logic that makes compilation of _Node.JS_ packages possible is:
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-compileconfig" title="Options for the Node.JS package compiler.">!CompileConfig</a></code></em>: Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
+ - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
+
+The actual logic that makes compilation of _Node.JS_ packages possible is:
 
 - Scan the source code and dependency to find out what internal Node.JS modules are used, and creates the output wrapper with `require` calls to require those built-in modules, e.g., `const path = require('path')`.
 - Add appropriate [externs](https://github.com/dpck/externs) for the internal modules.
@@ -126,13 +129,57 @@ Compiles a _Node.JS_ package into a single executable (with the `+x` addition). 
 The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
 
 __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS package compiler.
-
-|   Name   |       Type       |                             Description                              | Default |
-| -------- | ---------------- | -------------------------------------------------------------------- | ------- |
-| __src*__ | <em>string</em>  | The entry file to bundle. Currently only single files are supported. | -       |
-| noStrict | <em>boolean</em> | Removes `use strict` from the output.                                | `false` |
-| verbose  | <em>boolean</em> | Print all arguments to the compiler.                                 | `false` |
-| library  | <em>boolean</em> | Whether to create a library.                                         | `false` |
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+  <th>Default</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>src*</strong></td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The entry file to bundle. Currently only single files are supported.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">noStrict</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Removes <code>use strict</code> from the output.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">verbose</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Print all arguments to the compiler.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">library</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Whether to create a library.
+  </td>
+ </tr>
+</table>
 
 _For example, given the following source:_
 
@@ -220,11 +267,11 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709...         
+Running Google Closure Compiler 20190709            
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
 ## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
@@ -315,7 +362,7 @@ _Stderr:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709..          
+Running Google Closure Compiler 20190709.           
 ```
 
 <p align="center"><a href="#table-of-contents">

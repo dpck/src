@@ -25,7 +25,7 @@ import run from './run'
  * @param {boolean} [runOptions.noSourceMap=false] Disables source maps. Default `false`.
  * @param {!Array<string>} compilerArgs The compiler args got with `getOptions` and/or manually extended.
  */
-const Compile = async (options, runOptions, compilerArgs = []) => {
+const Compile = async (options, runOptions = {}, compilerArgs = []) => {
   const { src, noStrict, verbose, library } = options
   const { output } = runOptions
   if (!src) throw new Error('Source is not given.')

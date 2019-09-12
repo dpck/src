@@ -1,12 +1,6 @@
-```## async Compile
-[
-  ["options", "CompileConfig"],
-  ["runOptions", "RunConfig"],
-  ["compilerArgs?", "Array"]
-]
-```
+<typedef name="compile" noArgTypesInToc>types/api.xml</typedef>
 
-Compiles a _Node.JS_ package into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. The actual logic that makes compilation of _Node.JS_ packages possible is:
+The actual logic that makes compilation of _Node.JS_ packages possible is:
 
 - Scan the source code and dependency to find out what internal Node.JS modules are used, and creates the output wrapper with `require` calls to require those built-in modules, e.g., `const path = require('path')`.
 - Add appropriate [externs](https://github.com/dpck/externs) for the internal modules.
@@ -19,7 +13,7 @@ Compiles a _Node.JS_ package into a single executable (with the `+x` addition). 
 
 The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
 
-%TYPEDEF types/compile.xml%
+<typedef narrow>types/compile.xml</typedef>
 
 _For example, given the following source:_
 
@@ -35,4 +29,4 @@ _The compiled output in pretty format of advanced optimisation:_
 _Stderr:_
 %FORKERR example/compile%
 
-%~ width="25"%
+%~%
