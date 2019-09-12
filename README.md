@@ -13,19 +13,21 @@ yarn add -E @depack/depack
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
 - [`async run(args: Array, opts: RunConfig): string`](#async-runargs-arrayopts-runconfig-string)
-  * [`_depack.RunConfig`](#type-_depackrunconfig)
+  * [`RunConfig`](#type-runconfig)
 - [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
-  * [`_depack.CompileConfig`](#type-_depackcompileconfig)
+  * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options: BundleConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-array-void)
-  * [`_depack.BundleConfig`](#type-_depackbundleconfig)
-- [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-arraystring)
-  * [`_depack.GetOptions`](#type-_depackgetoptions)
+  * [`BundleConfig`](#type-bundleconfig)
+- [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-array)
+  * [`GetOptions`](#type-getoptions)
 - [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
 - [`GOOGLE_CLOSURE_COMPILER: string`](#googleclosurecompiler-string)
 - [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
 - [Copyright](#copyright)
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/0.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/0.svg?sanitize=true">
+</a></p>
 
 ## API
 
@@ -39,13 +41,15 @@ import {
 } from '@depack/depack'
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/1.svg?sanitize=true" width="25">
+</a></p>
 
-## `async run(`<br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/>`): string`
+## <code>async <ins>run</ins>(</code><sub><br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/></sub><code>): <i>string</i></code>
 
 Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process.
 
-<strong><a name="type-_depackrunconfig">`_depack.RunConfig`</a></strong>: General options for running of the compiler.
+__<a name="type-runconfig">`RunConfig`</a>__: General options for running of the compiler.
 
 |      Name       |       Type       |                                          Description                                          | Default |
 | --------------- | ---------------- | --------------------------------------------------------------------------------------------- | ------- |
@@ -54,9 +58,11 @@ Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the com
 | compilerVersion | <em>string</em>  | Used in the display message.                                                                  | -       |
 | noSourceMap     | <em>boolean</em> | Disables source maps.                                                                         | `false` |
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="25">
+</a></p>
 
-## `async Compile(`<br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
+## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
 
 Compiles a _Node.JS_ package into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. The actual logic that makes compilation of _Node.JS_ packages possible is:
 
@@ -71,7 +77,7 @@ Compiles a _Node.JS_ package into a single executable (with the `+x` addition). 
 
 The last argument, `compilerArgs` can come from the `getOptions` method. The output property should come from `getOutput` method to enable saving to directories without specifying the output filename (_GCC_ will do it automatically, but we need to write source maps and set `+x`).
 
-<strong><a name="type-_depackcompileconfig">`_depack.CompileConfig`</a></strong>: Options for the Node.JS package compiler.
+__<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS package compiler.
 
 |   Name   |       Type       |                             Description                              | Default |
 | -------- | ---------------- | -------------------------------------------------------------------- | ------- |
@@ -166,16 +172,18 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709...         
+Running Google Closure Compiler 20190709..          
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25">
+</a></p>
 
-## `async Bundle(`<br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/>`): void`
+## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
 
 Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
 
-<strong><a name="type-_depackbundleconfig">`_depack.BundleConfig`</a></strong>: Options for the web bundler.
+__<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
 
 |     Name     |       Type       |                                                                                                                             Description                                                                                                                              |    Default    |
 | ------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -262,13 +270,15 @@ java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 Running Google Closure Compiler 20190709            
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25">
+</a></p>
 
-## `getOptions(`<br/>&nbsp;&nbsp;`options: GetOptions,`<br/>`): Array<string>`
+## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: GetOptions,`<br/></sub><code>): <i>Array<string></i></code>
 
 Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
 
-<strong><a name="type-_depackgetoptions">`_depack.GetOptions`</a></strong>: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
 |    Name     |             Type              |                                                         Description                                                          | Default |
 | ----------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
@@ -323,9 +333,11 @@ console.log(opts)
   'bundle.js' ]
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25">
+</a></p>
 
-## `getOutput(`<br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src?: string,`<br/>`): string`
+## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src?: string,`<br/></sub><code>): <i>string</i></code>
 
 Returns the location of the output file, even when the directory is given.
 
@@ -342,19 +354,25 @@ File: test.js
 Dir: output/index.js
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25">
+</a></p>
 
 ## `GOOGLE_CLOSURE_COMPILER: string`
 
 If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true" width="25">
+</a></p>
 
-## `async getCompilerVersion(): string`
+## <code>async <ins>getCompilerVersion</ins>(): <i>string</i></code>
 
 If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+</a></p>
 
 
 ## Copyright
@@ -378,4 +396,6 @@ If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `tar
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/-1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/-1.svg?sanitize=true">
+</a></p>
