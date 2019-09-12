@@ -6,7 +6,7 @@
     </arg>
     Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process. Returns the _stdout_ of the Java process.
   </method>
-  <method async void name="Compile">
+  <method async return="string" name="Compile">
     <arg type="!_depack.CompileConfig" name="options">
       Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
     </arg>
@@ -14,7 +14,7 @@
       General options for running of the compiler.
     </arg>
     <arg type="!Array<string>" name="compilerArgs" opt>
-      The compiler args got with `getOptions` and/or manually extended.
+      The compiler args got with `getOptions` and/or manually extended. `getOptions` needs to be called first to find out the compiler's JAR at minimum.
     </arg>
     Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
   </method>

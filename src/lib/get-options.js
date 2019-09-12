@@ -7,7 +7,7 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
- * @param {!_depack.GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @param {!_depack.GetOptions} [opts] Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @param {string} [opts.compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [opts.output] Sets the `--js_output_file` flag.
  * @param {string} [opts.level] Sets the `--compilation_level` flag.
@@ -21,7 +21,7 @@ const getLanguage = (l) => {
  * @param {string} [opts.debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
  * @param {!Array<string>} [opts.argv] Any additional arguments to the compiler.
  */
-const getOptions = (opts) => {
+const getOptions = (opts = {}) => {
   const {
     compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
     output, level, advanced, languageIn, languageOut, sourceMap = true,

@@ -14,7 +14,7 @@ yarn add -E @depack/depack
 - [API](#api)
 - [`async run(args, opts=): string`](#async-runargs-arraystringopts-runconfig-string)
   * [`RunConfig`](#type-runconfig)
-- [`async Compile(options, runOptions=, compilerArgs=): void`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-void)
+- [`async Compile(options, runOptions=, compilerArgs=): string`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options, runOptions=, compilerArgs=): string`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`BundleConfig`](#type-bundleconfig)
@@ -108,12 +108,12 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
-## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
+## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>string</i></code>
 Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-compileconfig" title="Options for the Node.JS package compiler.">!CompileConfig</a></code></em>: Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
  - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
- - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
+ - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended. `getOptions` needs to be called first to find out the compiler's JAR at minimum.
 
 The actual logic that makes compilation of _Node.JS_ packages possible is:
 
@@ -330,6 +330,17 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
  <tr>
   <td>
    Adds <code>import { h } from 'preact'</code> automatically, so that the bundle will be compiled <strong>together</strong> with <em>Preact</em>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">silent</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   If output is not given, don't print to <code>stdout</code>. By default, the output will be printed.
   </td>
  </tr>
  <tr>

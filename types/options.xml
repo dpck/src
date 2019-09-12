@@ -1,5 +1,5 @@
 <types namespace="_depack">
-  <type name="GetOptions" desc="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">
+  <type record name="GetOptions" desc="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">
     <prop opt string name="compiler">
       The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
     </prop>
