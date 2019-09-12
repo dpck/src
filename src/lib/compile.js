@@ -5,11 +5,15 @@ import { chmod } from 'fs'
 import { builtinModules } from 'module'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
-import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
+// import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
 import frame from 'frame-of-mind'
 import { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
+
+/** @type {function(): string} */
+const getExternsDir = require(/*ok depack*/'@depack/externs')
+const { 'dependencies': externsDeps } = getExternsDir
 
 /**
  * Compile a Node.JS file into a single executable.

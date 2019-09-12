@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "module": "src/index.js",
   "scripts": {
-    "t": "zoroaster -a -t 25000",
+    "t": "zoroaster -a -t 60000",
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
@@ -50,24 +50,24 @@
   },
   "homepage": "https://github.com/dpck/src#readme",
   "devDependencies": {
+    "@depack/bundle": "^1.3.1",
+    "@wrote/wrote": "^1.2.3",
     "alamode": "^3.0.0",
     "documentary": "^1.33.0",
+    "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
+    "frame-of-mind": "^1.2.3",
+    "indicatrix": "^1.4.0",
+    "makepromise": "^3.1.0",
+    "spawncommand": "^2.2.0",
+    "static-analysis": "^1.7.1",
     "temp-context": "^2.1.3",
     "typal": "^1.22.6",
     "yarn-s": "1.1.0",
     "zoroaster": "^4.1.2"
   },
   "dependencies": {
-    "@depack/bundle": "^1.3.1",
     "@depack/externs": "^1.4.4",
-    "@depack/nodejs": "^1.1.4",
-    "@wrote/wrote": "^1.2.3",
-    "erte": "^1.2.0",
-    "frame-of-mind": "^1.2.3",
-    "indicatrix": "^1.4.0",
-    "makepromise": "^3.1.0",
-    "spawncommand": "^2.2.0",
-    "static-analysis": "^1.7.1"
+    "@depack/nodejs": "^1.1.4"
   }
 }

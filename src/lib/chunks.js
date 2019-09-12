@@ -13,7 +13,7 @@ import { prepareTemp, doesSrcHaveJsx } from './bundle'
  */
 export default async function BundleChunks(options, runOptions, compilerArgs = []) {
   const { srcs, tempDir = 'depack-temp', preact, preactExtern } = options
-  const { output, compilerVersion, debug, noSourceMap } = runOptions
+  const { output = '', compilerVersion, debug, noSourceMap } = runOptions
   if (!srcs) throw new Error('Entry files are not given.')
   if (!Array.isArray(srcs)) throw new Error('Expecting an array of source files to generate chunks.')
 

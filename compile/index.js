@@ -172,11 +172,11 @@ module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
  * @prop {boolean} [silent=false] If output is not given, don't print to `stdout`. By default, the output will be printed. Default `false`.
  * @prop {boolean} [preactExtern=false] Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope and won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the actual source code does not need manual editing. Default `false`.
  * @typedef {_depack.BundleConfig} BundleConfig `＠record` Options for the Bundle method.
- * @typedef {BundleBase & _depack.$BundleConfig} _depack.BundleConfig `＠record` Options for the Bundle method.
+ * @typedef {_depack.BundleBase & _depack.$BundleConfig} _depack.BundleConfig `＠record` Options for the Bundle method.
  * @typedef {Object} _depack.$BundleConfig `＠record` Options for the Bundle method.
  * @prop {string} src The entry file to bundle. Only a single file is accepted. To compile multiple files at once, use chunks.
  * @typedef {_depack.ChunksConfig} ChunksConfig `＠record` Options for the BundleChunks method.
- * @typedef {BundleBase & _depack.$ChunksConfig} _depack.ChunksConfig `＠record` Options for the BundleChunks method.
+ * @typedef {_depack.BundleBase & _depack.$ChunksConfig} _depack.ChunksConfig `＠record` Options for the BundleChunks method.
  * @typedef {Object} _depack.$ChunksConfig `＠record` Options for the BundleChunks method.
  * @prop {!Array<string>} srcs The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
  */

@@ -40,7 +40,7 @@ _depack.BundleBase.prototype.silent
 _depack.BundleBase.prototype.preactExtern
 /**
  * Options for the Bundle method.
- * @extends {BundleBase}
+ * @extends {_depack.BundleBase}
  * @record
  */
 _depack.BundleConfig
@@ -51,7 +51,7 @@ _depack.BundleConfig
 _depack.BundleConfig.prototype.src
 /**
  * Options for the BundleChunks method.
- * @extends {BundleBase}
+ * @extends {_depack.BundleBase}
  * @record
  */
 _depack.ChunksConfig

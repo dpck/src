@@ -1,8 +1,10 @@
 import { c } from 'erte'
 import { join, dirname, relative } from 'path'
 import { ensurePath, write, read, exists } from '@wrote/wrote'
-import getCorePath from '@depack/nodejs'
+// import getCorePath from '@depack/nodejs'
 import resolveDependency from 'resolve-dependency'
+
+const getCorePath = require(/*ok depack*/'@depack/nodejs')
 
 /**
  * Create an error with color.

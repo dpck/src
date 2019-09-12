@@ -13,13 +13,13 @@
       Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope and won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the actual source code does not need manual editing.
     </prop>
   </type>
-  <type record extends="BundleBase"
+  <type record extends="_depack.BundleBase"
     name="BundleConfig" desc="Options for the Bundle method.">
     <prop string name="src">
       The entry file to bundle. Only a single file is accepted. To compile multiple files at once, use chunks.
     </prop>
   </type>
-  <type record extends="BundleBase"
+  <type record extends="_depack.BundleBase"
     name="ChunksConfig" desc="Options for the BundleChunks method.">
     <prop type="!Array<string>" name="srcs">
       The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
