@@ -45,4 +45,7 @@
     </arg>
     Returns the location of the output file, even when the directory is given.
   </method>
+  <method async return="string" name="getCompilerVersion">
+    If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
+  </method>
 </types>

@@ -689,16 +689,17 @@ Dir: output/index.js
 If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
 </a></p>
 
 ## <code>async <ins>getCompilerVersion</ins>(): <i>string</i></code>
-
 If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
+
+
 
 
 ## Copyright

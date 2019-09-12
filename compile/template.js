@@ -1,4 +1,21 @@
-const { _Compile, _Bundle, _getOptions, _getOutput } = require('./depack')
+const {
+  _run, _Compile, _Bundle, _getOptions, _getOutput, _getCompilerVersion,
+  _GOOGLE_CLOSURE_COMPILER,
+} = require('./depack')
+
+/**
+ * @methodType {_depack.run}
+ */
+function run(args, opts) {
+  return _run(args, opts)
+}
+
+/**
+ * @methodType {_depack.getCompilerVersion}
+ */
+function getCompilerVersion() {
+  return _getCompilerVersion()
+}
 
 /**
  * @methodType {_depack.Compile}
@@ -28,10 +45,12 @@ function getOutput(output, src) {
   return _getOutput(output, src)
 }
 
+module.exports.run = run
 module.exports.Compile = Compile
 module.exports.Bundle = Bundle
 module.exports.getOptions = getOptions
 module.exports.getOutput = getOutput
+module.exports.getCompilerVersion = getCompilerVersion
 
 /* typal types/index.xml namespace */
 
