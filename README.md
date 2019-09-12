@@ -183,10 +183,20 @@ __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS pa
 
 _For example, given the following source:_
 
+<table><tr/><tr><td>
+
+<details>
+<summary>Click to expand/collapse
+
 ```js
 import { constants } from 'os'
 import { createWriteStream, createReadStream } from 'fs'
 
+// ...
+```
+</summary>
+
+```js
 ;(async () => {
   const result = await new Promise((r, j) => {
     const input = process.env['INPUT'] || __filename
@@ -211,6 +221,8 @@ import { createWriteStream, createReadStream } from 'fs'
   console.log(res)
 })()
 ```
+</details>
+</td></tr></table>
 
 _The library can be used to start the compilation:_
 
@@ -254,7 +266,7 @@ const {createReadStream:h, createWriteStream:k} = fs;
 ```
 
 _Stderr:_
-```
+```console
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
 ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \

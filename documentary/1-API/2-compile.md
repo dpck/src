@@ -17,7 +17,22 @@ The last argument, `compilerArgs` can come from the `getOptions` method. The out
 
 _For example, given the following source:_
 
+<table><tr/><tr><td>
+
+<details>
+<summary>Click to expand/collapse
+
+```js
+import { constants } from 'os'
+import { createWriteStream, createReadStream } from 'fs'
+
+// ...
+```
+</summary>
+
 %EXAMPLE: example/compile-src%
+</details>
+</td></tr></table>
 
 _The library can be used to start the compilation:_
 
@@ -27,6 +42,6 @@ _The compiled output in pretty format of advanced optimisation:_
 %FORK-js example/compile%
 
 _Stderr:_
-%FORKERR example/compile%
+%FORKERR-console example/compile%
 
 %~%

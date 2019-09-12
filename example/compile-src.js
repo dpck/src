@@ -1,6 +1,7 @@
 import { constants } from 'os'
 import { createWriteStream, createReadStream } from 'fs'
 
+/* start example */
 ;(async () => {
   const result = await new Promise((r, j) => {
     const input = process.env['INPUT'] || __filename
@@ -24,3 +25,4 @@ import { createWriteStream, createReadStream } from 'fs'
   }
   console.log(res)
 })()
+/* end example */
