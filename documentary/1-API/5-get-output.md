@@ -1,13 +1,6 @@
-```## getOutput => string
-[
-  ["output", "string"],
-  ["src?", "string"]
-]
-```
-
-Returns the location of the output file, even when the directory is given.
+<typedef name="getOutput" noArgTypesInToc>types/api.xml</typedef>
 
 %EXAMPLE: example/get-output, ../src => @depack/depack%
 %FORK-js example/get-output%
 
-%~ width="25"%
+%~%

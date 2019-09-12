@@ -20,7 +20,7 @@ yarn add @depack/depack
   * [`BundleConfig`](#type-bundleconfig)
 - [`getOptions(options): !Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
-- [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
+- [`getOutput(output, src=): string`](#getoutputoutput-stringsrc-string-string)
 - [`GOOGLE_CLOSURE_COMPILER: string`](#googleclosurecompiler-string)
 - [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
 - [Copyright](#copyright)
@@ -292,7 +292,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind2" href="#_ind2"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -444,7 +444,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind3" href="#_ind3"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -661,9 +661,11 @@ console.log(opts)
   <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
-## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src?: string,`<br/></sub><code>): <i>string</i></code>
-
+## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src=: string,`<br/></sub><code>): <i>string</i></code>
 Returns the location of the output file, even when the directory is given.
+
+ - <kbd><strong>output*</strong></kbd> <em>`string`</em>: The path to the output dir or file.
+ - <kbd>src</kbd> <em>`string`</em> (optional): The path to the source file. Will be used when the output is a dir.
 
 ```js
 import { getOutput } from '@depack/depack'
@@ -679,7 +681,7 @@ Dir: output/index.js
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
 </a></p>
 
 ## `GOOGLE_CLOSURE_COMPILER: string`

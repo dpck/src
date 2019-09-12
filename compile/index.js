@@ -1,4 +1,4 @@
-const { _Compile, _Bundle, _getOptions } = require('./depack')
+const { _Compile, _Bundle, _getOptions, _getOutput } = require('./depack')
 
 /**
  * Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
@@ -41,8 +41,8 @@ function Bundle(options, runOptions, compilerArgs) {
 }
 
 /**
- * Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
- * @param {!_depack.GetOptions} options Parameters for `getOptions`
+ * Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods. [Full list of supported arguments](https://github.com/google/closure-compiler/wiki/Flags-and-Options).
+ * @param {!_depack.GetOptions} options Parameters for `getOptions`.
  * @param {string} [options.compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [options.output] Sets the `--js_output_file` flag.
  * @param {string} [options.chunkOutput] Sets the `--chunk_output_path_prefix` flag.
@@ -62,9 +62,20 @@ function getOptions(options) {
   return _getOptions(options)
 }
 
+/**
+ * Returns the location of the output file, even when the directory is given.
+ * @param {string} output The path to the output dir or file.
+ * @param {string=} [src] The path to the source file. Will be used when the output is a dir.
+ * @return {string}
+ */
+function getOutput(output, src) {
+  return _getOutput(output, src)
+}
+
 module.exports.Compile = Compile
 module.exports.Bundle = Bundle
 module.exports.getOptions = getOptions
+module.exports.getOutput = getOutput
 
 /* typal types/index.xml namespace */
 /**
@@ -78,8 +89,8 @@ module.exports.getOptions = getOptions
 
 /* typal types/options.xml namespace */
 /**
- * @typedef {_depack.GetOptions} GetOptions `＠record` Parameters for `getOptions`
- * @typedef {Object} _depack.GetOptions `＠record` Parameters for `getOptions`
+ * @typedef {_depack.GetOptions} GetOptions `＠record` Parameters for `getOptions`.
+ * @typedef {Object} _depack.GetOptions `＠record` Parameters for `getOptions`.
  * @prop {string} [compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [chunkOutput] Sets the `--chunk_output_path_prefix` flag.

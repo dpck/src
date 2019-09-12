@@ -72,7 +72,7 @@ const getOptions = (opts = {}) => {
 /**
  * Returns the location of the output file, even when the directory is given.
  * @param {string} output
- * @param {string} src
+ * @param {string} [src]
  */
 export const getOutput = (output, src) => {
   let o = /\.js$/.test(output) ? output : join(output, basename(src))

@@ -28,7 +28,7 @@ _depack.CompileConfig
 
 /* typal types/options.xml externs */
 /**
- * Parameters for `getOptions`
+ * Parameters for `getOptions`.
  * @record
  */
 _depack.GetOptions
