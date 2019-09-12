@@ -40,7 +40,10 @@ The package is available by importing its named functions:
 <tr/>
 <tr><td>
 <a href="#api"><img src=".documentary/import1.png"></a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string">Compile</a>, <a href="#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string">Bundle</a>, <a href="#async-runargs-arraystringopts-runconfig-string">run</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string">Compile</a>,
+<a href="#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string">Bundle</a>,
+<a href="#async-bundlechunksoptions-chunksconfigrunoptions-runconfigcompilerargs-arraystring-string">BundleChunks</a>,
+<a href="#async-runargs-arraystringopts-runconfig-string">run</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#getoptionsoptions-getoptions-array">getOptions</a>, <a href="#getoutputoutput-stringsrc-string-string">getOutput</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#google_closure_compiler-string">GOOGLE_CLOSURE_COMPILER</a>, <a href="#async-getcompilerversion-string">getCompilerVersion</a>,<br>
 <a href="#api"><img src=".documentary/from2.png"></a>
@@ -295,7 +298,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind4" href="#_ind4"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -454,7 +457,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind5" href="#_ind5"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -486,7 +489,78 @@ __<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundleba
  </tr>
 </table>
 
-_For example, given the following single JS source:_
+_For example, given the following multiple JS sources:_
+
+<table><tr/><tr><td>
+
+<details>
+<summary>Click to expand/collapse
+
+```js
+// chunkA.js
+import test from './'
+import { common } from './common'
+
+console.log('chunk a')
+test()
+common()
+```
+...
+</summary>
+
+```js
+// chunkB.js
+import test from './'
+import { common } from './common'
+
+console.log('chunk b')
+test()
+common()
+```
+```js
+// common.js
+export const common = (opts = {}) => {
+  const { a } = opts
+  if (window.DEBUG && a) console.log('test')
+}
+```
+```js
+// index.js
+export default () => {
+  console.log('common')
+}
+```
+</details>
+</td></tr></table>
+
+_Depack can generate multiple output files when a number of entries are passed:_
+
+```js
+const options = getOptions({
+  chunkOutput: TEMP,
+  advanced: true,
+  sourceMap: false,
+})
+await BundleChunks({
+  silent: true,
+  srcs: ['test/fixture/chunkA.js', 'test/fixture/chunkB.js'],
+}, { output: TEMP, noSourceMap: true }, options)
+```
+
+_The bundled output:_
+```js
+
+```
+
+_Stderr:_
+```
+(node:80145) UnhandledPromiseRejectionWarning: Error: test/fixture/chunkA.js.js or test/fixture/chunkA.js.jsx is not found.
+    at resolveDependency (/Users/zavr/depack/src/node_modules/resolve-dependency/build/index.js:19:21)
+    at <anonymous>
+(node:80145) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:80145) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+```
+
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/5.svg?sanitize=true">
