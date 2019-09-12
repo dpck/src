@@ -36,11 +36,11 @@ The package is available by importing its named functions:
 <table>
 <tr/>
 <tr><td>
-<img src=".documentary/import.png"><br>
+<img src=".documentary/import1.png"><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string">Compile</a>, <a href="#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string">Bundle</a>, <a href="#async-runargs-arraystringopts-runconfig-string">run</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;getOptions, getOutput,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;GOOGLE_CLOSURE_COMPILER, getCompilerVersion,<br>
-<img src=".documentary/from.png">
+<img src=".documentary/from1.png">
 </td></tr>
 </table>
 
@@ -300,7 +300,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind2" href="#_ind2"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -452,7 +452,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind3" href="#_ind3"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
