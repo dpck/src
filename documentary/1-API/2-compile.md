@@ -1,4 +1,4 @@
-<typedef name="compile" noArgTypesInToc>types/api.xml</typedef>
+<typedef name="Compile" noArgTypesInToc>types/api.xml</typedef>
 
 The actual logic that makes compilation of _Node.JS_ packages possible is:
 

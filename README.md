@@ -14,9 +14,9 @@ yarn add -E @depack/depack
 - [API](#api)
 - [`async run(args, opts=): string`](#async-runargs-arraystringopts-runconfig-string)
   * [`RunConfig`](#type-runconfig)
-- [`async compile(options, runOptions=, compilerArgs=): void`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-void)
+- [`async Compile(options, runOptions=, compilerArgs=): void`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-void)
   * [`CompileConfig`](#type-compileconfig)
-- [`async Bundle(options: BundleConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-array-void)
+- [`async Bundle(options, runOptions=, compilerArgs=): void`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-void)
   * [`BundleConfig`](#type-bundleconfig)
 - [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
@@ -108,7 +108,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
   <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
-## <code>async <ins>compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
+## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
 Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-compileconfig" title="Options for the Node.JS package compiler.">!CompileConfig</a></code></em>: Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
@@ -286,18 +286,65 @@ Running Google Closure Compiler 20190709
   <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
-## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: BundleConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
+## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !BundleConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
+Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
 
-Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-bundleconfig" title="Options for the web bundler.">!BundleConfig</a></code></em>: Options for the web bundler. Must have the `src` prop at least.
+ - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
 
 __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
-
-|     Name     |       Type       |                                                                                                                             Description                                                                                                                              |    Default    |
-| ------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| __src*__     | <em>string</em>  | The entry file to bundle. Currently only single files are supported.                                                                                                                                                                                                 | -             |
-| tempDir      | <em>string</em>  | Where to save prepared JSX files.                                                                                                                                                                                                                                    | `depack-temp` |
-| preact       | <em>boolean</em> | Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_.                                                                                                                                                     | `false`       |
-| preactExtern | <em>boolean</em> | Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the source code stays the same. | `false`       |
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+  <th>Default</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>src*</strong></td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The entry file to bundle. Currently only single files are supported.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">tempDir</td>
+  <td><em>string</em></td>
+  <td rowSpan="3"><code>depack-temp</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Where to save prepared JSX files.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">preact</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Adds <code>import { h } from 'preact'</code> automatically, so that the bundle will be compiled <strong>together</strong> with <em>Preact</em>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">preactExtern</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Adds <code>import { h } from '＠preact/extern'</code> automatically, assuming that <code>preact</code> will be available in the global scope won't be included in the compilation. It will also rename any <code>preact</code> imports into <code>＠externs/preact</code>, so that the source code stays the same.
+  </td>
+ </tr>
+</table>
 
 _For example, given the following single JS source:_
 
@@ -370,7 +417,7 @@ function e(a) {
 ```
 
 _Stderr:_
-```
+```bash
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
@@ -378,7 +425,7 @@ Running Google Closure Compiler 20190709.
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true">
 </a></p>
 
 ## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: GetOptions,`<br/></sub><code>): <i>Array<string></i></code>

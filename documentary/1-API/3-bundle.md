@@ -1,14 +1,6 @@
-```## async Bundle
-[
-  ["options", "BundleConfig"],
-  ["runOptions", "RunConfig"],
-  ["compilerArgs?", "Array"]
-]
-```
+<typedef name="Bundle" noArgTypesInToc>types/api.xml</typedef>
 
-Bundles source code into a _JavaScript_ file. If there are _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
-
-%TYPEDEF types/bundle.xml%
+<typedef narrow>types/bundle.xml</typedef>
 
 _For example, given the following single JS source:_
 
@@ -22,9 +14,9 @@ _The bundled output:_
 %FORK-js example/bundle%
 
 _Stderr:_
-%FORKERR example/bundle%
+%FORKERR-bash example/bundle%
 
 <!-- %EXAMPLE: example, ../src => @depack/depack%
 %FORK example% -->
 
-%~ width="25"%
+%~%

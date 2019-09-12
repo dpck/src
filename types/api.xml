@@ -6,7 +6,7 @@
     </arg>
     Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process. Returns the _stdout_ of the Java process.
   </method>
-  <method async void name="compile">
+  <method async void name="Compile">
     <arg type="!_depack.CompileConfig" name="options">
       Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
     </arg>
@@ -17,5 +17,17 @@
       The compiler args got with `getOptions` and/or manually extended.
     </arg>
     Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag.
+  </method>
+  <method async void name="Bundle">
+    <arg type="!_depack.BundleConfig" name="options">
+      Options for the web bundler. Must have the `src` prop at least.
+    </arg>
+    <arg type="!_depack.RunConfig" name="runOptions" opt>
+      General options for running of the compiler.
+    </arg>
+    <arg type="!Array<string>" name="compilerArgs" opt>
+      The compiler args got with `getOptions` and/or manually extended.
+    </arg>
+    Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
   </method>
 </types>
