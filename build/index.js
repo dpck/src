@@ -2,6 +2,7 @@ const { read } = require('@wrote/wrote');
 
 const $_lib_compile = require('./lib/compile');
 const $_lib_bundle = require('./lib/bundle');
+const $_lib_chunks = require('./lib/chunks');
 const $_lib_run = require('./lib/run');
 const $_lib_get_options = require('./lib/get-options');
 
@@ -30,6 +31,7 @@ const getCompilerVersion = async () => {
 module.exports.getCompilerVersion = getCompilerVersion
 module.exports.Compile = $_lib_compile
 module.exports.Bundle = $_lib_bundle
+module.exports.BundleChunks = $_lib_chunks
 module.exports.run = $_lib_run
 module.exports.getOptions = $_lib_get_options
 module.exports.getOutput = $_lib_get_options.getOutput

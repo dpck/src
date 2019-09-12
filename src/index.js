@@ -2,6 +2,7 @@ import { read } from '@wrote/wrote'
 
 export { default as Compile } from './lib/compile'
 export { default as Bundle } from './lib/bundle'
+export { default as BundleChunks } from './lib/chunks'
 export { default as run } from './lib/run'
 export { default as getOptions, getOutput } from './lib/get-options'
 

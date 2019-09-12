@@ -1,4 +1,4 @@
-const { join, basename } = require('path');
+const { join, basename, sep } = require('path');
 
 const getLanguage = (l) => {
   if (/^\d+$/.test(l)) return `ECMASCRIPT_${l}`
@@ -25,7 +25,7 @@ const getOptions = (opts) => {
   const {
     compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
     output, level, advanced, languageIn, languageOut, sourceMap = true,
-    argv = [], prettyPrint, noWarnings, debug, iife,
+    argv = [], prettyPrint, noWarnings, debug, iife, chunkOutput,
   } = opts
   /** @type {!Array<string>} */
   const options = ['-jar', compiler]
@@ -42,7 +42,7 @@ const getOptions = (opts) => {
     const lang = getLanguage(languageOut)
     options.push('--language_out', lang)
   }
-  if (output && sourceMap && !debug) {
+  if ((output || chunkOutput) && sourceMap && !debug) {
     options.push('--create_source_map', '%outname%.map',
       // '--source_map_include_content'
     )
@@ -62,6 +62,9 @@ const getOptions = (opts) => {
   options.push(...argv)
   if (output) {
     options.push('--js_output_file', output)
+  }
+  if (chunkOutput) {
+    options.push('--chunk_output_path_prefix', join(chunkOutput, sep))
   }
   return options
 }

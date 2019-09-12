@@ -14,7 +14,7 @@ export const replaceWithColor = (str, name, color, background = false) => {
 /**
  * Returns the pretty-printed command for the bundler.
  * @param {!Array<string>} args The array with arguments.
- * @param {!Array<string>} js The list of js files.
+ * @param {!Array<string>} js The list of js files and chunks.
  */
 export const getCommand = (args, js) => {
   let s = getShellCommand(args)
@@ -22,17 +22,27 @@ export const getCommand = (args, js) => {
   s = replaceWithColor(s, 'compilation_level', 'green', true)
   s = replaceWithColor(s, 'js_output_file', 'red')
 
-  const jss = js.map((file) => {
-    const j = `${c(file, 'green')}`
-    return j
-  }).join('\n     ')
+  const sep = '\n     '
+  const jss = js.filter(a => a != '--js').map((file, i, a) => {
+    if (file == '--chunk') {
+      return `${file} `
+      // return `${c(file, 'magenta')} `
+    } else if (a[i-1] == '--chunk') {
+      return `${c(file, 'magenta')}${sep}`
+    }
+    let j = `${c(file, 'green')}`
+    if (a.length - 1 == i) return j
+    if (a[i + 1] == '--chunk') return `${j}\n`
+    //${(a.length - 1 != i && a[i + 1] != '--chunk') ? sep : ''}`
+    return `${j}${sep}`
+  }).join('')
+  // .join('\n     ')
   return `${s}\n--js ${jss}`.trim()
 }
 
-export const addData = async (path, { sourceMap, library }) => {
+export const addData = async (path, { sourceMap }) => {
   const r = await read(path)
   const rr = [r]
-  if (library) rr.push('module.exports = DEPACK_EXPORT')
   if (sourceMap) {
     const name = basename(path)
     rr.push('//' + `# sourceMappingURL=${name}.map`)
@@ -168,6 +178,25 @@ export const createExternsArgs = (externs) => {
   const args = externs.reduce((acc, e) => {
     return [...acc, '--externs', e]
   }, [])
+  return args
+}
+
+export const unique = (e, i, a) => a.indexOf(e) == i
+
+export const updateTempDirArgs = (args, tempDir) => {
+  return args.map((j) => {
+    return j.startsWith(tempDir) ? relative(tempDir, j) : j
+  })
+}
+
+export const getBundleArgs = (compilerArgs, externs, output, noSourceMap, deps, processCommonJs) => {
+  const args = [
+    ...compilerArgs,
+    ...externs,
+    ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
+    ...(deps.length > 1 ? ['--module_resolution', 'NODE'] : []),
+    ...(processCommonJs ? ['--process_common_js_modules'] : []),
+  ]
   return args
 }
 

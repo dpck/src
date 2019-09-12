@@ -2,15 +2,47 @@ import { rm } from '@wrote/wrote'
 import generateTemp from '@depack/bundle'
 import { join, relative } from 'path'
 import staticAnalysis, { sort } from 'static-analysis'
-import { getCommand, updateSourceMaps, hasJsonFiles, createExternsArgs, detectExterns } from './'
+import { getCommand, updateSourceMaps, hasJsonFiles, createExternsArgs, detectExterns, getBundleArgs } from './'
 import run from './run'
 
-const doesSrcHaveJsx = async (src) => {
+/**
+ * @param {string|!Array<string>} src
+ */
+export const doesSrcHaveJsx = async (src) => {
+  if (Array.isArray(src)) {
+    return src.reduce(async (acc, current) => {
+      const r = await acc
+      if (r) return r
+      return await _doesSrcHaveJsx(current)
+    }, false)
+  }
+  return await _doesSrcHaveJsx(src)
+}
+
+const _doesSrcHaveJsx = async (src) => {
   const analysis = await staticAnalysis(src, { nodeModules: false })
   const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
     return entry.endsWith('.jsx')
   })
   return hasJsx
+}
+
+/**
+ * Create the temp dir.
+ */
+export const prepareTemp = async (src, { tempDir, preact, preactExtern, forceTemp }) => {
+  let Src = src
+  if (forceTemp) {
+    await generateTemp(src, { tempDir, preact, preactExtern })
+    Src = join(tempDir, src)
+    return { Src, hasJsx: true }
+  }
+  const hasJsx = await doesSrcHaveJsx(src)
+  if (hasJsx) {
+    await generateTemp(src, { tempDir, preact, preactExtern })
+    Src = join(tempDir, src)
+  }
+  return { Src, hasJsx }
 }
 
 /**
@@ -31,15 +63,15 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   const { src, tempDir = 'depack-temp', preact, preactExtern } = options
   const { output, compilerVersion, debug, noSourceMap } = runOptions
   if (!src) throw new Error('Entry file is not given.')
-  const hasJsx = await doesSrcHaveJsx(src)
+
   let deps
   let processCommonJs
-  if (hasJsx) await generateTemp(src, { tempDir, preact, preactExtern })
+  let { Src, hasJsx } = await prepareTemp(src, { tempDir, preact, preactExtern })
 
-  const Src = hasJsx ? join(tempDir, src): src
   const detected = await staticAnalysis(Src, {
     fields: ['externs'],
   })
+
   const { detectedExterns } = detectExterns(detected)
   const externs = createExternsArgs(detectedExterns)
 
@@ -60,13 +92,8 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
   // process.on('SIGINT', () => {
   //   sigint = true
   // })
-  const PreArgs = [
-    ...compilerArgs,
-    ...externs,
-    ...(output && !noSourceMap ? ['--source_map_include_content'] : []),
-    ...(deps.length > 1 ? ['--module_resolution', 'NODE'] : []),
-    ...(processCommonJs ? ['--process_common_js_modules'] : []),
-  ]
+  const PreArgs = getBundleArgs(compilerArgs, externs, output, noSourceMap, deps, processCommonJs)
+
   const jjs = hasJsx ? deps.map((j) => {
     return j.startsWith(tempDir) ? relative(tempDir, j) : j
   }) : deps
@@ -86,7 +113,7 @@ const Bundle = async (options, runOptions, compilerArgs = []) => {
 
 export default Bundle
 
-/* documentary types/bundle.xml */
+/* typal types/bundle.xml */
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {_depack.BundleConfig} BundleConfig Options for the web bundler.
