@@ -16,7 +16,7 @@ yarn add -E @depack/depack
   * [`RunConfig`](#type-runconfig)
 - [`async Compile(options, runOptions=, compilerArgs=): void`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-void)
   * [`CompileConfig`](#type-compileconfig)
-- [`async Bundle(options, runOptions=, compilerArgs=): void`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-void)
+- [`async Bundle(options, runOptions=, compilerArgs=): string`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`BundleConfig`](#type-bundleconfig)
 - [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
@@ -109,7 +109,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
 </a></p>
 
 ## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !CompileConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
-Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag.
+Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-compileconfig" title="Options for the Node.JS package compiler.">!CompileConfig</a></code></em>: Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
  - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
@@ -286,8 +286,8 @@ Running Google Closure Compiler 20190709
   <img src="/.documentary/section-breaks/3.svg?sanitize=true">
 </a></p>
 
-## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !BundleConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>void</i></code>
-Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !BundleConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>string</i></code>
+Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-bundleconfig" title="Options for the web bundler.">!BundleConfig</a></code></em>: Options for the web bundler. Must have the `src` prop at least.
  - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
@@ -341,7 +341,7 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
  <tr></tr>
  <tr>
   <td>
-   Adds <code>import { h } from '＠preact/extern'</code> automatically, assuming that <code>preact</code> will be available in the global scope won't be included in the compilation. It will also rename any <code>preact</code> imports into <code>＠externs/preact</code>, so that the source code stays the same.
+   Adds <code>import { h } from '＠preact/extern'</code> automatically, assuming that <code>preact</code> will be available in the global scope and won't be included in the compilation. It will also rename any <code>preact</code> imports into <code>＠externs/preact</code>, so that the actual source code does not need manual editing.
   </td>
  </tr>
 </table>
@@ -417,12 +417,28 @@ function e(a) {
 ```
 
 _Stderr:_
-```bash
+```posh
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709.           
+Running Google Closure Compiler 20190709..          
 ```
+
+<pre>
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
+ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \
+--entry_point example/compile-src.js --externs node_modules/@depack/externs/v8/os.js \
+--externs node_modules/@depack/externs/v8/fs.js --externs \
+node_modules/@depack/externs/v8/stream.js --externs \
+node_modules/@depack/externs/v8/events.js --externs \
+node_modules/@depack/externs/v8/url.js --externs \
+node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
+node_modules/@depack/externs/v8/nodejs.js
+Built-ins: os, fs
+Running Google Closure Compiler 20190709<img src=".documentary/ellipsis.gif">
+</pre>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/4.svg?sanitize=true">

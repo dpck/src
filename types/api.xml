@@ -16,9 +16,9 @@
     <arg type="!Array<string>" name="compilerArgs" opt>
       The compiler args got with `getOptions` and/or manually extended.
     </arg>
-    Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag.
+    Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
   </method>
-  <method async void name="Bundle">
+  <method async return="string" name="Bundle">
     <arg type="!_depack.BundleConfig" name="options">
       Options for the web bundler. Must have the `src` prop at least.
     </arg>
@@ -28,6 +28,6 @@
     <arg type="!Array<string>" name="compilerArgs" opt>
       The compiler args got with `getOptions` and/or manually extended.
     </arg>
-    Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx).
+    Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
   </method>
 </types>

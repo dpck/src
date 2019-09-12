@@ -10,7 +10,7 @@
       Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_.
     </prop>
     <prop boolean name="preactExtern" default="false">
-      Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the source code stays the same.
+      Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope and won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the actual source code does not need manual editing.
     </prop>
   </type>
 </types>
