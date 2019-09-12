@@ -14,19 +14,11 @@ import run from './run'
 /**
  * Compile a Node.JS file into a single executable.
  * @param {!_depack.CompileConfig} options Options for the Node.JS package compiler.
- * @param {string} options.src The entry file to bundle. Currently only single files are supported.
- * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
- * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
- * @param {boolean} [options.library=false] Whether to create a library. Default `false`.
- * @param {!_depack.RunConfig} runOptions General options for running of the compiler.
- * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
- * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
- * @param {string} [runOptions.compilerVersion] Used in the display message.
- * @param {boolean} [runOptions.noSourceMap=false] Disables source maps. Default `false`.
- * @param {!Array<string>} compilerArgs The compiler args got with `getOptions` and/or manually extended.
+ * @param {!_depack.RunConfig} [runOptions] General options for running of the compiler.
+ * @param {!Array<string>} [compilerArgs] The compiler args got with `getOptions` and/or manually extended.
  */
 const Compile = async (options, runOptions = {}, compilerArgs = []) => {
-  const { src, noStrict, verbose, library } = options
+  const { src, noStrict, verbose, library, silent } = options
   const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
   // allow to pass internals in --externs arg, e.g.,
@@ -113,12 +105,14 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
 
   const stdout = await run(Args, runOptions, library)
   if (!output) {
-    const o = prepareOutput(stdout, wrapper, noStrict)
-    console.log(o.trim())
-  } else {
-    await removeStrict(output, wrapper, noStrict)
-    await makePromise(chmod, [output, '755'])
+    const o = prepareOutput(stdout, wrapper, noStrict).trim()
+    if (!silent) console.log(o)
+    return o
   }
+
+  await removeStrict(output, wrapper, noStrict)
+  await makePromise(chmod, [output, '755'])
+  return stdout
 }
 
 const printCommand = (args, externs, sorted) => {
@@ -227,30 +221,11 @@ export default Compile
  * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
  */
 
-/* documentary types/compile.xml */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {_depack.CompileConfig} CompileConfig Options for the Node.JS package compiler.
+ * @typedef {import('../..').CompileConfig} _depack.CompileConfig
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {Object} _depack.CompileConfig Options for the Node.JS package compiler.
- * @prop {string} src The entry file to bundle. Currently only single files are supported.
- * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
- * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
- * @prop {boolean} [library=false] Whether to create a library. Default `false`.
- */
-
-/* documentary types/index.xml */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {Object} _depack.RunConfig General options for running of the compiler.
- * @prop {string} [output] The path where the output will be saved. Prints to `stdout` if not passed.
- * @prop {string} [debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
- * @prop {string} [compilerVersion] Used in the display message.
- * @prop {boolean} [noSourceMap=false] Disables source maps. Default `false`.
+ * @typedef {import('../..').RunConfig} _depack.RunConfig
  */

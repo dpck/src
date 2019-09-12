@@ -22,7 +22,7 @@ _depack.BundleConfig
 /* typal types/compile.xml externs */
 /**
  * Options for the Node.JS package compiler.
- * @typedef {{ src: string, noStrict: (boolean|undefined), verbose: (boolean|undefined), library: (boolean|undefined) }}
+ * @typedef {{ src: string, noStrict: (boolean|undefined), verbose: (boolean|undefined), silent: (boolean|undefined), library: (boolean|undefined) }}
  */
 _depack.CompileConfig
 

@@ -6,6 +6,7 @@ const { _Compile } = require('./depack')
  * @param {string} options.src The entry file to bundle. Currently only single files are supported.
  * @param {boolean} [options.noStrict=false] Removes `use strict` from the output. Default `false`.
  * @param {boolean} [options.verbose=false] Print all arguments to the compiler. Default `false`.
+ * @param {boolean} [options.silent=false] If output is not given, don't print to `stdout`. By default, the output will be printed. Default `false`.
  * @param {boolean} [options.library=false] Whether to create a library. Default `false`.
  * @param {!_depack.RunConfig} [runOptions] General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
@@ -56,6 +57,7 @@ module.exports.Compile = Compile
  * @prop {string} src The entry file to bundle. Currently only single files are supported.
  * @prop {boolean} [noStrict=false] Removes `use strict` from the output. Default `false`.
  * @prop {boolean} [verbose=false] Print all arguments to the compiler. Default `false`.
+ * @prop {boolean} [silent=false] If output is not given, don't print to `stdout`. By default, the output will be printed. Default `false`.
  * @prop {boolean} [library=false] Whether to create a library. Default `false`.
  */
 

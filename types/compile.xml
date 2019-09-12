@@ -9,6 +9,9 @@
     <prop boolean name="verbose" default="false">
       Print all arguments to the compiler.
     </prop>
+    <prop boolean name="silent" default="false">
+      If output is not given, don't print to `stdout`. By default, the output will be printed.
+    </prop>
     <prop boolean name="library" default="false">
       Whether to create a library.
     </prop>

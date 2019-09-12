@@ -98,12 +98,11 @@ export const checkIfLib = modName => /^[./]/.test(modName)
 /**
  * Gets the wrapper to for the output to enable requiring Node.js modules.
  * @param {!Array<string>} internals The list of internal modules used in the program.
- * @param {boolean} [library=false] Whether to create a library.
  * @example
  * const fs = require('fs');
  * const _module = require('module');
  */
-export const getWrapper = (internals, library = false) => {
+export const getWrapper = (internals) => {
   if (!internals.length) return
   const wrapper = internals
     .map(i => {
@@ -112,11 +111,6 @@ export const getWrapper = (internals, library = false) => {
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
     .join('\n') + '%output%'
-  if (library) {
-    return `'use strict';
-let DEPACK_EXPORT;
-${wrapper}`
-  }
   return `#!/usr/bin/env node
 'use strict';
 ${wrapper}`
