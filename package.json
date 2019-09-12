@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "module": "src/index.js",
   "scripts": {
-    "t": "zoroaster -a -t 20000",
+    "t": "zoroaster -a -t 25000",
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",

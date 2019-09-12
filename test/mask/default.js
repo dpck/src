@@ -1,7 +1,6 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
-// import Context from '../context'
-import { Bundle, Compile, getOptions } from '../../src'
+import { Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '../../src'
 
 export const bundle = makeTestSuite('test/result/bundle', {
   context: TempContext,
@@ -35,5 +34,16 @@ export const compile = makeTestSuite('test/result/compile', {
       src,
     }, {}, options)
     return res
+  },
+})
+
+export const version = makeTestSuite('test/result/version', {
+  getResults() {
+    return getCompilerVersion()
+  },
+})
+export const output = makeTestSuite('test/result/get-output', {
+  getResults() {
+    return getOutput(...this.input.split(' '))
   },
 })
