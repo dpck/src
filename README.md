@@ -12,7 +12,7 @@ yarn add -E @depack/depack
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`async run(args: Array, opts: RunConfig): string`](#async-runargs-arrayopts-runconfig-string)
+- [`async run(args, opts): string`](#async-runargs-arraystringopts-runconfig-string)
   * [`RunConfig`](#type-runconfig)
 - [`async Compile(options: CompileConfig, runOptions: RunConfig, compilerArgs?: Array)`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-array-void)
   * [`CompileConfig`](#type-compileconfig)
@@ -45,21 +45,69 @@ import {
   <img src="/.documentary/section-breaks/1.svg?sanitize=true" width="25">
 </a></p>
 
-## <code>async <ins>run</ins>(</code><sub><br/>&nbsp;&nbsp;`args: Array,`<br/>&nbsp;&nbsp;`opts: RunConfig,`<br/></sub><code>): <i>string</i></code>
+## <code>async <ins>run</ins>(</code><sub><br/>&nbsp;&nbsp;`args: !Array<string>,`<br/>&nbsp;&nbsp;`opts: !RunConfig,`<br/></sub><code>): <i>string</i></code>
+Spawns a Java process and executes the compilation. Returns the _stdout_ of the Java process.
+
+ - <kbd><strong>args*</strong></kbd> <em><code>!Array&lt;string&gt;</code></em>: The arguments to Java.
+ - <kbd><strong>opts*</strong></kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em>: General options for running of the compiler.
 
 Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process.
 
 __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the compiler.
-
-|      Name       |       Type       |                                          Description                                          | Default |
-| --------------- | ---------------- | --------------------------------------------------------------------------------------------- | ------- |
-| output          | <em>string</em>  | The path where the output will be saved. Prints to `stdout` if not passed.                    | -       |
-| debug           | <em>string</em>  | The name of the file where to save sources after each pass. Useful when there's a bug in GCC. | -       |
-| compilerVersion | <em>string</em>  | Used in the display message.                                                                  | -       |
-| noSourceMap     | <em>boolean</em> | Disables source maps.                                                                         | `false` |
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+  <th>Default</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center">output</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The path where the output will be saved. Prints to <code>stdout</code> if not passed.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">debug</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">compilerVersion</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Used in the display message.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">noSourceMap</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Disables source maps.
+  </td>
+ </tr>
+</table>
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
 </a></p>
 
 ## <code>async <ins>Compile</ins>(</code><sub><br/>&nbsp;&nbsp;`options: CompileConfig,`<br/>&nbsp;&nbsp;`runOptions: RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs?: Array,`<br/></sub><code>): <i>void</i></code>
@@ -172,7 +220,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709..          
+Running Google Closure Compiler 20190709...         
 ```
 
 <p align="center"><a href="#table-of-contents">
@@ -267,7 +315,7 @@ _Stderr:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709            
+Running Google Closure Compiler 20190709..          
 ```
 
 <p align="center"><a href="#table-of-contents">

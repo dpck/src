@@ -15,9 +15,9 @@ import { addData } from './'
  * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
  * @return {!Promise<string>} Stdout of JavaProcess
  */
-const run = async (args, opts) => {
+const run = async (args, opts = {}) => {
   const {
-    debug, compilerVersion = '', output, noSourceMap, outputFiles,
+    debug, compilerVersion, output, noSourceMap, outputFiles,
   } = opts
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))

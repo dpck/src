@@ -1,0 +1,7 @@
+<types namespace="_depack">
+  <method async return="string" name="run">
+    <arg type="!Array<string>" name="args">The arguments to Java.</arg>
+    <arg type="!_depack.RunConfig" name="opts">General options for running of the compiler.</arg>
+    Spawns a Java process and executes the compilation. Returns the _stdout_ of the Java process.
+  </method>
+</types>
