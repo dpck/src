@@ -266,8 +266,7 @@ const {createReadStream:h, createWriteStream:k} = fs;
 ```
 
 _Stderr:_
-```console
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
 ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \
 --entry_point example/compile-src.js --externs node_modules/@depack/externs/v8/os.js \
@@ -279,8 +278,8 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709            
-```
+Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+</pre>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/3.svg?sanitize=true">
@@ -417,27 +416,10 @@ function e(a) {
 ```
 
 _Stderr:_
-```posh
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709..          
-```
-
-<pre>
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
---compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
-ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \
---entry_point example/compile-src.js --externs node_modules/@depack/externs/v8/os.js \
---externs node_modules/@depack/externs/v8/fs.js --externs \
-node_modules/@depack/externs/v8/stream.js --externs \
-node_modules/@depack/externs/v8/events.js --externs \
-node_modules/@depack/externs/v8/url.js --externs \
-node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js
-Built-ins: os, fs
-Running Google Closure Compiler 20190709<img src=".documentary/ellipsis.gif">
+Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">

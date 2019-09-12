@@ -42,6 +42,6 @@ _The compiled output in pretty format of advanced optimisation:_
 %FORK-js example/compile%
 
 _Stderr:_
-%FORKERR-console example/compile%
+%FORKERR example/compile%
 
 %~%

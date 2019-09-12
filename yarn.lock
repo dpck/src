@@ -149,14 +149,14 @@ catchment@^3.2.3, catchment@^3.3.0:
     "@artdeco/clean-stack" "^1.1.1"
     erotic "^2.1.0"
 
-documentary@^1.32.2:
-  version "1.32.2"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.32.2.tgz#4ee674dbab622bd64b6c625668e3680f43807330"
-  integrity sha512-WvfCNlz585ryP4YF+Wac9wxv8VTi3ePR2q9RNvUmTNrE0ifz8jDmiQxgkv5KeieL8bf4XBn7dQYQ1O6eRkwUyA==
+documentary@^1.33.0:
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.33.0.tgz#c13baaf6ea5f075c7a683e1547593dd634158a41"
+  integrity sha512-V6xOSIkBkHhQeUdLtGDUOa5LDXthjDNcmyrT5WIJmaXaYRbFnTwDE6hf9th5Bzq4Ia7CfuP/Jzln7s2ef+vrKA==
   dependencies:
     alamode "^3.0.0"
     preact "8.5.2"
-    typal "^1.22.1"
+    typal "^1.22.6"
 
 erotic@^2.1.0, erotic@^2.1.1:
   version "2.1.1"
@@ -191,10 +191,10 @@ frame-of-mind@^1.2.3:
   dependencies:
     paddys "^1.2.0"
 
-indicatrix@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.3.0.tgz#afa0a148f2dc260da56b8ace36d213ab7ddfb254"
-  integrity sha512-Z54tO3QPXVAVvJZkCYhHIoB8DI+eGLHEQSseN3M0QGmyv0QLDjhKLDTj7PTS/sAB3MfOPVNxa659b3fyM9dRlQ==
+indicatrix@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.4.0.tgz#544c3c9a12485f4a62a88e849819bd3245b3d756"
+  integrity sha512-35LB8ClUvqFFRJhEpllq5H8lnKrQa4CFJapjC0hsU+c8Qr0PCCASf4iffDW28EMHn1AxeY/jTh/ayOpAanUbbQ==
 
 makepromise@^3.0.3, makepromise@^3.1.0:
   version "3.1.0"
@@ -279,7 +279,7 @@ temp-context@^2.1.3:
     makepromise "^3.0.3"
     pedantry "^2.3.1"
 
-typal@^1.22.1, typal@^1.22.6:
+typal@^1.22.6:
   version "1.22.6"
   resolved "https://registry.yarnpkg.com/typal/-/typal-1.22.6.tgz#c3162f5f19e91ad6d830375220e6552fcb4a0936"
   integrity sha512-N6tkgC/r7OXwH0/hEFNRH6S/7zPfMXJU45w78KGgy8JLbt3lAbWPd4NWUZjQt6o2id23P34KeHSmNR4ddI/zZQ==
