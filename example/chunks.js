@@ -13,8 +13,10 @@ import TempContext from 'temp-context'
   })
   await BundleChunks({
     silent: true,
-    srcs: ['test/fixture/chunkA.js', 'test/fixture/chunkB.js'],
+    srcs: ['test/fixture/chunks/chunkA.js',
+      'test/fixture/chunks/chunkB.js'],
   }, { output: TEMP, noSourceMap: true }, options)
   /* end example */
   console.log((await t.snapshot()))
+  await t._destroy()
 })()

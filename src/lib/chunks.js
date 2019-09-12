@@ -66,7 +66,7 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
     }
     return acc
   }, [])
-  if (commonChunk.length) commonChunk.push('--chunk', 'common:auto')
+  if (commonChunk.length) commonChunk.push('--chunk', `common:${commonChunk.length/2}`)// 'common:auto')
 
   const outputFiles = []
   const chunks = Object.entries(map).reduce((acc, [key, value]) => {

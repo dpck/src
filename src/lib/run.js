@@ -30,12 +30,16 @@ const run = async (args, opts = {}) => {
   // if(process.stderr.isTTY) process.stderr.write(' '.repeat(process.stderr.columns))
 
   if (code) throw new Error(makeError(code, stderr))
-  if (outputFiles && !noSourceMap) {
-    await Promise.all(outputFiles.map(async (outputFile) => {
-      await addData(outputFile, { sourceMap: true })
-    }))
+
+  if (!noSourceMap) {
+    if (outputFiles) {
+      await Promise.all(outputFiles.map(async (outputFile) => {
+        await addData(outputFile, { sourceMap: true })
+      }))
+    }
+    else if (output) await addData(output, { sourceMap: !noSourceMap })
   }
-  else if (output) await addData(output, { sourceMap: !noSourceMap })
+
   if (stderr && !debug) console.warn(c(stderr, 'grey'))
   else if (debug) console.log('Sources after each pass saved to %s', debug)
   return stdout

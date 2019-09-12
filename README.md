@@ -298,7 +298,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind4" href="#_ind4"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -457,7 +457,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind5" href="#_ind5"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -543,23 +543,46 @@ const options = getOptions({
 })
 await BundleChunks({
   silent: true,
-  srcs: ['test/fixture/chunkA.js', 'test/fixture/chunkB.js'],
+  srcs: ['test/fixture/chunks/chunkA.js',
+    'test/fixture/chunks/chunkB.js'],
 }, { output: TEMP, noSourceMap: true }, options)
 ```
 
 _The bundled output:_
 ```js
+# $weak$.js
 
+
+
+
+# chunkA.js
+
+console.log("chunk a");console.log("common");c();
+
+
+# chunkB.js
+
+console.log("chunk b");console.log("common");c();
+
+
+# common.js
+
+function c(){var a=void 0===a?{}:a;a=a.a;window.b&&a&&console.log("test")};
 ```
 
 _Stderr:_
-```
-(node:80145) UnhandledPromiseRejectionWarning: Error: test/fixture/chunkA.js.js or test/fixture/chunkA.js.jsx is not found.
-    at resolveDependency (/Users/zavr/depack/src/node_modules/resolve-dependency/build/index.js:19:21)
-    at <anonymous>
-(node:80145) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
-(node:80145) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
-```
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --chunk_output_path_prefix test/temp/ --module_resolution \
+NODE
+--js test/fixture/chunks/index.js
+     test/fixture/chunks/common.js
+--chunk common:2
+     test/fixture/chunks/chunkA.js
+--chunk chunkA:1:common
+     test/fixture/chunks/chunkB.js
+--chunk chunkB:1:common
+Running Google Closure Compiler<a id="_ind2" href="#_ind2"><img src=".documentary/indicatrix.gif"></a>
+</pre>
 
 
 <p align="center"><a href="#table-of-contents">

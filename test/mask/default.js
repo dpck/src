@@ -1,6 +1,6 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
-import { Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '../../src'
+import { Bundle, Compile, BundleChunks, getOptions, getCompilerVersion, getOutput } from '../../src'
 
 export const bundle = makeTestSuite('test/result/bundle', {
   context: TempContext,
@@ -15,6 +15,25 @@ export const bundle = makeTestSuite('test/result/bundle', {
       src,
     }, {}, options)
     return res
+  },
+})
+
+export const chunks = makeTestSuite('!test/result/chunks', {
+  context: TempContext,
+  /**
+   * @param {TempContext} t
+   */
+  async getResults({ snapshot, TEMP }) {
+    const options = getOptions({
+      chunkOutput: TEMP,
+      advanced: true,
+      sourceMap: false,
+    })
+    await BundleChunks({
+      silent: true,
+      srcs: this.input.split(' '),
+    }, { output: TEMP, noSourceMap: true }, options)
+    return snapshot()
   },
 })
 
