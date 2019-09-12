@@ -1,14 +1,8 @@
-```## getOptions => Array<string>
-[
-  ["options", "GetOptions"]
-]
-```
+<typedef name="getOptions" noArgTypesInToc>types/api.xml</typedef>
 
-Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
-
-%TYPEDEF types/options.xml%
+<typedef narrow>types/options.xml</typedef>
 
 %EXAMPLE: example/get-options, ../src => @depack/depack%
 %FORK-js example/get-options%
 
-%~ width="25"%
+%~%

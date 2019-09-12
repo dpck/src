@@ -18,7 +18,7 @@ yarn add -E @depack/depack
   * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options, runOptions=, compilerArgs=): string`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`BundleConfig`](#type-bundleconfig)
-- [`getOptions(options: GetOptions): Array<string>`](#getoptionsoptions-getoptions-array)
+- [`getOptions(options): !Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
 - [`getOutput(output: string, src?: string): string`](#getoutputoutput-stringsrc-string-string)
 - [`GOOGLE_CLOSURE_COMPILER: string`](#googleclosurecompiler-string)
@@ -166,6 +166,17 @@ __<a name="type-compileconfig">`CompileConfig`</a>__: Options for the Node.JS pa
  <tr>
   <td>
    Print all arguments to the compiler.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">silent</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   If output is not given, don't print to <code>stdout</code>. By default, the output will be printed.
   </td>
  </tr>
  <tr>
@@ -437,26 +448,162 @@ Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".d
   <img src="/.documentary/section-breaks/4.svg?sanitize=true">
 </a></p>
 
-## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: GetOptions,`<br/></sub><code>): <i>Array<string></i></code>
+## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !GetOptions,`<br/></sub><code>): <i>!Array<string></i></code>
+Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
 
-Returns an array of options to pass to the compiler for `Compile` and `Bundle` methods.
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-getoptions" title="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">!GetOptions</a></code></em>: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
 __<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
-
-|    Name     |             Type              |                                                         Description                                                          | Default |
-| ----------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------- |
-| compiler    | <em>string</em>               | The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`. | -       |
-| output      | <em>string</em>               | Sets the `--js_output_file` flag.                                                                                            | -       |
-| level       | <em>string</em>               | Sets the `--compilation_level` flag.                                                                                         | -       |
-| advanced    | <em>boolean</em>              | Sets the `--compilation_level` flag to `ADVANCED`.                                                                           | `false` |
-| languageIn  | <em>(string \| number)</em>   | Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                         | -       |
-| languageOut | <em>(string \| number)</em>   | Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.                      | -       |
-| sourceMap   | <em>boolean</em>              | Adds the `--create_source_map %outname%.map` flag.                                                                           | `true`  |
-| prettyPrint | <em>boolean</em>              | Adds the `--formatting PRETTY_PRINT` flag.                                                                                   | `false` |
-| iife        | <em>boolean</em>              | Adds the `--isolation_mode IIFE` flag.                                                                                       | `false` |
-| noWarnings  | <em>boolean</em>              | Sets the `--warning_level QUIET` flag.                                                                                       | `false` |
-| debug       | <em>string</em>               | The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.    | -       |
-| argv        | <em>!Array&lt;string&gt;</em> | Any additional arguments to the compiler.                                                                                    | -       |
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+  <th>Default</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center">compiler</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The path to the compiler JAR. Default value will be got from <code>require.resolve('google-closure-compiler-java/compiler.jar')</code>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">output</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--js_output_file</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">chunkOutput</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--chunk_output_path_prefix</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">level</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--compilation_level</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">advanced</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--compilation_level</code> flag to <code>ADVANCED</code>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">languageIn</td>
+  <td><em>(string | number)</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--language_in</code> flag. If a year is passed, adjusts it to <code>ECMASCRIPT_{YEAR}</code> automatically.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">languageOut</td>
+  <td><em>(string | number)</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--language_out</code> flag. If a number is passed, adjusts it to <code>ECMASCRIPT_{YEAR}</code> automatically.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">sourceMap</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>true</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Adds the <code>--create_source_map %outname%.map</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">prettyPrint</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Adds the <code>--formatting PRETTY_PRINT</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">iife</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Adds the <code>--isolation_mode IIFE</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">noWarnings</td>
+  <td><em>boolean</em></td>
+  <td rowSpan="3"><code>false</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Sets the <code>--warning_level QUIET</code> flag.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">debug</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">argv</td>
+  <td><em>!Array&lt;string&gt;</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Any additional arguments to the compiler.
+  </td>
+ </tr>
+</table>
 
 ```js
 import { getOptions } from '@depack/depack'
@@ -497,7 +644,7 @@ console.log(opts)
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
 ## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src?: string,`<br/></sub><code>): <i>string</i></code>

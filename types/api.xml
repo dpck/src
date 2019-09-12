@@ -30,4 +30,10 @@
     </arg>
     Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
   </method>
+  <method return="!Array<string>" name="getOptions">
+    <arg type="!_depack.GetOptions" name="options">
+      Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+    </arg>
+    Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
+  </method>
 </types>
