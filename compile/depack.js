@@ -21,7 +21,7 @@ const la = (a, b = 0, c = !1) => {
   return a;
 };
 const {homedir:oa} = os;
-const pa = /\s+at.*(?:\(|\s)(.*)\)?/, qa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, sa = oa(), y = a => {
+const pa = /\s+at.*(?:\(|\s)(.*)\)?/, qa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ra = oa(), y = a => {
   const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(qa.source.replace("IGNORED_MODULES", d));
   return a.replace(/\\/g, "/").split("\n").filter(f => {
     f = f.match(pa);
@@ -30,7 +30,7 @@ const pa = /\s+at.*(?:\(|\s)(.*)\)?/, qa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.
     }
     f = f[1];
     return f.includes(".app/Contents/Resources/electron.asar") || f.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(f);
-  }).filter(f => f.trim()).map(f => b ? f.replace(pa, (g, h) => g.replace(h, h.replace(sa, "~"))) : f).join("\n");
+  }).filter(f => f.trim()).map(f => b ? f.replace(pa, (g, h) => g.replace(h, h.replace(ra, "~"))) : f).join("\n");
 };
 function ta(a, b, c = !1) {
   return function(d) {
@@ -1189,6 +1189,7 @@ const mc = async a => Array.isArray(a) ? a.reduce(async(b, c) => (b = await b) ?
   return {o:f, K:e};
 };
 const oc = (a, b) => [...a, "--js", b];
+const pc = process.env.GOOGLE_CLOSURE_COMPILER;
 module.exports = {_Compile:async(a, b = {}, c = []) => {
   const {src:d, noStrict:e, verbose:f, silent:g} = a;
   ({output:a} = b);
@@ -1268,10 +1269,10 @@ module.exports = {_Compile:async(a, b = {}, c = []) => {
     var u = await S(w, {fields:["externs"]}), {v:z} = nb(u);
     t = [...t, ...z];
     z = Za(u);
-    const {h:H, s:K, m:X, A:ra} = z;
+    const {h:H, s:K, m:X, A:sa} = z;
     u = lb(u);
     q = q || !(!H.length && !u.length);
-    u = [...H, ...ra, ...X, ...K];
+    u = [...H, ...sa, ...X, ...K];
     n = [...n, ...u];
     v[w] = u;
     return v;
@@ -1287,7 +1288,7 @@ module.exports = {_Compile:async(a, b = {}, c = []) => {
   a.length && a.push("--chunk", "common:auto");
   const O = [];
   b = Object.entries(b).reduce((v, [w, u]) => {
-    const z = u.filter(ra => 1 == x[ra]), H = z.reduce(oc, []), K = G(w).replace(/.jsx$/, ".js"), X = [K.replace(".js", ""), z.length + 1];
+    const z = u.filter(sa => 1 == x[sa]), H = z.reduce(oc, []), K = G(w).replace(/.jsx$/, ".js"), X = [K.replace(".js", ""), z.length + 1];
     z.length != u.length && (A[K] = ["common"], X.push("common"));
     v.push(...H, "--js", w, "--chunk", X.join(":"));
     w = J(h, K);
@@ -1322,7 +1323,12 @@ module.exports = {_Compile:async(a, b = {}, c = []) => {
 }, _getOutput:(a, b) => {
   a = /\.js$/.test(a) ? a : J(a, G(b));
   return a = a.replace(/jsx$/, "js");
-}};
+}, _getCompilerVersion:async() => {
+  var a = "target";
+  const b = pc ? "target" : require.resolve("google-closure-compiler-java/package.json");
+  pc || (a = await D(b), {version:a} = JSON.parse(a), [a] = a.split("."));
+  return a;
+}, _GOOGLE_CLOSURE_COMPILER:pc};
 
 
 //# sourceMappingURL=depack.js.map

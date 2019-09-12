@@ -20,7 +20,7 @@ yarn add @depack/depack
   * [`BundleConfig`](#type-bundleconfig)
 - [`getOptions(options): !Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
-- [`getOutput(output, src=): string`](#getoutputoutput-stringsrc-string-string)
+- [`getOutput(output, src): string`](#getoutputoutput-stringsrc-string-string)
 - [`GOOGLE_CLOSURE_COMPILER: string`](#googleclosurecompiler-string)
 - [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
 - [Copyright](#copyright)
@@ -39,7 +39,7 @@ The package is available by importing its named functions:
 <a href="#api"><img src=".documentary/import1.png"></a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string">Compile</a>, <a href="#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string">Bundle</a>, <a href="#async-runargs-arraystringopts-runconfig-string">run</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#getoptionsoptions-getoptions-array">getOptions</a>, <a href="#getoutputoutput-stringsrc-string-string">getOutput</a>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GOOGLE_CLOSURE_COMPILER, getCompilerVersion,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#google_closure_compiler-string">GOOGLE_CLOSURE_COMPILER</a>, <a href="#async-getcompilerversion-string">getCompilerVersion</a>,<br>
 <a href="#api"><img src=".documentary/from2.png"></a>
 </td></tr>
 </table>
@@ -661,22 +661,22 @@ console.log(opts)
   <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
-## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src=: string,`<br/></sub><code>): <i>string</i></code>
+## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src: string,`<br/></sub><code>): <i>string</i></code>
 Returns the location of the output file, even when the directory is given.
 
  - <kbd><strong>output*</strong></kbd> <em>`string`</em>: The path to the output dir or file.
- - <kbd>src</kbd> <em>`string`</em> (optional): The path to the source file. Will be used when the output is a dir.
+ - <kbd><strong>src*</strong></kbd> <em>`string`</em>: The path to the source file. Will be used when the output is a dir.
 
 ```js
 import { getOutput } from '@depack/depack'
 
-const file = getOutput('test.js')
+const file = getOutput('output/example.js', 'src/example.js')
 console.log('File: %s', file)
-const dir = getOutput('output', 'index.js')
+const dir = getOutput('output', 'src/index.js')
 console.log('Dir: %s', dir)
 ```
 ```js
-File: test.js
+File: output/example.js
 Dir: output/index.js
 ```
 

@@ -40,7 +40,7 @@
     <arg type="string" name="output">
       The path to the output dir or file.
     </arg>
-    <arg type="string" name="src" opt>
+    <arg type="string" name="src">
       The path to the source file. Will be used when the output is a dir.
     </arg>
     Returns the location of the output file, even when the directory is given.

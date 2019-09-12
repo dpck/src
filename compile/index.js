@@ -1,4 +1,29 @@
-const { _Compile, _Bundle, _getOptions, _getOutput } = require('./depack')
+const {
+  _run, _Compile, _Bundle, _getOptions, _getOutput, _getCompilerVersion,
+  _GOOGLE_CLOSURE_COMPILER,
+} = require('./depack')
+
+/**
+ * Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process. Returns the _stdout_ of the Java process.
+ * @param {!Array<string>} args The arguments to Java.
+ * @param {!_depack.RunConfig} [opts] General options for running of the compiler.
+ * @param {string} [opts.output] The path where the output will be saved. Prints to `stdout` if not passed.
+ * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a potential bug in _GCC_.
+ * @param {string} [opts.compilerVersion] Used in the display message. Obtained with the `getCompilerVersion` method.
+ * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
+ * @return {Promise<string>}
+ */
+function run(args, opts) {
+  return _run(args, opts)
+}
+
+/**
+ * If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
+ * @return {Promise<string>}
+ */
+function getCompilerVersion() {
+  return _getCompilerVersion()
+}
 
 /**
  * Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
@@ -65,17 +90,19 @@ function getOptions(options) {
 /**
  * Returns the location of the output file, even when the directory is given.
  * @param {string} output The path to the output dir or file.
- * @param {string=} [src] The path to the source file. Will be used when the output is a dir.
+ * @param {string} src The path to the source file. Will be used when the output is a dir.
  * @return {string}
  */
 function getOutput(output, src) {
   return _getOutput(output, src)
 }
 
+module.exports.run = run
 module.exports.Compile = Compile
 module.exports.Bundle = Bundle
 module.exports.getOptions = getOptions
 module.exports.getOutput = getOutput
+module.exports.getCompilerVersion = getCompilerVersion
 
 /* typal types/index.xml namespace */
 /**

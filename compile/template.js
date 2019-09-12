@@ -45,12 +45,19 @@ function getOutput(output, src) {
   return _getOutput(output, src)
 }
 
+/**
+ * If the `GOOGLE_CLOSURE_COMPILER` jar path was set using the environment variable, it will be returned in this named exported.
+ * @type {string}
+ */
+const GOOGLE_CLOSURE_COMPILER = _GOOGLE_CLOSURE_COMPILER
+
 module.exports.run = run
 module.exports.Compile = Compile
 module.exports.Bundle = Bundle
 module.exports.getOptions = getOptions
 module.exports.getOutput = getOutput
 module.exports.getCompilerVersion = getCompilerVersion
+module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
 
 /* typal types/index.xml namespace */
 
