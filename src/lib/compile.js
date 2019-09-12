@@ -18,7 +18,7 @@ import run from './run'
  * @param {!Array<string>} [compilerArgs] The compiler args got with `getOptions` and/or manually extended.
  */
 const Compile = async (options, runOptions = {}, compilerArgs = []) => {
-  const { src, noStrict, verbose, library, silent } = options
+  const { src, noStrict, verbose, silent } = options
   const { output } = runOptions
   if (!src) throw new Error('Source is not given.')
   // allow to pass internals in --externs arg, e.g.,
@@ -30,8 +30,8 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
     const next = a[i + 1]
     if (!next) return acc
     if (builtinModules.includes(next)) {
-      compilerArgs[i] = null
-      compilerArgs[i + 1] = null
+      compilerArgs[i] = ''
+      compilerArgs[i + 1] = ''
       acc.push(next)
     }
     return acc
@@ -75,7 +75,7 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
     if (b.startsWith('node_modules')) return 1
     return 0
   })
-  const wrapper = getWrapper(internals, library)
+  const wrapper = getWrapper(internals)
   const jsonFiles = hasJsonFiles(detected)
 
   const Args = [
@@ -103,7 +103,7 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
     ...externs, ...detectedExternsArgs,
   ], sorted)
 
-  const stdout = await run(Args, runOptions, library)
+  const stdout = await run(Args, runOptions)
   if (!output) {
     const o = prepareOutput(stdout, wrapper, noStrict).trim()
     if (!silent) console.log(o)

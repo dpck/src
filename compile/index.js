@@ -38,6 +38,7 @@ module.exports.Compile = Compile
  * @typedef {Object} _depack.GetOptions `＠record` Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  * @prop {string} [compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
+ * @prop {string} [chunkOutput] Sets the `--chunk_output_path_prefix` flag.
  * @prop {string} [level] Sets the `--compilation_level` flag.
  * @prop {boolean} [advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
  * @prop {(string|number)} [languageIn] Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.

@@ -4,7 +4,7 @@
       "import": {
         "replacement": {
           "from": "^((../)+)src$",
-          "to": "$1"
+          "to": "$1/compile"
         }
       }
     }

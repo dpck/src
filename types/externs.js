@@ -43,6 +43,11 @@ _depack.GetOptions.prototype.compiler
  */
 _depack.GetOptions.prototype.output
 /**
+ * Sets the `--chunk_output_path_prefix` flag.
+ * @type {string|undefined}
+ */
+_depack.GetOptions.prototype.chunkOutput
+/**
  * Sets the `--compilation_level` flag.
  * @type {string|undefined}
  */
@@ -92,3 +97,7 @@ _depack.GetOptions.prototype.debug
  * @type {(!Array<string>)|undefined}
  */
 _depack.GetOptions.prototype.argv
+
+
+/** @type {string} */
+process.env.DEPACK_MAX_COLUMNS

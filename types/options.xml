@@ -6,6 +6,9 @@
     <prop opt string name="output">
       Sets the `--js_output_file` flag.
     </prop>
+    <prop opt string name="chunkOutput">
+      Sets the `--chunk_output_path_prefix` flag.
+    </prop>
     <prop opt string name="level">
       Sets the `--compilation_level` flag.
     </prop>
