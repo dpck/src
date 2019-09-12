@@ -1,6 +1,6 @@
 const {
   _run, _Compile, _Bundle, _getOptions, _getOutput, _getCompilerVersion,
-  _GOOGLE_CLOSURE_COMPILER,
+  _GOOGLE_CLOSURE_COMPILER, _BundleChunks,
 } = require('./depack')
 
 /**
@@ -30,6 +30,12 @@ function Compile(options, runOptions, compilerArgs) {
 function Bundle(options, runOptions, compilerArgs) {
   return _Bundle(options, runOptions, compilerArgs)
 }
+/**
+ * @methodType {_depack.BundleChunks}
+ */
+function BundleChunks(options, runOptions, compilerArgs) {
+  return _BundleChunks(options, runOptions, compilerArgs)
+}
 
 /**
  * @methodType {_depack.getOptions}
@@ -54,6 +60,7 @@ const GOOGLE_CLOSURE_COMPILER = _GOOGLE_CLOSURE_COMPILER
 module.exports.run = run
 module.exports.Compile = Compile
 module.exports.Bundle = Bundle
+module.exports.BundleChunks = BundleChunks
 module.exports.getOptions = getOptions
 module.exports.getOutput = getOutput
 module.exports.getCompilerVersion = getCompilerVersion

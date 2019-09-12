@@ -223,9 +223,9 @@ export default Compile
 
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('../..').CompileConfig} _depack.CompileConfig
+ * @typedef {import('../../compile').CompileConfig} _depack.CompileConfig
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('../..').RunConfig} _depack.RunConfig
+ * @typedef {import('../../compile').RunConfig} _depack.RunConfig
  */

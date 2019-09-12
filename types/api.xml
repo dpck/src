@@ -30,6 +30,18 @@
     </arg>
     Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
   </method>
+  <method async return="string" name="BundleChunks">
+    <arg type="!_depack.ChunksConfig" name="options">
+      Options for the web bundler. Must have the `srcs` prop with paths to source files at least.
+    </arg>
+    <arg type="!_depack.RunConfig" name="runOptions" opt>
+      General options for running of the compiler.
+    </arg>
+    <arg type="!Array<string>" name="compilerArgs" opt>
+      The compiler args got with `getOptions` and/or manually extended.
+    </arg>
+    Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies.
+  </method>
   <method return="!Array<string>" name="getOptions">
     <arg type="!_depack.GetOptions" name="options">
       The map of options to be converted into Java arguments.

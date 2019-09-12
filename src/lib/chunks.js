@@ -1,15 +1,21 @@
 import { join, basename } from 'path'
 import { rm } from '@wrote/wrote'
+import staticAnalysis, { sort } from 'static-analysis'
 import { getBundleArgs, updateTempDirArgs, getCommand, unique, createExternsArgs, hasJsonFiles, detectExterns } from './'
 import run from './run'
-import staticAnalysis, { sort } from 'static-analysis'
 import { prepareTemp, doesSrcHaveJsx } from './bundle'
 
+/**
+ * Bundle the source code into chunks.
+ * @param {_depack.ChunksConfig} options Options for the web bundler.
+ * @param {_depack.RunConfig} [runOptions] General options for running of the compiler.
+ * @param {!Array<string>} [compilerArgs] Extra arguments for the compiler, including the ones got with `getOptions`.
+ */
 export default async function BundleChunks(options, runOptions, compilerArgs = []) {
   const { srcs, tempDir = 'depack-temp', preact, preactExtern } = options
   const { output, compilerVersion, debug, noSourceMap } = runOptions
   if (!srcs) throw new Error('Entry files are not given.')
-  if (!Array.isArray(srcs)) throw new Error('Expecting chunks.')
+  if (!Array.isArray(srcs)) throw new Error('Expecting an array of source files to generate chunks.')
 
   let deps = []
   let processCommonJs = false
@@ -100,3 +106,12 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
 }
 
 export const addJsArg = (a, v) => [...a, '--js', v]
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../compile').ChunksConfig} _depack.ChunksConfig
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../compile').RunConfig} _depack.RunConfig
+ */

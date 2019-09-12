@@ -15,9 +15,51 @@ _depack.RunConfig
 /* typal types/bundle.xml externs */
 /**
  * Options for the web bundler.
- * @typedef {{ src: string, tempDir: (string|undefined), preact: (boolean|undefined), silent: (boolean|undefined), preactExtern: (boolean|undefined) }}
+ * @record
+ */
+_depack.BundleBase
+/**
+ * Where to save prepared JSX files. Default `depack-temp`.
+ * @type {string|undefined}
+ */
+_depack.BundleBase.prototype.tempDir
+/**
+ * Adds `import { h } from 'preact'` automatically, so that the bundle will be compiled **together** with _Preact_. Default `false`.
+ * @type {boolean|undefined}
+ */
+_depack.BundleBase.prototype.preact
+/**
+ * If output is not given, don't print to `stdout`. By default, the output will be printed. Default `false`.
+ * @type {boolean|undefined}
+ */
+_depack.BundleBase.prototype.silent
+/**
+ * Adds `import { h } from '＠preact/extern'` automatically, assuming that `preact` will be available in the global scope and won't be included in the compilation. It will also rename any `preact` imports into `＠externs/preact`, so that the actual source code does not need manual editing. Default `false`.
+ * @type {boolean|undefined}
+ */
+_depack.BundleBase.prototype.preactExtern
+/**
+ * Options for the Bundle method.
+ * @extends {BundleBase}
+ * @record
  */
 _depack.BundleConfig
+/**
+ * The entry file to bundle. Only a single file is accepted. To compile multiple files at once, use chunks.
+ * @type {string}
+ */
+_depack.BundleConfig.prototype.src
+/**
+ * Options for the BundleChunks method.
+ * @extends {BundleBase}
+ * @record
+ */
+_depack.ChunksConfig
+/**
+ * The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
+ * @type {!Array<string>}
+ */
+_depack.ChunksConfig.prototype.srcs
 
 /* typal types/compile.xml externs */
 /**

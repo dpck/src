@@ -17,7 +17,10 @@ yarn add @depack/depack
 - [`async Compile(options, runOptions=, compilerArgs=): string`](#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`CompileConfig`](#type-compileconfig)
 - [`async Bundle(options, runOptions=, compilerArgs=): string`](#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string)
+  * [`BundleBase`](#type-bundlebase)
   * [`BundleConfig`](#type-bundleconfig)
+- [`async BundleChunks(options, runOptions=, compilerArgs=): string`](#async-bundlechunksoptions-chunksconfigrunoptions-runconfigcompilerargs-arraystring-string)
+  * [`ChunksConfig`](#type-chunksconfig)
 - [`getOptions(options): !Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
 - [`getOutput(output, src): string`](#getoutputoutput-stringsrc-string-string)
@@ -302,28 +305,17 @@ Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".d
 ## <code>async <ins>Bundle</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !BundleConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>string</i></code>
 Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
- - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-bundleconfig" title="Options for the web bundler.">!BundleConfig</a></code></em>: Options for the web bundler. Must have the `src` prop at least.
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-bundleconfig" title="Options for the Bundle method.">!BundleConfig</a></code></em>: Options for the web bundler. Must have the `src` prop at least.
  - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
  - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
 
-__<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
+__<a name="type-bundlebase">`BundleBase`</a>__: Options for the web bundler.
 <table>
  <thead><tr>
   <th>Name</th>
   <th>Type &amp; Description</th>
   <th>Default</th>
  </tr></thead>
- <tr>
-  <td rowSpan="3" align="center"><strong>src*</strong></td>
-  <td><em>string</em></td>
-  <td rowSpan="3">-</td>
- </tr>
- <tr></tr>
- <tr>
-  <td>
-   The entry file to bundle. Currently only single files are supported.
-  </td>
- </tr>
  <tr>
   <td rowSpan="3" align="center">tempDir</td>
   <td><em>string</em></td>
@@ -366,6 +358,24 @@ __<a name="type-bundleconfig">`BundleConfig`</a>__: Options for the web bundler.
  <tr>
   <td>
    Adds <code>import { h } from '＠preact/extern'</code> automatically, assuming that <code>preact</code> will be available in the global scope and won't be included in the compilation. It will also rename any <code>preact</code> imports into <code>＠externs/preact</code>, so that the actual source code does not need manual editing.
+  </td>
+ </tr>
+</table>
+
+__<a name="type-bundleconfig">`BundleConfig`</a> extends <a href="#type-bundlebase" title="Options for the web bundler.">`BundleBase`</a>__: Options for the Bundle method.
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>src*</strong></td>
+  <td><em>string</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The entry file to bundle. Only a single file is accepted. To compile multiple files at once, use chunks.
   </td>
  </tr>
 </table>
@@ -449,6 +459,37 @@ Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".d
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/4.svg?sanitize=true">
+</a></p>
+
+## <code>async <ins>BundleChunks</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !ChunksConfig,`<br/>&nbsp;&nbsp;`runOptions=: !RunConfig,`<br/>&nbsp;&nbsp;`compilerArgs=: !Array<string>,`<br/></sub><code>): <i>string</i></code>
+Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies.
+
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-chunksconfig" title="Options for the BundleChunks method.">!ChunksConfig</a></code></em>: Options for the web bundler. Must have the `srcs` prop with paths to source files at least.
+ - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
+
+__<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundlebase" title="Options for the web bundler.">`BundleBase`</a>__: Options for the BundleChunks method.
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>srcs*</strong></td>
+  <td><em>!Array&lt;string&gt;</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The entry files to bundle. Chunks will be created according to the strategy (only <code>common</code> strategy is supported at the moment, which places any dependency which is required in more than one file in a <code>common</code> chunk).
+  </td>
+ </tr>
+</table>
+
+_For example, given the following single JS source:_
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
 </a></p>
 
 ## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !GetOptions,`<br/></sub><code>): <i>!Array<string></i></code>
@@ -658,7 +699,7 @@ console.log(opts)
 </td></tr></table>
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
 </a></p>
 
 ## <code><ins>getOutput</ins>(</code><sub><br/>&nbsp;&nbsp;`output: string,`<br/>&nbsp;&nbsp;`src: string,`<br/></sub><code>): <i>string</i></code>
@@ -681,7 +722,7 @@ Dir: output/index.js
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
 </a></p>
 
 ## `GOOGLE_CLOSURE_COMPILER: string`
@@ -689,14 +730,14 @@ Dir: output/index.js
 If the `GOOGLE_CLOSURE_COMPILER` was set using the environment variable, it will be returned in this named exported.
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
 </a></p>
 
 ## <code>async <ins>getCompilerVersion</ins>(): <i>string</i></code>
 If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file.
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
 </a></p>
 
 

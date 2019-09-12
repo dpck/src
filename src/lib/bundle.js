@@ -108,9 +108,9 @@ export default Bundle
 
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('../..').BundleConfig} _depack.BundleConfig
+ * @typedef {import('../../compile').BundleConfig} _depack.BundleConfig
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('../..').RunConfig} _depack.RunConfig
+ * @typedef {import('../../compile').RunConfig} _depack.RunConfig
  */
