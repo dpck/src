@@ -18,7 +18,7 @@ export const bundle = makeTestSuite('test/result/bundle', {
   },
 })
 
-export const chunks = makeTestSuite('!test/result/chunks', {
+export const chunks = makeTestSuite('test/result/chunks', {
   context: TempContext,
   /**
    * @param {TempContext} t

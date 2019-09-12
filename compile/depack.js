@@ -619,9 +619,9 @@ function yb(a) {
   if (n) {
     throw Error(qb(n, m));
   }
-  g && !f ? await Promise.all(g.map(async q => {
+  f || (g ? await Promise.all(g.map(async q => {
     await eb(q, {sourceMap:!0});
-  })) : e && await eb(e, {sourceMap:!f});
+  })) : e && await eb(e, {sourceMap:!f}));
   m && !c ? console.warn(N(m, "grey")) : c && console.log("Sources after each pass saved to %s", c);
   return l;
 };
@@ -1279,7 +1279,7 @@ module.exports = {_Compile:async(a, b = {}, c = []) => {
     1 < u && v.push("--js", w);
     return v;
   }, []);
-  a.length && a.push("--chunk", "common:auto");
+  a.length && a.push("--chunk", `common:${a.length / 2}`);
   const O = [];
   b = Object.entries(b).reduce((v, [w, u]) => {
     const z = u.filter(sa => 1 == x[sa]), H = z.reduce(nc, []), K = G(w).replace(/.jsx$/, ".js"), X = [K.replace(".js", ""), z.length + 1];
