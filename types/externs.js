@@ -28,7 +28,7 @@ _depack.CompileConfig
 
 /* typal types/options.xml externs */
 /**
- * Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * Parameters for `getOptions`
  * @record
  */
 _depack.GetOptions

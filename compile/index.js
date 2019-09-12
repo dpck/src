@@ -42,7 +42,7 @@ function Bundle(options, runOptions, compilerArgs) {
 
 /**
  * Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
- * @param {!_depack.GetOptions} options Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @param {!_depack.GetOptions} options Parameters for `getOptions`
  * @param {string} [options.compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @param {string} [options.output] Sets the `--js_output_file` flag.
  * @param {string} [options.chunkOutput] Sets the `--chunk_output_path_prefix` flag.
@@ -78,8 +78,8 @@ module.exports.getOptions = getOptions
 
 /* typal types/options.xml namespace */
 /**
- * @typedef {_depack.GetOptions} GetOptions `＠record` Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @typedef {Object} _depack.GetOptions `＠record` Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ * @typedef {_depack.GetOptions} GetOptions `＠record` Parameters for `getOptions`
+ * @typedef {Object} _depack.GetOptions `＠record` Parameters for `getOptions`
  * @prop {string} [compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
  * @prop {string} [output] Sets the `--js_output_file` flag.
  * @prop {string} [chunkOutput] Sets the `--chunk_output_path_prefix` flag.
