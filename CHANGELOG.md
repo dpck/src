@@ -1,3 +1,11 @@
+## 12 September 2019
+
+### [1.4.0](https://github.com/dpck/src/compare/v1.3.3...v1.4.0)
+
+- [feature] Add _BundleChunks_ method.
+- [doc] Nicer documentation.
+- [package] Compile the API with _Depack_.
+
 ## 30 July 2019
 
 ### [1.3.3](https://github.com/dpck/src/compare/v1.3.2...v1.3.3)
