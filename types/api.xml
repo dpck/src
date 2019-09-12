@@ -32,8 +32,8 @@
   </method>
   <method return="!Array<string>" name="getOptions">
     <arg type="!_depack.GetOptions" name="options">
-      Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+      The map of options to be converted into Java arguments.
     </arg>
-    Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
+    Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods. [Full list of supported arguments](https://github.com/google/closure-compiler/wiki/Flags-and-Options).
   </method>
 </types>

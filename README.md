@@ -289,7 +289,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind16" href="#_ind16"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -441,7 +441,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190709<a id="_ind17" href="#_ind17"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -449,11 +449,11 @@ Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".d
 </a></p>
 
 ## <code><ins>getOptions</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !GetOptions,`<br/></sub><code>): <i>!Array<string></i></code>
-Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods.
+Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods. [Full list of supported arguments](https://github.com/google/closure-compiler/wiki/Flags-and-Options).
 
- - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-getoptions" title="Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options">!GetOptions</a></code></em>: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-getoptions" title="Parameters for `getOptions`.">!GetOptions</a></code></em>: The map of options to be converted into Java arguments.
 
-__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
+__<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`.
 <table>
  <thead><tr>
   <th>Name</th>
@@ -605,6 +605,12 @@ __<a name="type-getoptions">`GetOptions`</a>__: Parameters for `getOptions`. htt
  </tr>
 </table>
 
+**Example:**
+
+<table><tr/><tr><td>
+<details>
+<summary><em>Click to show/hide output</em>
+
 ```js
 import { getOptions } from '@depack/depack'
 
@@ -620,6 +626,9 @@ const opts = getOptions({
 })
 console.log(opts)
 ```
+</summary>
+
+---
 ```js
 [ '-jar',
   '/Users/zavr/node_modules/google-closure-compiler-java/compiler.jar',
@@ -642,6 +651,8 @@ console.log(opts)
   '--js_output_file',
   'bundle.js' ]
 ```
+</details>
+</td></tr></table>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/5.svg?sanitize=true">
