@@ -1,6 +1,6 @@
 {
   "name": "@depack/depack",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "The Source Code For Depack's JavaScript API.",
   "main": "compile/index.js",
   "module": "src/index.js",
