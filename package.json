@@ -23,7 +23,8 @@
   "files": [
     "compile",
     "src",
-    "types/externs.js"
+    "types/externs.js",
+    "COPYING"
   ],
   "externs": "types/externs.js",
   "repository": {
@@ -44,7 +45,7 @@
     "single"
   ],
   "author": "Anton <anton@adc.sh>",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "bugs": {
     "url": "https://github.com/dpck/src/issues"
   },
