@@ -2,8 +2,10 @@
 
 - [ ] Add a new item to the todo list. -->
 
-## Copyright
+## License & Copyright
 
-<DepackFooter />
+%EXAMPLE: LICENSE%
+
+<depack-footer />
 
 %~ -1%

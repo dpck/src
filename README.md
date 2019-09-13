@@ -26,7 +26,7 @@ yarn add @depack/depack
 - [`getOutput(output, src): string`](#getoutputoutput-stringsrc-string-string)
 - [`GOOGLE_CLOSURE_COMPILER: string`](#googleclosurecompiler-string)
 - [`async getCompilerVersion(): string`](#async-getcompilerversion-string)
-- [Copyright](#copyright)
+- [License & Copyright](#license--copyright)
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/0.svg?sanitize=true">
@@ -840,7 +840,24 @@ If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `tar
 
 
 
-## Copyright
+## License & Copyright
+
+```
+Dual licensed under Affero GPL and a commercial license.
+
+- Within the UK: no commercial use is allowed until the
+  organisation signs up at
+  https://www.technation.sucks/license/.
+- Across the globe: Affero GPL. No companies affiliated
+  with Tech Nation in any way (e.g., participation in
+  their programs, being part of their network, hiring
+  their directors), are allowed to use the software
+  unless they sign up.
+
+(c) 2019 Art Deco Code Limited
+
+The COPYING file contains the full text of the public license.
+```
 
 <table>
   <tr>
