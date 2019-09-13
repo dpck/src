@@ -1,3 +1,9 @@
+## 13 September 2019
+
+### [2.0.0](https://github.com/dpck/src/compare/v1.4.0...v2.0.0)
+
+- [license] Release under Tech Nation Sucks license.
+
 ## 12 September 2019
 
 ### [1.4.0](https://github.com/dpck/src/compare/v1.3.3...v1.4.0)
