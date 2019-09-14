@@ -7,21 +7,9 @@ const getLanguage = (l) => {
 
 /**
  * Returns the arguments for the compiler.
- * @param {!_depack.GetOptions} opts Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @param {string} [opts.compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
- * @param {string} [opts.output] Sets the `--js_output_file` flag.
- * @param {string} [opts.level] Sets the `--compilation_level` flag.
- * @param {boolean} [opts.advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
- * @param {(string|number)} [opts.languageIn] Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @param {(string|number)} [opts.languageOut] Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @param {boolean} [opts.sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
- * @param {boolean} [opts.prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
- * @param {boolean} [opts.iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
- * @param {boolean} [opts.noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
- * @param {string} [opts.debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
- * @param {!Array<string>} [opts.argv] Any additional arguments to the compiler.
+ * @param {!_depack.GetOptions} [opts] Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
  */
-const getOptions = (opts) => {
+const getOptions = (opts = {}) => {
   const {
     compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
     output, level, advanced, languageIn, languageOut, sourceMap = true,
@@ -82,27 +70,10 @@ const getOutput = (output, src) => {
 
 module.exports=getOptions
 
-/* documentary types/options.xml */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {_depack.GetOptions} GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {Object} _depack.GetOptions Parameters for `getOptions`. https://github.com/google/closure-compiler/wiki/Flags-and-Options
- * @prop {string} [compiler] The path to the compiler JAR. Default value will be got from `require.resolve('google-closure-compiler-java/compiler.jar')`.
- * @prop {string} [output] Sets the `--js_output_file` flag.
- * @prop {string} [level] Sets the `--compilation_level` flag.
- * @prop {boolean} [advanced=false] Sets the `--compilation_level` flag to `ADVANCED`. Default `false`.
- * @prop {(string|number)} [languageIn] Sets the `--language_in` flag. If a year is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @prop {(string|number)} [languageOut] Sets the `--language_out` flag. If a number is passed, adjusts it to `ECMASCRIPT_{YEAR}` automatically.
- * @prop {boolean} [sourceMap=true] Adds the `--create_source_map %outname%.map` flag. Default `true`.
- * @prop {boolean} [prettyPrint=false] Adds the `--formatting PRETTY_PRINT` flag. Default `false`.
- * @prop {boolean} [iife=false] Adds the `--isolation_mode IIFE` flag. Default `false`.
- * @prop {boolean} [noWarnings=false] Sets the `--warning_level QUIET` flag. Default `false`.
- * @prop {string} [debug] The location of the file where to save sources after each pass. Disables source maps as these 2 options are incompatible.
- * @prop {!Array<string>} [argv] Any additional arguments to the compiler.
- */
 
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../compile').GetOptions} _depack.GetOptions
+ */
 
 module.exports.getOutput = getOutput

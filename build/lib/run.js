@@ -8,16 +8,16 @@ const { addData } = require('./');
 /**
  * Spawns Java and executes the compilation.
  * @param {!Array<string>} args The arguments to Java.
- * @param {!_depack.RunConfig} opts General options for running of the compiler.
+ * @param {!_depack.RunConfig} [opts] General options for running of the compiler.
  * @param {string} [opts.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [opts.debug] The name of the file where to save sources after each pass. Useful when there's a bug in GCC.
  * @param {string} [opts.compilerVersion] Used in the display message.
  * @param {boolean} [opts.noSourceMap=false] Disables source maps. Default `false`.
  * @return {!Promise<string>} Stdout of JavaProcess
  */
-const run = async (args, opts) => {
+const run = async (args, opts = {}) => {
   const {
-    debug, compilerVersion = '', output, noSourceMap, outputFiles,
+    debug, compilerVersion, output, noSourceMap, outputFiles,
   } = opts
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))
@@ -30,12 +30,16 @@ const run = async (args, opts) => {
   // if(process.stderr.isTTY) process.stderr.write(' '.repeat(process.stderr.columns))
 
   if (code) throw new Error(makeError(code, stderr))
-  if (outputFiles && !noSourceMap) {
-    await Promise.all(outputFiles.map(async (outputFile) => {
-      await addData(outputFile, { sourceMap: true })
-    }))
+
+  if (!noSourceMap) {
+    if (outputFiles) {
+      await Promise.all(outputFiles.map(async (outputFile) => {
+        await addData(outputFile, { sourceMap: true })
+      }))
+    }
+    else if (output) await addData(output, { sourceMap: !noSourceMap })
   }
-  else if (output) await addData(output, { sourceMap: !noSourceMap })
+
   if (stderr && !debug) console.warn(c(stderr, 'grey'))
   else if (debug) console.log('Sources after each pass saved to %s', debug)
   return stdout
@@ -43,7 +47,7 @@ const run = async (args, opts) => {
 
 module.exports=run
 
-/* documentary types/index.xml */
+/* typal types/index.xml */
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {_depack.RunConfig} RunConfig General options for running of the compiler.
