@@ -1,7 +1,7 @@
-import { getExterns } from '../../src/lib/compile'
+import { getNodeExterns } from '../../src/lib/compile'
 
 export default {
   'gets externs'() {
-    return getExterns(['stream'], ['os', 'stream'])
+    return getNodeExterns(['stream'], ['os', 'stream'])
   },
 }

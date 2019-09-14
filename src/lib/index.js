@@ -1,6 +1,6 @@
 import { c, b } from 'erte'
 import { join, dirname, basename, relative } from 'path'
-import { write, read } from '@wrote/wrote'
+import { write, read, exists } from '@wrote/wrote'
 import { builtinModules } from 'module'
 
 export const replaceWithColor = (str, name, color, background = false) => {
@@ -144,14 +144,29 @@ export const getShellCommand = (args, program = 'java') => {
 }
 
 /**
+ * @param {!Array<string>} files Paths to externs.
+ * @param {string} [name] The package name.
+ */
+export const checkExternsExist = async (files, name) => {
+  await Promise.all(files.map(async pp => {
+    const exist = await exists(pp)
+    if (!exist) {
+      const n = name ? ` specified in the "externs" field of package ${name}` : ''
+      throw new Error(`Externs file ${pp}${n} doesn't exist.`)
+    }
+  }))
+}
+
+/**
  * Runs through detected packages and returns the list of externs specified in the `externs` field.
  * @param {!Array<!_staticAnalysis.Detection>} detected
  */
-export const detectExterns = (detected) => {
+export const detectExterns = async (detected) => {
   /** @type {!Array<string>} */
   const nodeJS = []
   /** @type {!Array<string>} */
-  const detectedExterns = detected.reduce((acc, { packageJson, 'externs': externs = [] }) => {
+  const files = await detected.reduce(async (acc, { name, packageJson, 'externs': externs = [] }) => {
+    acc = await acc
     if (!packageJson) return acc
     const dir = dirname(packageJson)
     externs = Array.isArray(externs) ? externs : [externs]
@@ -163,9 +178,11 @@ export const detectExterns = (detected) => {
       return true
     })
     const actual = externs.map((e) => join(dir, e))
+    await checkExternsExist(actual, name)
     return [...acc, ...actual]
   }, [])
-  return { detectedExterns, nodeJS }
+
+  return { files, nodeJS }
 }
 
 export const createExternsArgs = (externs) => {

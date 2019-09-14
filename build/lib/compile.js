@@ -7,7 +7,7 @@ const { exists } = require('@wrote/wrote');
 let detect = require('static-analysis'); const { sort } = detect; if (detect && detect.__esModule) detect = detect.default;
 // import getExternsDir, { dependencies as externsDeps } from '@depack/externs'
 let frame = require('frame-of-mind'); if (frame && frame.__esModule) frame = frame.default;
-const { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs } = require('./');
+const { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs, checkExternsExist } = require('./');
 const { prepareCoreModules, fixDependencies } = require('./closure');
 const run = require('./run');
 
@@ -52,7 +52,7 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
   const detected = await detect(src, {
     fields: ['externs'],
   })
-  const { detectedExterns, nodeJS } = detectExterns(detected)
+  const { files: detectedExterns, nodeJS } = await detectExterns(detected)
   detectedExterns.length && console.error('%s %s', c('Modules\' externs:', 'blue'), detectedExterns.join(' '))
   const detectedExternsArgs = createExternsArgs(detectedExterns)
   warnOfCommonJs(detected)
@@ -62,7 +62,7 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
     commonJs, commonJsPackageJsons, internals, js, packageJsons,
   } = sorted
   const internalDeps = await prepareCoreModules({ internals })
-  const externs = await getExterns(internals, [
+  const externs = await getNodeExterns(internals, [
     ...foundAdditional,
     ...nodeJS,
   ])
@@ -192,11 +192,11 @@ const filterNodeModule = (entry) => {
 const unique = (e, i, a) => a.indexOf(e) == i
 
 /**
- * Returns options to include externs.
+ * Returns compiler arguments to include Node.JS externs.
  * @param {!Array<string>} internals The list of builtin Node.JS modules used.
  * @param {!Array<string>} additional Any extra Node.JS modules to be included
  */
-const getExterns = async (internals, additional = []) => {
+const getNodeExterns = async (internals, additional = []) => {
   const externsDir = getExternsDir()
   const allInternals = [...internals, ...additional]
     .filter(unique)
@@ -205,16 +205,13 @@ const getExterns = async (internals, additional = []) => {
       return [...acc, i, ...deps]
     }, [])
     .filter(unique)
-  const p = [...allInternals, 'global', 'global/buffer', 'nodejs']
+  const internalExterns = [...allInternals, 'global', 'global/buffer', 'nodejs']
     .map(i => {
       if (['module', 'process', 'console', 'crypto'].includes(i)) i = `_${i}`
       return join(externsDir, `${i}.js`)
     })
-  await Promise.all(p.map(async pp => {
-    const exist = await exists(pp)
-    if (!exist) throw new Error(`Externs ${pp} don't exist.`)
-  }))
-  const args = createExternsArgs(p)
+  await checkExternsExist(internalExterns)
+  const args = createExternsArgs(internalExterns)
   return args
 }
 
@@ -234,4 +231,4 @@ module.exports=Compile
  * @typedef {import('../../compile').RunConfig} _depack.RunConfig
  */
 
-module.exports.getExterns = getExterns
+module.exports.getNodeExterns = getNodeExterns

@@ -1,5 +1,11 @@
 ## 14 September 2019
 
+### [2.0.2](https://github.com/dpck/src/compare/v2.0.1...v2.0.2)
+
+- [deps] Update `static-analysis`.
+- [fix] Check if externs from `package.json` exist.
+- [fix] Add the common chunk to output files list.
+
 ### [2.0.1](https://github.com/dpck/src/compare/v2.0.0...v2.0.1)
 
 - [feature] Update _Bundle_ to handle linked packages.

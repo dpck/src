@@ -10,21 +10,15 @@ import run from './run'
  */
 export const doesSrcHaveJsx = async (src) => {
   if (Array.isArray(src)) {
-    return src.reduce(async (acc, current) => {
-      const r = await acc
-      if (r) return r
-      return await _doesSrcHaveJsx(current)
-    }, false)
-  }
-  return await _doesSrcHaveJsx(src)
-}
+    if (src.some(endsWithJsx)) return true
+  } else if (endsWithJsx(src)) return true
 
-const _doesSrcHaveJsx = async (src) => {
   const analysis = await staticAnalysis(src, { nodeModules: false })
-  const hasJsx = src.endsWith('.jsx') || analysis.some(({ entry }) => {
-    return entry.endsWith('.jsx')
-  })
+  const hasJsx = analysis.some(({ entry }) => endsWithJsx(entry))
   return hasJsx
+}
+const endsWithJsx = (name) => {
+  return name.endsWith('.jsx')
 }
 
 /**
@@ -64,7 +58,7 @@ const Bundle = async (options, runOptions = {}, compilerArgs = []) => {
     fields: ['externs'],
   })
 
-  const { detectedExterns } = detectExterns(detected)
+  const { files: detectedExterns } = await detectExterns(detected)
   const externs = createExternsArgs(detectedExterns)
 
   const sorted = sort(detected)

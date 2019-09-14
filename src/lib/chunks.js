@@ -1,7 +1,7 @@
 import { join, basename } from 'path'
 import { rm } from '@wrote/wrote'
 import staticAnalysis, { sort } from 'static-analysis'
-import { getBundleArgs, updateTempDirArgs, getCommand, unique, createExternsArgs, hasJsonFiles, detectExterns } from './'
+import { getBundleArgs, updateTempDirArgs, getCommand, unique, createExternsArgs, hasJsonFiles, detectExterns, updateSourceMaps } from './'
 import run from './run'
 import { prepareTemp, doesSrcHaveJsx } from './bundle'
 
@@ -36,7 +36,7 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
       fields: ['externs'],
     })
 
-    const { detectedExterns: de } = detectExterns(detected)
+    const { files: de } = await detectExterns(detected)
     detectedExterns = [...detectedExterns, ...de]
 
     const sorted = sort(detected)
@@ -66,9 +66,13 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
     }
     return acc
   }, [])
-  if (commonChunk.length) commonChunk.push('--chunk', `common:${commonChunk.length/2}`)// 'common:auto')
 
   const outputFiles = []
+  if (commonChunk.length) {
+    commonChunk.push('--chunk', `common:${commonChunk.length/2}`)
+    // 'common:auto')
+    outputFiles.push(join(output, 'common.js'))
+  }
   const chunks = Object.entries(map).reduce((acc, [key, value]) => {
     const chunkDeps = value.filter(v => depsMap[v] == 1)
     const c = chunkDeps.reduce(addJsArg, [])
@@ -98,8 +102,10 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
   if (!output && stdout) console.log(stdout)
 
   if (hasJsx) {
-    // if (output && !noSourceMap)
-    //   await updateSourceMaps(output, tempDir)
+    if (output && !noSourceMap)
+      await Promise.all(outputFiles.map(async (o) => {
+        await updateSourceMaps(o, tempDir)
+      }))
     await rm(tempDir)
   }
   return chunksMap

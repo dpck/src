@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.1.1.tgz#0a68b9a061b5076ebaf948c150ea26d09c1e753f"
   integrity sha512-q5lO3vGUo0WgkSqzgzjL0HQdA9t2HzQqZISuVuQWMh9xqLuiLFP/ZTsxFc8vpMl7mNpGk7Mm0OeyFQ+Evrp0Cw==
 
-"@depack/bundle@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.4.0.tgz#67937aff40ee1a83cb53d2a3dcba748bae9a2740"
-  integrity sha512-4Hm4kPzHp76xAxvCXqMPLOvowqDW0AdPk57Ia6muICCa4X2XbT6saoWRJaoLU3nfqUrk/J7IfizaUXn84hBJOw==
+"@depack/bundle@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.4.1.tgz#fd7f096a38643f71278ac2148b96dd99a7bc3ac3"
+  integrity sha512-PoMt1L6m1IQnHO0p6rn1c8rJc0eeV58LP9jYy+e5OKihY3+W7MG/xGKiUUrr7OzxZxEJUZxI0gm9yGlS4K0TPw==
   dependencies:
     "@a-la/jsx" "^1.6.0"
     "@depack/split" "^1.0.0"
@@ -33,9 +33,9 @@
     fpj "^1.3.0"
     resolve-dependency "^1.0.3"
     restream "^3.7.4"
-    static-analysis "^1.7.1"
+    static-analysis "^2.0.1"
 
-"@depack/detect@^1.0.2":
+"@depack/detect@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@depack/detect/-/detect-1.1.0.tgz#e5e5cbd2c7f68d689363f4b4a7179a2918d45ff3"
   integrity sha512-t6OBa7LsPNhBFDcEN1V6S3nIQp0t3rB2OfTa/UiV1jCyeI+AEmy4iwhlkgv0pdMEs+gzgwnQQ/6bwQGI6+89lA==
@@ -158,7 +158,7 @@ documentary@^1.33.0:
     preact "8.5.2"
     typal "^1.22.6"
 
-erotic@^2.1.0, erotic@^2.1.1:
+erotic@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/erotic/-/erotic-2.1.1.tgz#97f20c2d6e7fd2ec6f7996823009d3ac8ae7157f"
   integrity sha512-S1ns+uibigdXxxzqiO5VNZw3d0YNrVb4jZ7OUAklO4722/ytp+nta6txsUhYmnIEI0TF7jjXNjGvcmw0I/Rs7A==
@@ -252,18 +252,10 @@ spawncommand@^2.2.0:
   dependencies:
     catchment "^3.3.0"
 
-static-analysis@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.7.1.tgz#d5c58e0fd318a8db981616cdb7726003c93db999"
-  integrity sha512-QTZGNqXoeEOFFTZmyeR10ai9sT8Hi/Xi7zDwr6LrFcZ9l4GEBT7qeWLyesaLf+2rAnpMDWkgLJ/ovRquJX01HA==
-  dependencies:
-    "@depack/detect" "^1.0.2"
-    "@depack/split" "^1.0.0"
-    "@wrote/read" "^1.0.4"
-    erotic "^2.1.1"
-    fpj "^1.3.0"
-    mismatch "^1.2.0"
-    resolve-dependency "^1.0.3"
+static-analysis@^2.0.1, static-analysis@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-2.0.3.tgz#4a7150da4165e27e07f881782cb298ea320dfe74"
+  integrity sha512-zPeoyu3ZKssjrLf1uq/dbIqWuY4CakZhOgivyZ//dzlPGN29aP0iM7/1cY+FV50UGY+D39CcxJtqST9IP72UBA==
 
 temp-context@^2.1.3:
   version "2.1.3"
