@@ -846,7 +846,7 @@ If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `tar
 Dual licensed under Affero GPL and a commercial license.
 
 - Within the UK: no commercial use is allowed until the
-  organisation signs up at
+  organisation signs up. After: see below. Sign up at:
   https://www.technation.sucks/license/.
 - Across the globe: Affero GPL. No companies affiliated
   with Tech Nation in any way (e.g., participation in
