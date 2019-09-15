@@ -1,5 +1,6 @@
-import { BundleChunks } from '../src'
 import stat from 'async-stat'
+import deepEqual from '@zoroaster/deep-equal'
+import { BundleChunks } from '../src'
 
 const compileOurChunks = async (srcs) => {
   let cachedMap, needsCacheUpdate

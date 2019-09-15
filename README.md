@@ -596,8 +596,9 @@ Running Google Closure Compiler<a id="_ind2" href="#_ind2"><img src=".documentar
 This method supports caching. It will shallowly analyse source files (does not go into `node_modules` apart from finding out their version), and run the `checkCache` function if it was passed. If this callback returns true, the compilation will be skipped. See an example implementation below.
 
 ```js
-import { BundleChunks } from '../src'
 import stat from 'async-stat'
+import deepEqual from '@zoroaster/deep-equal'
+import { BundleChunks } from '../src'
 
 const compileOurChunks = async (srcs) => {
   let cachedMap, needsCacheUpdate
