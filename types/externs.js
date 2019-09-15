@@ -60,6 +60,11 @@ _depack.ChunksConfig
  * @type {!Array<string>}
  */
 _depack.ChunksConfig.prototype.srcs
+/**
+ * A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
+ * @type {(function(!Array<!_staticAnalysis.Detection>): !Promise<boolean|undefined>)|undefined}
+ */
+_depack.ChunksConfig.prototype.checkCache = function(analysis) {}
 
 /* typal types/compile.xml externs */
 /**

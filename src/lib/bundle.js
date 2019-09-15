@@ -6,16 +6,20 @@ import { getCommand, updateSourceMaps, hasJsonFiles, createExternsArgs, detectEx
 import run from './run'
 
 /**
- * @param {string|!Array<string>} src
+ * @param {string|!Array<string>} src The path or paths to the entries.
+ * @param {boolean} [needsAnalysis] Whether the shallow analysis result needs to be returned.
  */
-export const doesSrcHaveJsx = async (src) => {
-  if (Array.isArray(src)) {
-    if (src.some(endsWithJsx)) return true
-  } else if (endsWithJsx(src)) return true
+export const doesSrcHaveJsx = async (src, needsAnalysis) => {
+  if (!needsAnalysis && Array.isArray(src)) {
+    if (src.some(endsWithJsx)) return { hasJsx: true }
+  } else if (!needsAnalysis && endsWithJsx(src)) return { hasJsx: true }
 
-  const analysis = await staticAnalysis(src, { nodeModules: false })
-  const hasJsx = analysis.some(({ entry }) => endsWithJsx(entry))
-  return hasJsx
+  const analysis = await staticAnalysis(src, { shallow: true })
+  const hasJsx = analysis.some(({ entry, name }) => {
+    if (name) return false // return node_modules
+    return endsWithJsx(entry)
+  })
+  return { hasJsx, analysis }
 }
 const endsWithJsx = (name) => {
   return name.endsWith('.jsx')
@@ -31,12 +35,12 @@ export const prepareTemp = async (src, { tempDir, preact, preactExtern, forceTem
     Src = join(tempDir, src)
     return { Src, hasJsx: true }
   }
-  const hasJsx = await doesSrcHaveJsx(src)
+  const { hasJsx, analysis } = await doesSrcHaveJsx(src)
   if (hasJsx) {
     await generateTemp(src, { tempDir, preact, preactExtern })
     Src = join(tempDir, src)
   }
-  return { Src, hasJsx }
+  return { Src, hasJsx, analysis }
 }
 
 /**

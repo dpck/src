@@ -1,4 +1,7 @@
 <types namespace="_depack">
+  <import from="static-analysis" ns="_staticAnalysis" name="Detection"
+    link="https://github.com/dpck/static-analysis#type-detection"
+  />
   <type record name="BundleBase" desc="Options for the web bundler.">
     <prop string name="tempDir" default="depack-temp">
       Where to save prepared JSX files.
@@ -24,5 +27,11 @@
     <prop type="!Array<string>" name="srcs">
       The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
     </prop>
+    <fn async name="checkCache" return="boolean|undefined" opt>
+      <arg type="!Array<!_staticAnalysis.Detection>" name="analysis">
+        New static analysis result.
+      </arg>
+      A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
+    </fn>
   </type>
 </types>

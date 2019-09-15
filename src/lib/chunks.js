@@ -12,14 +12,18 @@ import { prepareTemp, doesSrcHaveJsx } from './bundle'
  * @param {!Array<string>} [compilerArgs] Extra arguments for the compiler, including the ones got with `getOptions`.
  */
 export default async function BundleChunks(options, runOptions, compilerArgs = []) {
-  const { srcs, tempDir = 'depack-temp', preact, preactExtern } = options
+  const { srcs, tempDir = 'depack-temp', preact, preactExtern, checkCache } = options
   const { output = '', compilerVersion, debug, noSourceMap } = runOptions
   if (!srcs) throw new Error('Entry files are not given.')
   if (!Array.isArray(srcs)) throw new Error('Expecting an array of source files to generate chunks.')
 
   let deps = []
   let processCommonJs = false
-  let hasJsx = await doesSrcHaveJsx(srcs) // todo: share cache
+  let { hasJsx, analysis } = await doesSrcHaveJsx(srcs, true)
+  if (checkCache) {
+    const res = await checkCache(analysis)
+    if (res) return
+  }
   // If one has jsx, create temp for all.
   // @depack/bundle needs updating to reference src JS files and create
   // temp only for JSX.

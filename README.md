@@ -21,6 +21,7 @@ yarn add @depack/depack
   * [`BundleConfig`](#type-bundleconfig)
 - [`async BundleChunks(options, runOptions=, compilerArgs=): string`](#async-bundlechunksoptions-chunksconfigrunoptions-runconfigcompilerargs-arraystring-string)
   * [`ChunksConfig`](#type-chunksconfig)
+  * [Caching](#caching)
 - [`getOptions(options): !Array<string>`](#getoptionsoptions-getoptions-array)
   * [`GetOptions`](#type-getoptions)
 - [`getOutput(output, src): string`](#getoutputoutput-stringsrc-string-string)
@@ -298,7 +299,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190709<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190909<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -439,13 +440,13 @@ function e(a) {
   }
   return a;
 }
-[].concat(e(document.querySelectorAll(".BananaInactive"))).forEach(function(a) {
+e(document.querySelectorAll(".BananaInactive")).concat().forEach(function(a) {
   var b = a.closest(".BananaCheck");
   a.onclick = function() {
     b.classList.add("BananaActivated");
   };
 });
-[].concat(e(document.querySelectorAll(".BananaActive"))).forEach(function(a) {
+e(document.querySelectorAll(".BananaActive")).concat().forEach(function(a) {
   var b = a.closest(".BananaCheck");
   a.onclick = function() {
     b.classList.remove("BananaActivated");
@@ -457,7 +458,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190709<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190909<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -485,6 +486,17 @@ __<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundleba
  <tr>
   <td>
    The entry files to bundle. Chunks will be created according to the strategy (only <code>common</code> strategy is supported at the moment, which places any dependency which is required in more than one file in a <code>common</code> chunk).
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">checkCache</td>
+  <td><em>(analysis: !Array&lt;<a href="https://github.com/dpck/static-analysis#type-detection">!_staticAnalysis.Detection</a>&gt;) => !Promise&lt;(boolean | undefined)&gt;</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return <code>true</code> when caches match to skip processing and return void.<br/>
+   <kbd><strong>analysis*</strong></kbd> <em><code>!Array&lt;<a href="https://github.com/dpck/static-analysis#type-detection">!_staticAnalysis.Detection</a>&gt;</code></em>: New static analysis result.
   </td>
  </tr>
 </table>
@@ -550,11 +562,6 @@ await BundleChunks({
 
 _The bundled output:_
 ```js
-# $weak$.js
-
-
-
-
 # chunkA.js
 
 console.log("chunk a");console.log("common");c();
@@ -584,6 +591,60 @@ NODE
 Running Google Closure Compiler<a id="_ind2" href="#_ind2"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
+### Caching
+
+This method supports caching. It will shallowly analyse source files (does not go into `node_modules` apart from finding out their version), and run the `checkCache` function if it was passed. If this callback returns true, the compilation will be skipped. See an example implementation below.
+
+```js
+import { BundleChunks } from '../src'
+import stat from 'async-stat'
+
+const compileOurChunks = async (srcs) => {
+  let cachedMap, needsCacheUpdate
+
+  let map = await BundleChunks({
+    srcs,
+    preactExtern: true,
+    async checkCache(analysis) {
+      // somehow get the cache object: { chunksMap, files, deps }
+      const { chunksMap, ...current } = splendid.getCache('compile-comps')
+      cachedMap = chunksMap
+      const deps = {}
+      const entries = []
+      analysis.forEach(({ name, version, entry }) =>  {
+        if (name) deps[name] = version
+        else entries.push(entry)
+      })
+      const files = await entries.reduce(async (acc, file) => {
+        const accRes = await acc
+        /** @type {import('fs').Stats} */
+        const ls = await stat(file)
+        const d = new Date(ls.mtimeMs).toLocaleString()
+        accRes[file] = d
+        return accRes
+      }, {})
+      try {
+        deepEqual({ files, deps }, current, ' ')
+        // this is now OK, should not need to do anything else
+        splendid.log2('compile-comps', 'Comps not changed.')
+        return true
+      } catch (err) {
+        splendid.log2('compile-comps', err.message)
+        needsCacheUpdate = err.actual
+      }
+    },
+  }, { compilerVersion, output }, options)
+
+  if (needsCacheUpdate) {
+    needsCacheUpdate.chunksMap = map
+    // save new cache: { chunksMap, files, deps }
+    await splendid.appendCache('compile-comps', needsCacheUpdate)
+  } else if (!map) {
+    map = cachedMap
+  }
+  return map
+}
+```
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/5.svg?sanitize=true">

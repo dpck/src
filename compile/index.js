@@ -64,6 +64,7 @@ function Bundle(options, runOptions, compilerArgs) {
  * Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies.
  * @param {!_depack.ChunksConfig} options Options for the BundleChunks method.
  * @param {!Array<string>} options.srcs The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
+ * @param {(analysis: !Array<!_staticAnalysis.Detection>) => !Promise<(boolean|undefined)>} [options.checkCache] A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
  * @param {!_depack.RunConfig} [runOptions] General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
  * @param {string} [runOptions.debug] The name of the file where to save sources after each pass. Useful when there's a potential bug in _GCC_.
@@ -165,6 +166,7 @@ module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
 
 /* typal types/bundle.xml namespace */
 /**
+ * @typedef {import('static-analysis').Detection} _staticAnalysis.Detection
  * @typedef {_depack.BundleBase} BundleBase `＠record` Options for the web bundler.
  * @typedef {Object} _depack.BundleBase `＠record` Options for the web bundler.
  * @prop {string} [tempDir="depack-temp"] Where to save prepared JSX files. Default `depack-temp`.
@@ -179,4 +181,5 @@ module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
  * @typedef {_depack.BundleBase & _depack.$ChunksConfig} _depack.ChunksConfig `＠record` Options for the BundleChunks method.
  * @typedef {Object} _depack.$ChunksConfig `＠record` Options for the BundleChunks method.
  * @prop {!Array<string>} srcs The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
+ * @prop {(analysis: !Array<!_staticAnalysis.Detection>) => !Promise<(boolean|undefined)>} [checkCache] A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
  */
