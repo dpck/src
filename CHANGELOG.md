@@ -1,3 +1,9 @@
+## 16 September 2019
+
+### [2.1.0](https://github.com/dpck/src/compare/v2.0.2...v2.1.0)
+
+- [feature] Enable caching for chunks analysis.
+
 ## 14 September 2019
 
 ### [2.0.2](https://github.com/dpck/src/compare/v2.0.1...v2.0.2)
