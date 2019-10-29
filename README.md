@@ -299,7 +299,7 @@ node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190909<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -458,7 +458,7 @@ _Stderr:_
 <pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190909<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20190929<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -486,6 +486,24 @@ __<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundleba
  <tr>
   <td>
    The entry files to bundle. Chunks will be created according to the strategy (only <code>common</code> strategy is supported at the moment, which places any dependency which is required in more than one file in a <code>common</code> chunk).
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><strong>rel*</strong></td>
+  <td><em>string</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Directory to which sources of chunks are relative. By default, the basenames are used for chunk names, but if sources are from multiple dirs, this prop can be set. Because chunk names cannot contain <code>/</code>, separators will be substituted for <code>-</code>. For example, given the following input:
+   <li><code>src/lib.js</code></li>
+   <li><code>src/source1.js</code></li>
+   <li><code>src/dir/source2.js</code></li>
+   
+   and using <code>rel=src</code>, the following chunks are created:
+   <li><code>lib</code></li>
+   <li><code>source1</code></li>
+   <li><code>dir-source2</code></li>
   </td>
  </tr>
  <tr>

@@ -61,6 +61,19 @@ _depack.ChunksConfig
  */
 _depack.ChunksConfig.prototype.srcs
 /**
+ * Directory to which sources of chunks are relative. By default, the basenames are used for chunk names, but if sources are from multiple dirs, this prop can be set. Because chunk names cannot contain `/`, separators will be substituted for `-`. For example, given the following input:
+ * - `src/lib.js`
+ * - `src/source1.js`
+ * - `src/dir/source2.js`
+ *
+ * and using `rel=src`, the following chunks are created:
+ * - `lib`
+ * - `source1`
+ * - `dir-source2`
+ * @type {string}
+ */
+_depack.ChunksConfig.prototype.rel
+/**
  * A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
  * @type {(function(!Array<!_staticAnalysis.Detection>): !Promise<boolean|undefined>)|undefined}
  */

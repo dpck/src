@@ -64,6 +64,15 @@ function Bundle(options, runOptions, compilerArgs) {
  * Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies.
  * @param {!_depack.ChunksConfig} options Options for the BundleChunks method.
  * @param {!Array<string>} options.srcs The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
+ * @param {string} options.rel Directory to which sources of chunks are relative. By default, the basenames are used for chunk names, but if sources are from multiple dirs, this prop can be set. Because chunk names cannot contain `/`, separators will be substituted for `-`. For example, given the following input:
+ * - `src/lib.js`
+ * - `src/source1.js`
+ * - `src/dir/source2.js`
+ * 
+ * and using `rel=src`, the following chunks are created:
+ * - `lib`
+ * - `source1`
+ * - `dir-source2`
  * @param {(analysis: !Array<!_staticAnalysis.Detection>) => !Promise<(boolean|undefined)>} [options.checkCache] A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
  * @param {!_depack.RunConfig} [runOptions] General options for running of the compiler.
  * @param {string} [runOptions.output] The path where the output will be saved. Prints to `stdout` if not passed.
@@ -181,5 +190,14 @@ module.exports.GOOGLE_CLOSURE_COMPILER = GOOGLE_CLOSURE_COMPILER
  * @typedef {_depack.BundleBase & _depack.$ChunksConfig} _depack.ChunksConfig `＠record` Options for the BundleChunks method.
  * @typedef {Object} _depack.$ChunksConfig `＠record` Options for the BundleChunks method.
  * @prop {!Array<string>} srcs The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
+ * @prop {string} rel Directory to which sources of chunks are relative. By default, the basenames are used for chunk names, but if sources are from multiple dirs, this prop can be set. Because chunk names cannot contain `/`, separators will be substituted for `-`. For example, given the following input:
+ * - `src/lib.js`
+ * - `src/source1.js`
+ * - `src/dir/source2.js`
+ *
+ * and using `rel=src`, the following chunks are created:
+ * - `lib`
+ * - `source1`
+ * - `dir-source2`
  * @prop {(analysis: !Array<!_staticAnalysis.Detection>) => !Promise<(boolean|undefined)>} [checkCache] A function to be executed to compare the an existing static analysis result with the new one, to see if any files/dependencies were updated. Should return `true` when caches match to skip processing and return void.
  */

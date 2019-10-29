@@ -1,4 +1,4 @@
-import { join, basename } from 'path'
+import { join, basename, relative, sep } from 'path'
 import { rm } from '@wrote/wrote'
 import staticAnalysis, { sort } from 'static-analysis'
 import { getBundleArgs, updateTempDirArgs, getCommand, unique, createExternsArgs, hasJsonFiles, detectExterns, updateSourceMaps } from './'
@@ -12,7 +12,8 @@ import { prepareTemp, doesSrcHaveJsx } from './bundle'
  * @param {!Array<string>} [compilerArgs] Extra arguments for the compiler, including the ones got with `getOptions`.
  */
 export default async function BundleChunks(options, runOptions, compilerArgs = []) {
-  const { srcs, tempDir = 'depack-temp', preact, preactExtern, checkCache } = options
+  const { srcs, tempDir = 'depack-temp', preact, preactExtern, checkCache,
+    rel } = options
   const { output = '', compilerVersion, debug, noSourceMap } = runOptions
   if (!srcs) throw new Error('Entry files are not given.')
   if (!Array.isArray(srcs)) throw new Error('Expecting an array of source files to generate chunks.')
@@ -77,10 +78,12 @@ export default async function BundleChunks(options, runOptions, compilerArgs = [
     // 'common:auto')
     outputFiles.push(join(output, 'common.js'))
   }
+  const Rel = hasJsx && rel ? join(tempDir, rel) : rel
   const chunks = Object.entries(map).reduce((acc, [key, value]) => {
     const chunkDeps = value.filter(v => depsMap[v] == 1)
     const c = chunkDeps.reduce(addJsArg, [])
-    const name = basename(key).replace(/.jsx$/, '.js')
+    const n = Rel ? relative(Rel, key) : basename(key)
+    const name = n.replace(/.jsx$/, '.js').replace(sep, '-')
     const cu = [name.replace('.js', ''), chunkDeps.length + 1]
     if (chunkDeps.length != value.length) {
       chunksMap[name] = ['common']

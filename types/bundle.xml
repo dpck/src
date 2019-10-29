@@ -27,6 +27,17 @@
     <prop type="!Array<string>" name="srcs">
       The entry files to bundle. Chunks will be created according to the strategy (only `common` strategy is supported at the moment, which places any dependency which is required in more than one file in a `common` chunk).
     </prop>
+    <prop string name="rel">
+      Directory to which sources of chunks are relative. By default, the basenames are used for chunk names, but if sources are from multiple dirs, this prop can be set. Because chunk names cannot contain `/`, separators will be substituted for `-`. For example, given the following input:
+      - `src/lib.js`
+      - `src/source1.js`
+      - `src/dir/source2.js`
+
+      and using `rel=src`, the following chunks are created:
+      - `lib`
+      - `source1`
+      - `dir-source2`
+    </prop>
     <fn async name="checkCache" return="boolean|undefined" opt>
       <arg type="!Array<!_staticAnalysis.Detection>" name="analysis">
         New static analysis result.
