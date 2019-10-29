@@ -1,3 +1,9 @@
+## 29 October 2019
+
+### [2.1.1](https://github.com/dpck/src/compare/v2.1.0...v2.1.1)
+
+- [feature] Support `rel` prop for chunks config (to use for multiple directories instead of _basename_).
+
 ## 16 September 2019
 
 ### [2.1.0](https://github.com/dpck/src/compare/v2.0.2...v2.1.0)
