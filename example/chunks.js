@@ -4,6 +4,11 @@ import TempContext from 'temp-context'
 (async () => {
   const t = new TempContext()
   await t._init()
+  try {
+    await t._destroy()
+  } catch (err) {
+    // ok
+  }
   const { TEMP } = t
   /* start example */
   const options = getOptions({

@@ -266,6 +266,7 @@ import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
 
 _The compiled output in pretty format of advanced optimisation:_
 ```js
+Your Node.JS version is v10 but only externs for v8 are available at the moment. This can result in compiler warnings.
 #!/usr/bin/env node
 'use strict';
 const os = require('os');
@@ -287,17 +288,17 @@ const {createReadStream:h, createWriteStream:k} = fs;
 ```
 
 _Stderr:_
-<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
 ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \
---entry_point example/compile-src.js --externs node_modules/@depack/externs/v8/os.js \
---externs node_modules/@depack/externs/v8/fs.js --externs \
-node_modules/@depack/externs/v8/stream.js --externs \
-node_modules/@depack/externs/v8/events.js --externs \
-node_modules/@depack/externs/v8/url.js --externs \
-node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js
+--entry_point example/compile-src.js --externs node_modules/@externs/nodejs/v8/os.js \
+--externs node_modules/@externs/nodejs/v8/fs.js --externs \
+node_modules/@externs/nodejs/v8/stream.js --externs \
+node_modules/@externs/nodejs/v8/events.js --externs \
+node_modules/@externs/nodejs/v8/url.js --externs \
+node_modules/@externs/nodejs/v8/global.js --externs \
+node_modules/@externs/nodejs/v8/global/buffer.js --externs \
+node_modules/@externs/nodejs/v8/nodejs.js
 Built-ins: os, fs
 Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
@@ -455,7 +456,7 @@ e(document.querySelectorAll(".BananaActive")).concat().forEach(function(a) {
 ```
 
 _Stderr:_
-<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
 Running Google Closure Compiler 20190929<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
@@ -596,7 +597,7 @@ function c(){var a=void 0===a?{}:a;a=a.a;window.b&&a&&console.log("test")};
 ```
 
 _Stderr:_
-<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --chunk_output_path_prefix test/temp/ --module_resolution \
 NODE
 --js test/fixture/chunks/index.js
@@ -852,7 +853,7 @@ console.log(opts)
 ---
 ```js
 [ '-jar',
-  '/Users/zavr/node_modules/google-closure-compiler-java/compiler.jar',
+  '/Users/anton/node_modules/google-closure-compiler-java/compiler.jar',
   '--compilation_level',
   'ADVANCED',
   '--language_in',
