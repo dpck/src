@@ -23,7 +23,17 @@ export const makeError = (exitCode, se) => {
   return er
 }
 
-const [VER] = process.version.split('.', 1)
+
+const getCoreVersion = () => {
+  let [VER] = process.version.split('.', 1)
+  const V = VER.replace(/[^\d]/g, '')
+  if (V > 8 || V < 8) {
+    console.log('Your Node.JS version is %s but only externs for v8 are available at the moment. ' +
+      'This can result in compiler warnings.', VER)
+    VER = 'v8'
+  }
+  return VER
+}
 
 /**
  * Creates mocks in the `node_module` folder to serve as externs. It is not possible to serve proxies not from `node_modules` path because Closure does not understand it.
@@ -36,6 +46,7 @@ const [VER] = process.version.split('.', 1)
 export const prepareCoreModules = async ({
   internals, nodeModulesPath = 'node_modules', force = true,
 }) => {
+  const VER = getCoreVersion()
   const corePath = getCorePath(VER)
   const r = await Promise.all(internals.map(async (name) => {
     const path = join(nodeModulesPath, name)
