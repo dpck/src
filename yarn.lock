@@ -257,10 +257,15 @@ spawncommand@^2.2.0:
   dependencies:
     catchment "^3.3.0"
 
-static-analysis@^2.0.1, static-analysis@^2.0.3:
+static-analysis@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-2.0.3.tgz#4a7150da4165e27e07f881782cb298ea320dfe74"
   integrity sha512-zPeoyu3ZKssjrLf1uq/dbIqWuY4CakZhOgivyZ//dzlPGN29aP0iM7/1cY+FV50UGY+D39CcxJtqST9IP72UBA==
+
+static-analysis@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-2.1.0.tgz#ade6c6f1ccf6f96f545b20534312aa6452fc2a72"
+  integrity sha512-2rNPCCcEWUKvyHiWmAqksD05pCI0RM9/if4NYpqryStrdpOlfKyhN9UJDavkVFsGfKdynIVwzh8YCcI5ETmeLQ==
 
 temp-context@^2.1.3:
   version "2.1.3"

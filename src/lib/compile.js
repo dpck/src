@@ -41,7 +41,6 @@ const Compile = async (options, runOptions = {}, compilerArgs = []) => {
   const realCompilerArgs =
     foundAdditional.length ? compilerArgs.filter(a => a) : compilerArgs
 
-
   const args = [
     ...realCompilerArgs,
     '--package_json_entry_names', 'module,main',
