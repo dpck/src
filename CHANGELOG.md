@@ -1,5 +1,9 @@
 ## 16 November 2019
 
+### [2.1.3](https://github.com/dpck/src/compare/v2.1.2...v2.1.3)
+
+- [fix] Require `@externs/nodejs` and `@depack/nodejs` at runtime only.
+
 ### [2.1.2](https://github.com/dpck/src/compare/v2.1.1...v2.1.2)
 
 - [fix] Read lower Node's version of the core builtins.
