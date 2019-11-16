@@ -4,8 +4,6 @@ import { ensurePath, write, read, exists } from '@wrote/wrote'
 // import getCorePath from '@depack/nodejs'
 import resolveDependency from 'resolve-dependency'
 
-const getCorePath = require(/*ok depack*/'@depack/nodejs')
-
 /**
  * Create an error with color.
  * @param {number} exitCode
@@ -47,6 +45,7 @@ export const prepareCoreModules = async ({
   internals, nodeModulesPath = 'node_modules', force = true,
 }) => {
   const VER = getCoreVersion()
+  const getCorePath = require(/*ok depack*/'@depack/nodejs')
   const corePath = getCorePath(VER)
   const r = await Promise.all(internals.map(async (name) => {
     const path = join(nodeModulesPath, name)

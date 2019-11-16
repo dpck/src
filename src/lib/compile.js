@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { c } from 'erte'
 import { join } from 'path'
 import makePromise from 'makepromise'
@@ -8,10 +9,6 @@ import frame from 'frame-of-mind'
 import { removeStrict, getWrapper, hasJsonFiles, prepareOutput, getShellCommand, replaceWithColor, detectExterns, createExternsArgs, checkExternsExist } from './'
 import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
-
-/** @type {function(): string} */
-const getExternsDir = require(/*ok depack*/'@externs/nodejs')
-const { 'dependencies': externsDeps } = getExternsDir
 
 /**
  * Compile a Node.JS file into a single executable.
@@ -194,6 +191,10 @@ const unique = (e, i, a) => a.indexOf(e) == i
  * @param {!Array<string>} additional Any extra Node.JS modules to be included
  */
 export const getNodeExterns = async (internals, additional = []) => {
+  /** @type {function(): string} */
+  const getExternsDir = require(/*ok depack*/'@externs/nodejs')
+  const { 'dependencies': externsDeps } = getExternsDir
+
   const externsDir = getExternsDir()
   const allInternals = [...internals, ...additional]
     .filter(unique)
