@@ -1,3 +1,11 @@
+## 16 November 2019
+
+### [2.1.2](https://github.com/dpck/src/compare/v2.1.1...v2.1.2)
+
+- [fix] Read lower Node's version of the core builtins.
+- [fix] Migrate externs to `@externs/nodejs` org.
+- [fix] Merge node_modules in _StaticAnalysis_.
+
 ## 29 October 2019
 
 ### [2.1.1](https://github.com/dpck/src/compare/v2.1.0...v2.1.1)
