@@ -2,11 +2,6 @@
 test/fixture/chunks/chunkA.js test/fixture/chunks/chunkB.js
 
 /* expected */
-# $weak$.js
-
-
-
-
 # chunkA.js
 
 console.log("chunk a");console.log("common");c();

@@ -10,7 +10,7 @@ import { prepareCoreModules, fixDependencies } from './closure'
 import run from './run'
 
 /** @type {function(): string} */
-const getExternsDir = require(/*ok depack*/'@depack/externs')
+const getExternsDir = require(/*ok depack*/'@externs/nodejs')
 const { 'dependencies': externsDeps } = getExternsDir
 
 /**

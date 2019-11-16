@@ -42,11 +42,6 @@
   dependencies:
     mismatch "^1.2.0"
 
-"@depack/externs@^1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.4.4.tgz#d75493858dd590421931b67395800d57cf0ae063"
-  integrity sha512-+xYILsIcH+k8QiBMKUVPpa6wwwsXMgL8nQaqpeQoBu9yXG0o4nVszDU07PMxw0N/q/3lb2NeJo/Uesj/eWkPvA==
-
 "@depack/nodejs@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.4.tgz#36195f33fef7a6b9b1f93a043a52a87fac087729"
@@ -56,6 +51,11 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@depack/split/-/split-1.0.0.tgz#37fea28d9bc6f01e5a2da87d393f402781bb7e99"
   integrity sha512-PNJPl01VFMKtyN7qBZ2cds4N/lO2KvzLrR7JamODFiuuL2X8mGoTKp1SI8fxlT2MwLV8mScCUKn55QPwsUX7iA==
+
+"@externs/nodejs@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@externs/nodejs/-/nodejs-1.5.0.tgz#88ff9e7a03c53d19101ee49768e598ff0f39c9ad"
+  integrity sha512-2J+FRDjGfKKldTQ5YqLmhQ04/sA9swTQ6OTtPzo4xhg41u1+eiufciXiqW6u3UXEcmm413a27NakgnLbzfp0wQ==
 
 "@wrote/clone@^1.1.1":
   version "1.2.1"
@@ -131,10 +131,15 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.3.0.tgz#57d169417e09e481efafccbffdd93cef919ec5e6"
   integrity sha512-fufal06pS/SYhOKHCmoFQ+PjhQwsCwMr2h0D2xeiVaXstaWHJVEiLg4+BU/KCmOOzLXLKikf81ca4zFXip7ScQ==
 
-alamode@^3.0.0, alamode@^3.0.1:
+alamode@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.0.1.tgz#a51113deb629e0ac177b072c0b3d58475e343f57"
   integrity sha512-BXOkrmmR1Q8/Fa8z5PE7jUKQJQJ6JPGzvhkMvyeHQ28kG5jCGUjTVgR8WsIqyczEjH5iWy3v4utwDfWwXr44sg==
+
+alamode@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.2.0.tgz#ee79dcf2483b5e28e9aac8cd0dfdc692aa333ca5"
+  integrity sha512-jDV6kYpIf9jHJUre1OOotW8EM2Qy58S/eOks2MWhjNz2xJQdEfyzFKbcdaZowC8sk5DKxsnapf/mZNE53B3haQ==
 
 catchment@^1.0.0:
   version "1.0.0"
