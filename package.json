@@ -12,7 +12,7 @@
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
     "compile": "depack src/depack -o compile -c -a -p -s",
     "lint": "eslint .",
-    "doc": "NODE_DEBUG=doc doc -o README.md -n _depack",
+    "doc": "doc -o README.md -n _depack -d -a",
     "b": "alamode src -o build -s",
     "d": "yarn-s template d1 externs",
     "template": "typal compile/template.js -T compile/index.js -t types",
