@@ -193,7 +193,7 @@ const unique = (e, i, a) => a.indexOf(e) == i
 export const getNodeExterns = async (internals, additional = []) => {
   /** @type {function(): string} */
   const getExternsDir = require(/*ok depack*/'@externs/nodejs')
-  const { 'dependencies': externsDeps } = getExternsDir
+  const externsDeps = getExternsDir['dependencies']
 
   const externsDir = getExternsDir()
   const allInternals = [...internals, ...additional]

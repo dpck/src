@@ -10,7 +10,7 @@
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
-    "compile": "depack src/depack -o compile -c -a -p -s",
+    "lib": "depack src/depack -o compile -c -a -p -s --source_map_include_content",
     "lint": "eslint .",
     "doc": "doc -o README.md -n _depack -d -a",
     "b": "alamode src -o build -s",
@@ -31,6 +31,7 @@
     "type": "git",
     "url": "git://github.com/dpck/src.git"
   },
+  "typedefs": "typedefs.json",
   "keywords": [
     "src",
     "depack",
@@ -45,11 +46,11 @@
     "single"
   ],
   "author": "Anton <anton@adc.sh>",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/dpck/src/issues"
   },
-  "homepage": "https://compiler.page",
+  "homepage": "https://www.compiler.page",
   "devDependencies": {
     "@depack/bundle": "^1.4.1",
     "@depack/detect": "^1.1.0",

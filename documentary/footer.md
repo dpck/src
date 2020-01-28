@@ -4,7 +4,7 @@
 
 ## License & Copyright
 
-%EXAMPLE: LICENSE%
+GNU Affero General Public License v3.0
 
 <depack-footer />
 

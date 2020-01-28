@@ -1,0 +1,54 @@
+{
+  "_depack.run": {
+    "link": "https://github.com/dpck/src#async-runargs-arraystringopts-runconfig-string",
+    "description": "Low-level API used by `Compile` and `Bundle`. Spawns _Java_ and executes the compilation. To debug a possible bug in the _GCC_, the sources after each pass can be saved to the file specified with the `debug` command. Also, _GCC_ does not add `// # sourceMappingURL=output.map` comment, therefore it's done by this method. Returns `stdout` of the _Java_ process. Returns the _stdout_ of the Java process."
+  },
+  "_depack.RunConfig": {
+    "link": "https://github.com/dpck/src#type-runconfig",
+    "description": "General options for running of the compiler."
+  },
+  "_depack.Compile": {
+    "link": "https://github.com/dpck/src#async-compileoptions-compileconfigrunoptions-runconfigcompilerargs-arraystring-string",
+    "description": "Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`."
+  },
+  "_depack.CompileConfig": {
+    "link": "https://github.com/dpck/src#type-compileconfig",
+    "description": "Options for the Node.JS package compiler."
+  },
+  "_depack.Bundle": {
+    "link": "https://github.com/dpck/src#async-bundleoptions-bundleconfigrunoptions-runconfigcompilerargs-arraystring-string",
+    "description": "Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`."
+  },
+  "_depack.BundleBase": {
+    "link": "https://github.com/dpck/src#type-bundlebase",
+    "description": "Options for the web bundler."
+  },
+  "_depack.BundleConfig": {
+    "link": "https://github.com/dpck/src#type-bundleconfig",
+    "description": "Options for the Bundle method."
+  },
+  "_depack.BundleChunks": {
+    "link": "https://github.com/dpck/src#async-bundlechunksoptions-chunksconfigrunoptions-runconfigcompilerargs-arraystring-string",
+    "description": "Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies."
+  },
+  "_depack.ChunksConfig": {
+    "link": "https://github.com/dpck/src#type-chunksconfig",
+    "description": "Options for the BundleChunks method."
+  },
+  "_depack.getOptions": {
+    "link": "https://github.com/dpck/src#getoptionsoptions-getoptions-array",
+    "description": "Returns an array of options to pass to the compiler for `Compile`, `Bundle` and `BundleChunks` methods. [Full list of supported arguments](https://github.com/google/closure-compiler/wiki/Flags-and-Options)."
+  },
+  "_depack.GetOptions": {
+    "link": "https://github.com/dpck/src#type-getoptions",
+    "description": "Parameters for `getOptions`."
+  },
+  "_depack.getOutput": {
+    "link": "https://github.com/dpck/src#getoutputoutput-stringsrc-string-string",
+    "description": "Returns the location of the output file, even when the directory is given."
+  },
+  "_depack.getCompilerVersion": {
+    "link": "https://github.com/dpck/src#async-getcompilerversion-string",
+    "description": "If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `target`, otherwise reads the version from the `google-closure-compiler-java` package.json file."
+  }
+}

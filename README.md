@@ -122,7 +122,7 @@ __<a name="type-runconfig">`RunConfig`</a>__: General options for running of the
 Compiles a _Node.JS_ source file with dependencies into a single executable (with the `+x` addition). Performs regex-based static analysis of the whole of the dependency tree to construct the list of JS files. If any of the files use `require`, adds the `--process_common_js_modules` flag. Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-compileconfig" title="Options for the Node.JS package compiler.">!CompileConfig</a></code></em>: Options for the _Node.JS_ package compiler. Must have the `src` prop at least.
- - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>runOptions</kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
  - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended. `getOptions` needs to be called first to find out the compiler's JAR at minimum.
 
 The actual logic that makes compilation of _Node.JS_ packages possible is:
@@ -266,13 +266,12 @@ import { getCompilerVersion, Compile, getOptions } from '@depack/depack'
 
 _The compiled output in pretty format of advanced optimisation:_
 ```js
-Your Node.JS version is v10 but only externs for v8 are available at the moment. This can result in compiler warnings.
 #!/usr/bin/env node
 'use strict';
 const os = require('os');
 const fs = require('fs');             
-const {constants:g} = os;
-const {createReadStream:h, createWriteStream:k} = fs;
+const g = os.constants;
+const h = fs.createReadStream, k = fs.createWriteStream;
 (async() => {
   var d = await new Promise((l, e) => {
     const a = process.env.INPUT || __filename, b = process.env.OUTPUT, c = h(a), m = b ? k(b) : process.stdout;
@@ -288,7 +287,7 @@ const {createReadStream:h, createWriteStream:k} = fs;
 ```
 
 _Stderr:_
-<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out \
 ECMASCRIPT_2017 --formatting PRETTY_PRINT --package_json_entry_names module,main \
 --entry_point example/compile-src.js --externs node_modules/@externs/nodejs/v8/os.js \
@@ -300,7 +299,7 @@ node_modules/@externs/nodejs/v8/global.js --externs \
 node_modules/@externs/nodejs/v8/global/buffer.js --externs \
 node_modules/@externs/nodejs/v8/nodejs.js
 Built-ins: os, fs
-Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20200112<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -311,7 +310,7 @@ Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".d
 Bundles the browser source code into a _JavaScript_ file. If there are any _JSX_ dependencies, the bundler will transpile them first using [ÀLaMode/JSX](https://github.com/a-la/jsx). Returns the `stdout` of the compiler, and prints to the console if output is not given in `runOptions`.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-bundleconfig" title="Options for the Bundle method.">!BundleConfig</a></code></em>: Options for the web bundler. Must have the `src` prop at least.
- - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>runOptions</kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
  - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
 
 __<a name="type-bundlebase">`BundleBase`</a>__: Options for the web bundler.
@@ -456,10 +455,10 @@ e(document.querySelectorAll(".BananaActive")).concat().forEach(function(a) {
 ```
 
 _Stderr:_
-<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --formatting PRETTY_PRINT
 --js example/bundle-src.js
-Running Google Closure Compiler 20190929<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20200112<a id="_ind1" href="#_ind1"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 
 <p align="center"><a href="#table-of-contents">
@@ -470,7 +469,7 @@ Running Google Closure Compiler 20190929<a id="_ind1" href="#_ind1"><img src=".d
 Bundles the browser source code into multiple _JavaScript_ file. Works in the same way as `Bundle`, generating a temp dir for JSX dependencies.
 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-chunksconfig" title="Options for the BundleChunks method.">!ChunksConfig</a></code></em>: Options for the web bundler. Must have the `srcs` prop with paths to source files at least.
- - <kbd>runOptions</kbd> <em><code><a href="1-run.md#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
+ - <kbd>runOptions</kbd> <em><code><a href="#type-runconfig" title="General options for running of the compiler.">!RunConfig</a></code></em> (optional): General options for running of the compiler.
  - <kbd>compilerArgs</kbd> <em><code>!Array&lt;string&gt;</code></em> (optional): The compiler args got with `getOptions` and/or manually extended.
 
 __<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundlebase" title="Options for the web bundler.">`BundleBase`</a>__: Options for the BundleChunks method.
@@ -500,7 +499,7 @@ __<a name="type-chunksconfig">`ChunksConfig`</a> extends <a href="#type-bundleba
    <li><code>src/lib.js</code></li>
    <li><code>src/source1.js</code></li>
    <li><code>src/dir/source2.js</code></li>
-   
+
    and using <code>rel=src</code>, the following chunks are created:
    <li><code>lib</code></li>
    <li><code>source1</code></li>
@@ -597,7 +596,7 @@ function c(){var a=void 0===a?{}:a;a=a.a;window.b&&a&&console.log("test")};
 ```
 
 _Stderr:_
-<pre>java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
+<pre>java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --chunk_output_path_prefix test/temp/ --module_resolution \
 NODE
 --js test/fixture/chunks/index.js
@@ -853,7 +852,7 @@ console.log(opts)
 ---
 ```js
 [ '-jar',
-  '/Users/anton/node_modules/google-closure-compiler-java/compiler.jar',
+  '/Users/zavr/node_modules/google-closure-compiler-java/compiler.jar',
   '--compilation_level',
   'ADVANCED',
   '--language_in',
@@ -923,39 +922,17 @@ If `GOOGLE_CLOSURE_COMPILER` was set using an environment variable, returns `tar
 
 ## License & Copyright
 
-```
-Dual licensed under Affero GPL and a commercial license.
-
-- Within the UK: no commercial use is allowed until the
-  organisation signs up. After: see below. Sign up at:
-  https://www.technation.sucks/license/.
-- Across the globe: Affero GPL. No companies affiliated
-  with Tech Nation in any way (e.g., participation in
-  their programs, being part of their network, hiring
-  their directors), are allowed to use the software
-  unless they sign up.
-
-(c) 2019 Art Deco Code Limited
-
-The COPYING file contains the full text of the public license.
-```
+GNU Affero General Public License v3.0
 
 <table>
   <tr>
     <th>
-      <a href="https://artd.eco">
+      <a href="https://www.artd.eco">
         <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
           alt="Art Deco">
       </a>
     </th>
-    <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
-    <th>
-      <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
-          alt="Tech Nation Visa">
-      </a>
-    </th>
-    <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
+    <th>© <a href="https://www.artd.eco">Art Deco™</a> for <a href="https://artd.eco/depack">Depack</a> 2020</th>
   </tr>
 </table>
 
