@@ -1,3 +1,10 @@
+## 28 January 2020
+
+### [2.2.0](https://github.com/dpck/src/compare/v2.1.3...v2.2.0)
+
+- [license] Just use Affero.
+- [docs] Update package and add `typedefs.json`.
+
 ## 16 November 2019
 
 ### [2.1.3](https://github.com/dpck/src/compare/v2.1.2...v2.1.3)
